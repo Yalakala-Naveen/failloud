@@ -6,11 +6,15 @@
                                [--max-state-age-hours 24]
                                [--max-segment-gap-seconds 2.0]
                                [--only FL001,FL004]
+                               [--receipt-out receipts.jsonl]
     failloud checks            # list the checks and what they catch
+    failloud verify-receipts receipts.jsonl
+                               # verify a hash-chained receipt file
 
 Exit codes: ``0`` the output passed, ``1`` verification failed (the agent
 output, not the tool), ``2`` the tool itself could not run (bad input,
-bad arguments).
+bad arguments). ``verify-receipts`` uses the same contract: ``0`` the
+chain verifies, ``1`` it does not, ``2`` the file could not be read.
 """
 
 from __future__ import annotations
@@ -23,6 +27,7 @@ from typing import Any
 from .checks import MODULES
 from .engine import run_checks
 from .models import CheckConfig
+from .receipts import read_chain, seal_to_chain, verify_chain
 from .report import render_json, render_markdown, render_text
 
 
@@ -80,6 +85,17 @@ def _cmd_check(args: argparse.Namespace) -> int:
         )
     else:
         sys.stdout.write(rendered)
+    if args.receipt_out:
+        try:
+            receipt = seal_to_chain(args.receipt_out, result, source=args.file)
+        except (OSError, ValueError, KeyError) as exc:
+            print(f"failloud: cannot write receipt: {exc}", file=sys.stderr)
+            return 2
+        # Stderr, so a `--format json` report on stdout stays machine-clean.
+        print(
+            f"Receipt {receipt.receipt_hash[:16]}… sealed to {args.receipt_out}",
+            file=sys.stderr,
+        )
     return 0 if result.passed else 1
 
 
@@ -87,6 +103,22 @@ def _cmd_checks(_args: argparse.Namespace) -> int:
     for module in MODULES:
         print(f"{module.CHECK_ID}  {module.NAME}")
         print(f"      {module.DESCRIPTION}")
+    return 0
+
+
+def _cmd_verify_receipts(args: argparse.Namespace) -> int:
+    try:
+        chain = read_chain(args.file)
+    except (OSError, json.JSONDecodeError, KeyError, TypeError) as exc:
+        print(f"failloud: cannot read receipts: {exc}", file=sys.stderr)
+        return 2
+    problems = verify_chain(chain)
+    if problems:
+        print(f"RECEIPT CHAIN INVALID — {len(problems)} problem(s) in {args.file}:")
+        for problem in problems:
+            print(f"  ✗ {problem}")
+        return 1
+    print(f"Receipt chain OK — {len(chain)} receipt(s) verified in {args.file}.")
     return 0
 
 
@@ -129,10 +161,23 @@ def build_parser() -> argparse.ArgumentParser:
         help="Segment gap longer than this is a dead stretch (default: 2.0).",
     )
     check.add_argument("--only", help="Comma-separated check ids to run, e.g. 'FL001,FL004'.")
+    check.add_argument(
+        "--receipt-out",
+        help="Append a hash-chained verification receipt for this run to this "
+        "JSONL file (created if needed), so the verdict can be re-verified "
+        "later with 'failloud verify-receipts'.",
+    )
     check.set_defaults(func=_cmd_check)
 
     checks = sub.add_parser("checks", help="List the checks and what they catch.")
     checks.set_defaults(func=_cmd_checks)
+
+    verify = sub.add_parser(
+        "verify-receipts",
+        help="Verify a receipt chain file written by --receipt-out.",
+    )
+    verify.add_argument("file", help="Path to the receipts JSONL file.")
+    verify.set_defaults(func=_cmd_verify_receipts)
     return parser
 
 

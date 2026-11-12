@@ -110,6 +110,19 @@ $ failloud check examples/failing_output.json --format md --out report.md
 - **ERROR** `$.counts.sent` — Count for 'sent' is reported as 12 but the itemized record at $.items.sent contains 9 item(s) — the report overstates what the record supports.
 ```
 
+## Verification receipts (new in 0.2.0)
+
+A report says what FailLoud found; a **receipt proves it**. Seal any run into a hash-chained receipt file:
+
+```console
+$ failloud check examples/failing_output.json --receipt-out receipts.jsonl
+$ failloud check examples/passing_output.json --receipt-out receipts.jsonl
+$ failloud verify-receipts receipts.jsonl
+Receipt chain OK — 2 receipt(s) verified in receipts.jsonl.
+```
+
+Each receipt embeds the full result and two SHA-256 hashes: `result_hash` seals the result and its source, and `receipt_hash` seals every receipt field including `prev_hash` — the previous receipt's hash. Edit a verdict, erase a finding, drop or reorder a receipt, and `verify-receipts` (exit 1) names the break. Anyone holding the chain can re-verify it offline, stdlib only — the audit trail an orchestrator needs before one agent's "done" becomes the next agent's input. In Python: `create_receipt`, `verify_receipt`, `verify_chain`; over MCP: `create_verification_receipt`, `verify_receipt_chain`.
+
 ## What to feed it
 
 FailLoud works on **any JSON an agent produces** — the checks are shape-tolerant heuristics, not a schema straitjacket. They verify the most when the output follows this envelope (every field optional; each one present is one more thing that gets checked instead of trusted):
@@ -165,7 +178,7 @@ FailLoud also ships as an [MCP](https://modelcontextprotocol.io) server, so an a
 }
 ```
 
-Tools: `check_output` (all checks, JSON result), `check_placeholder`, `check_evidence`, `check_stale_state`, `check_counts`, `check_completeness`, and `failure_report` (the Markdown report). Works with both the 1.x and 2.x Python MCP SDKs.
+Tools: `check_output` (all checks, JSON result), `check_placeholder`, `check_evidence`, `check_stale_state`, `check_counts`, `check_completeness`, `failure_report` (the Markdown report), `create_verification_receipt`, and `verify_receipt_chain`. Works with both the 1.x and 2.x Python MCP SDKs.
 
 ## Design principles
 
@@ -178,14 +191,13 @@ Tools: `check_output` (all checks, JSON result), `check_placeholder`, `check_evi
 
 ```bash
 pip install -e ".[mcp,dev]"
-python -m pytest        # 68 tests, including a live MCP stdio end-to-end test
+python -m pytest        # 90 tests, including a live MCP stdio end-to-end test
 ```
 
 ## Roadmap
 
 - PyPI release and a public GitHub home (this repo is release-ready; publishing is a maintainer decision, not a code gap).
 - Framework adapters that capture outputs directly from popular agent frameworks instead of reading files.
-- Signed, hash-chained verification receipts for audit trails.
 - A `failloud watch` mode for streaming/runner integration.
 
 ## License

@@ -56,8 +56,21 @@ async def _exercise_inner() -> dict:
                 "failure_report", {"output_json": FAILING}
             )
             report_text = report_call.content[0].text
+
+            receipt_call = await session.call_tool(
+                "create_verification_receipt", {"output_json": PASSING}
+            )
+            receipt_payload = json.loads(receipt_call.content[0].text)
+
+            chain_call = await session.call_tool(
+                "verify_receipt_chain",
+                {"receipts_json": json.dumps([receipt_payload])},
+            )
+            chain_payload = json.loads(chain_call.content[0].text)
     return {
         "tools": names,
+        "receipt": receipt_payload,
+        "chain": chain_payload,
         "fail": fail_payload,
         "pass": pass_payload,
         "report": report_text,
@@ -74,8 +87,13 @@ def test_mcp_server_end_to_end():
         "check_counts",
         "check_completeness",
         "failure_report",
+        "create_verification_receipt",
+        "verify_receipt_chain",
     ):
         assert expected in result["tools"]
     assert result["fail"]["verdict"] == "FAIL"
     assert result["pass"]["verdict"] == "PASS"
     assert result["report"].startswith("# FAILURE REPORT")
+    assert result["receipt"]["verdict"] == "PASS"
+    assert len(result["receipt"]["receipt_hash"]) == 64
+    assert result["chain"] == {"valid": True, "count": 1, "problems": []}

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "failloud"
-version = "0.1.0"
+version = "0.2.0"
 description = "Verification harness for LLM agent outputs — catches the silent failures agents ship as 'done'."
 readme = "README.md"
 license = { text = "MIT" }
@@ -43,8 +43,8 @@ failloud = "failloud.cli:main"
 failloud-mcp = "failloud.mcp_server:main"
 
 [project.urls]
-Homepage = "https://github.com/failloud/failloud"
-Issues = "https://github.com/failloud/failloud/issues"
+Homepage = "https://github.com/Yalakala-Naveen/failloud"
+Issues = "https://github.com/Yalakala-Naveen/failloud/issues"
 
 [tool.setuptools.packages.find]
 where = ["src"]
