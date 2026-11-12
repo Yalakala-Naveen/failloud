@@ -1,0 +1,53 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "failloud"
+version = "0.1.0"
+description = "Verification harness for LLM agent outputs — catches the silent failures agents ship as 'done'."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+authors = [{ name = "Naveen Yalakala" }]
+keywords = [
+    "llm",
+    "agents",
+    "verification",
+    "evaluation",
+    "mcp",
+    "reliability",
+    "silent-failures",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Quality Assurance",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+# The core is stdlib-only on purpose: a verification tool should add no
+# supply-chain surface of its own.
+dependencies = []
+
+[project.optional-dependencies]
+mcp = ["mcp>=1.2"]
+dev = ["pytest>=7"]
+
+[project.scripts]
+failloud = "failloud.cli:main"
+failloud-mcp = "failloud.mcp_server:main"
+
+[project.urls]
+Homepage = "https://github.com/failloud/failloud"
+Issues = "https://github.com/failloud/failloud/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

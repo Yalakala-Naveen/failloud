@@ -1,0 +1,1 @@
+{"properties":{"output":{"required":["subject","body","archive_url"],"type":"object"}},"required":["task","status","output"],"type":"object"}
