@@ -8,6 +8,8 @@ FailLoud reads an agent's output the way a skeptical reviewer would — and prod
 
 > Built by a Forward Deployed Engineer from production failures — every check in this tool exists because a real agent failed this way in production and the miss became a rule.
 
+**▶ Try it in your browser: [FailLoud Playground](https://yalakala-naveen.github.io/failloud/)** — paste an agent output, get the failure report. No install, nothing uploaded.
+
 ## The five silent failures
 
 | Check | Name | What it catches |

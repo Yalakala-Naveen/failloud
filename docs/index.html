@@ -1,0 +1,906 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark" />
+    <link rel="icon" href="data:," />
+    <title>FailLoud Playground</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #07090d;
+        --bg-panel: #0c1118;
+        --bg-panel-2: #0a0e14;
+        --bg-input: #080b10;
+        --border: #1d2735;
+        --border-soft: #141c28;
+        --text: #d9e2ee;
+        --muted: #8d9cae;
+        --faint: #5d6d81;
+        --green: #3fb96f;
+        --green-bright: #4ade80;
+        --green-dim: #123324;
+        --red: #f0564f;
+        --red-bright: #ff6b64;
+        --red-dim: #3a1512;
+        --amber: #e8a33d;
+        --amber-dim: #38270e;
+        --cyan: #58a6ff;
+        --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+        --sans: "IBM Plex Sans", -apple-system, "Segoe UI", sans-serif;
+      }
+      * { box-sizing: border-box; }
+      html { -webkit-text-size-adjust: 100%; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--sans);
+        font-size: 16px;
+        line-height: 1.55;
+      }
+      a { color: var(--cyan); }
+      button, [role="button"], select, summary, input:not([type="checkbox"], [type="radio"]) { min-height: 2rem; }
+      button, label.file-btn { min-height: 44px; }
+
+      .wrap { max-width: 1240px; margin: 0 auto; padding: 0 20px 56px; }
+
+      /* ---------- header ---------- */
+      header.top { padding: 34px 0 8px; }
+      .prompt-line { font-family: var(--mono); font-size: 13px; color: var(--faint); margin: 0 0 14px; }
+      .prompt-line .u { color: var(--green-bright); }
+      .prompt-line .p { color: var(--cyan); }
+      h1.wordmark {
+        font-family: var(--mono);
+        font-size: clamp(2.1rem, 6vw, 3.4rem);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        margin: 0;
+        line-height: 1.05;
+      }
+      h1.wordmark .loud { color: var(--red-bright); }
+      .cursor { display: inline-block; width: 0.55em; height: 0.85em; background: var(--green-bright); margin-left: 8px; vertical-align: -0.08em; animation: blink 1.1s steps(1) infinite; }
+      @keyframes blink { 50% { opacity: 0; } }
+      @media (prefers-reduced-motion: reduce) { .cursor { animation: none; } }
+      .tagline { font-size: clamp(1.02rem, 2.6vw, 1.25rem); color: var(--text); max-width: 46em; margin: 14px 0 0; }
+      .tagline strong { color: #fff; font-weight: 600; }
+      .honest-note {
+        margin-top: 16px; display: inline-block;
+        font-family: var(--mono); font-size: 12.5px; color: var(--muted);
+        border: 1px solid var(--border); border-radius: 6px;
+        padding: 7px 12px; background: var(--bg-panel);
+      }
+      .honest-note b { color: var(--green-bright); font-weight: 600; }
+
+      /* ---------- checks strip ---------- */
+      .checks-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin: 26px 0 6px; }
+      .check-chip {
+        border: 1px solid var(--border-soft); border-radius: 8px; background: var(--bg-panel);
+        padding: 12px 13px;
+      }
+      .check-chip .cid { font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--green-bright); letter-spacing: 0.06em; }
+      .check-chip .cname { font-family: var(--mono); font-size: 13px; font-weight: 600; color: var(--text); margin-top: 2px; word-break: break-word; }
+      .check-chip .cdesc { font-size: 12.5px; color: var(--muted); margin-top: 5px; line-height: 1.45; }
+      @media (max-width: 900px) { .checks-strip { grid-template-columns: repeat(2, 1fr); } .check-chip:last-child { grid-column: span 2; } }
+      @media (max-width: 480px) { .checks-strip { grid-template-columns: 1fr; } .check-chip:last-child { grid-column: auto; } }
+
+      /* ---------- playground ---------- */
+      .play { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 22px; align-items: start; }
+      @media (max-width: 900px) { .play { grid-template-columns: 1fr; } }
+      .panel { border: 1px solid var(--border); border-radius: 10px; background: var(--bg-panel); overflow: hidden; }
+      .panel-head {
+        display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+        padding: 10px 14px; border-bottom: 1px solid var(--border-soft);
+        font-family: var(--mono); font-size: 12.5px; color: var(--muted);
+        background: var(--bg-panel-2);
+      }
+      .dots { display: inline-flex; gap: 6px; margin-right: 4px; }
+      .dots i { width: 10px; height: 10px; border-radius: 50%; display: block; }
+      .dots i:nth-child(1) { background: #3d4756; } .dots i:nth-child(2) { background: #3d4756; } .dots i:nth-child(3) { background: var(--green); }
+      .panel-head .fname { color: var(--text); font-weight: 600; }
+      .panel-body { padding: 14px; }
+
+      .toolbar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+      .btn {
+        font-family: var(--mono); font-size: 13px; font-weight: 600;
+        border: 1px solid var(--border); border-radius: 7px;
+        background: #111927; color: var(--text);
+        padding: 10px 14px; cursor: pointer;
+        display: inline-flex; align-items: center; gap: 7px;
+        transition: border-color .15s, background .15s;
+      }
+      .btn:hover { border-color: #33507a; background: #14202f; }
+      .btn.active { border-color: var(--green); color: var(--green-bright); background: var(--green-dim); }
+      .btn.primary { background: var(--green); border-color: var(--green); color: #04140a; font-size: 14px; padding: 11px 20px; }
+      .btn.primary:hover { background: var(--green-bright); border-color: var(--green-bright); }
+      .btn.ghost { background: transparent; }
+      #fileInput { display: none; }
+
+      textarea#editor {
+        width: 100%; min-height: 430px; resize: vertical;
+        background: var(--bg-input); color: #c9e7d4;
+        border: 1px solid var(--border-soft); border-radius: 8px;
+        font-family: var(--mono); font-size: 12.8px; line-height: 1.6;
+        padding: 13px 14px; outline: none; tab-size: 2;
+      }
+      textarea#editor:focus { border-color: #33507a; }
+      textarea#editor.drag { border-color: var(--green-bright); border-style: dashed; }
+      .editor-err { display: none; margin-top: 10px; font-family: var(--mono); font-size: 12.5px; color: var(--red-bright); background: var(--red-dim); border: 1px solid #5c2320; border-radius: 7px; padding: 9px 12px; }
+      .editor-err.show { display: block; }
+      .run-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 12px; }
+      .cfg { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 14px; padding-top: 13px; border-top: 1px dashed var(--border-soft); }
+      .cfg label { font-family: var(--mono); font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 7px; }
+      .cfg input[type="number"] {
+        width: 72px; background: var(--bg-input); color: var(--text);
+        border: 1px solid var(--border); border-radius: 6px;
+        font-family: var(--mono); font-size: 13px; padding: 7px 8px; min-height: 38px;
+      }
+      .hint { font-size: 12.5px; color: var(--faint); margin: 12px 0 0; }
+
+      /* ---------- results ---------- */
+      .verdict-block { padding: 20px 18px 16px; text-align: left; border-bottom: 1px solid var(--border-soft); }
+      .verdict-label { font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.14em; color: var(--faint); }
+      .verdict-word { font-family: var(--mono); font-weight: 700; line-height: 1; margin: 6px 0 4px; font-size: clamp(3.4rem, 10vw, 5.2rem); letter-spacing: -0.02em; }
+      .verdict-word.fail { color: var(--red-bright); }
+      .verdict-word.pass { color: var(--green-bright); }
+      .verdict-word.warn { color: var(--amber); }
+      .verdict-word.idle { color: var(--faint); font-size: clamp(2rem, 6vw, 3rem); }
+      .verdict-sub { font-family: var(--mono); font-size: 13.5px; color: var(--muted); }
+      .verdict-sub b { color: var(--text); }
+      .cmd-line { font-family: var(--mono); font-size: 12px; color: var(--faint); margin-top: 12px; word-break: break-all; }
+      .cmd-line .exit { color: var(--muted); }
+      .cmd-line .exit.bad { color: var(--red-bright); } .cmd-line .exit.good { color: var(--green-bright); }
+
+      .outcome { border-bottom: 1px solid var(--border-soft); padding: 13px 18px 15px; }
+      .outcome:last-child { border-bottom: none; }
+      .outcome-head { display: flex; align-items: baseline; gap: 9px; flex-wrap: wrap; font-family: var(--mono); }
+      .outcome-head .oid { font-size: 12px; font-weight: 700; color: var(--faint); }
+      .outcome-head .oname { font-size: 14.5px; font-weight: 600; color: var(--text); }
+      .status-chip { margin-left: auto; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; padding: 3px 9px; border-radius: 99px; border: 1px solid; }
+      .status-chip.fail { color: var(--red-bright); border-color: #5c2320; background: var(--red-dim); }
+      .status-chip.pass { color: var(--green-bright); border-color: #1d4a30; background: var(--green-dim); }
+      .status-chip.warn { color: var(--amber); border-color: #57431a; background: var(--amber-dim); }
+      .why { font-size: 12.5px; color: var(--faint); margin: 5px 0 0; font-style: italic; }
+      .findings { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 8px; }
+      .finding { display: flex; gap: 10px; font-size: 13.5px; line-height: 1.5; background: var(--bg-panel-2); border: 1px solid var(--border-soft); border-radius: 7px; padding: 10px 12px; }
+      .finding .mark { font-family: var(--mono); font-weight: 700; flex: none; }
+      .finding.error .mark { color: var(--red-bright); }
+      .finding.warning .mark { color: var(--amber); }
+      .finding .fpath { font-family: var(--mono); font-size: 12.5px; font-weight: 600; color: var(--cyan); word-break: break-all; }
+      .finding .fmsg { color: var(--text); }
+      .pass-line { font-family: var(--mono); font-size: 12.5px; color: var(--faint); margin-top: 8px; }
+      .pass-line .tick { color: var(--green-bright); }
+      .all-pass { padding: 16px 18px; font-size: 14.5px; color: var(--green-bright); font-family: var(--mono); }
+
+      /* ---------- get the code ---------- */
+      .funnel {
+        margin-top: 22px; border: 1px solid #1d4a30; border-radius: 10px;
+        background: var(--bg-panel); padding: 24px 22px;
+        display: flex; gap: 22px; align-items: center; flex-wrap: wrap;
+      }
+      .funnel .f-text { flex: 1 1 340px; }
+      .funnel h2 { font-family: var(--mono); font-size: 1.35rem; margin: 0 0 6px; color: #fff; }
+      .funnel p { margin: 0; color: var(--muted); font-size: 15px; max-width: 40em; }
+      .install {
+        font-family: var(--mono); font-size: 13px; background: var(--bg-input);
+        border: 1px solid var(--border-soft); border-radius: 7px;
+        padding: 9px 12px; margin-top: 12px; display: inline-flex; gap: 12px; align-items: center; flex-wrap: wrap;
+      }
+      .install code { color: var(--green-bright); }
+      .install button { background: none; border: none; color: var(--cyan); font-family: var(--mono); font-size: 12px; cursor: pointer; padding: 6px 4px; min-height: 36px; }
+      .btn-code {
+        font-family: var(--mono); font-weight: 700; font-size: 15.5px;
+        background: var(--green); color: #04140a; text-decoration: none;
+        padding: 15px 26px; border-radius: 8px; display: inline-flex; align-items: center; gap: 9px;
+        white-space: nowrap;
+      }
+      .btn-code:hover { background: var(--green-bright); }
+
+      footer.site { margin-top: 34px; padding-top: 18px; border-top: 1px solid var(--border-soft); display: flex; justify-content: space-between; gap: 14px; flex-wrap: wrap; font-size: 13.5px; color: var(--muted); }
+      footer.site .sig { font-family: var(--mono); font-size: 13px; }
+      footer.site a { font-weight: 600; text-decoration: none; }
+      footer.site a:hover { text-decoration: underline; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+
+      <header class="top">
+        <p class="prompt-line"><span class="u">naveen@failloud</span>:<span class="p">~/playground</span>$ failloud check agent_output.json</p>
+        <h1 class="wordmark">Fail<span class="loud">Loud</span><span class="cursor" aria-hidden="true"></span></h1>
+        <p class="tagline">FailLoud catches agents claiming <strong>&ldquo;done&rdquo;</strong> when the work is <strong>placeholder, unbacked, stale, miscounted, or missing pieces</strong>. Paste an agent&rsquo;s JSON output below and watch it get checked — deterministically, line by line. No model grades the homework.</p>
+        <span class="honest-note"><b>Same checks, in your browser.</b> This playground runs the five real FailLoud checks client-side — nothing you paste is uploaded anywhere. The CLI + MCP server is the production tool.</span>
+      </header>
+
+      <section class="checks-strip" aria-label="The five checks">
+        <div class="check-chip"><div class="cid">FL001</div><div class="cname">placeholder_shipped</div><div class="cdesc">Done, but the payload is empty or still holds lorem ipsum, {{template}} braces, &ldquo;coming soon&rdquo;.</div></div>
+        <div class="check-chip"><div class="cid">FL002</div><div class="cname">unbacked_claim</div><div class="cdesc">&ldquo;Sent / posted / published&rdquo; with no message id, URL, receipt, or artifact to back it.</div></div>
+        <div class="check-chip"><div class="cid">FL003</div><div class="cname">stale_state</div><div class="cdesc">Work based on state older than allowed (24h by default), untimestamped, or version-skewed.</div></div>
+        <div class="check-chip"><div class="cid">FL004</div><div class="cname">count_mismatch</div><div class="cdesc">The report says 12, the itemized record lists 9. The list is the only part that was ever true.</div></div>
+        <div class="check-chip"><div class="cid">FL005</div><div class="cname">missing_components</div><div class="cdesc">Fields present but silently empty, zero-length segments, dead stretches in the deliverable.</div></div>
+      </section>
+
+      <main class="play">
+        <section class="panel" aria-label="Input">
+          <div class="panel-head"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="fname" id="srcName">failing_output.json</span><span>— the exact examples shipped in the repo</span></div>
+          <div class="panel-body">
+            <div class="toolbar">
+              <button class="btn preset active" id="btnFail" type="button">&#9656; Failing example</button>
+              <button class="btn preset" id="btnPass" type="button">&#9656; Corrected example</button>
+              <button class="btn" id="btnUpload" type="button">&#9656; Open .json file</button>
+              <input type="file" id="fileInput" accept=".json,application/json" hidden />
+              <button class="btn ghost" id="btnClear" type="button">Clear</button>
+            </div>
+            <textarea id="editor" spellcheck="false" aria-label="Agent output JSON"></textarea>
+            <div class="editor-err" id="editorErr" role="alert"></div>
+            <div class="run-row">
+              <button class="btn primary" id="btnRun" type="button">&#9656; Run checks</button>
+              <button class="btn" id="btnCopyReport" type="button">Copy text report</button>
+              <span id="copyMsg" style="font-family:var(--mono);font-size:12.5px;color:var(--green-bright);"></span>
+            </div>
+            <div class="cfg">
+              <label>Max state age (h) <input type="number" id="cfgAge" value="24" min="0" step="1" /></label>
+              <label>Max segment gap (s) <input type="number" id="cfgGap" value="2" min="0" step="0.5" /></label>
+            </div>
+            <p class="hint">Or paste / drop any JSON an agent produced. The envelope that verifies best: <span style="font-family:var(--mono)">status, generated_at, claims[] with evidence, counts + items, state with context_updated_at, output, segments</span> — every field optional, each one present is one more thing checked instead of trusted.</p>
+          </div>
+        </section>
+
+        <section class="panel" aria-label="Results">
+          <div class="panel-head"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="fname">failure report</span><span>— errors fail the run, warnings don&rsquo;t</span></div>
+          <div id="results">
+            <div class="verdict-block">
+              <div class="verdict-label">VERDICT</div>
+              <div class="verdict-word idle" id="verdictWord">—</div>
+              <div class="verdict-sub" id="verdictSub">Running the failing example&hellip;</div>
+              <div class="cmd-line" id="cmdLine"></div>
+            </div>
+            <div id="outcomes"></div>
+          </div>
+        </section>
+      </main>
+
+      <section class="funnel">
+        <div class="f-text">
+          <h2>Liked what it caught? Get the code.</h2>
+          <p>The full FailLoud — the command-line tool and the MCP server an agent can call <em>inside the loop</em>, before acting on a sub-agent&rsquo;s output — lives on GitHub, MIT-licensed, zero-dependency core, 68 tests. Star it, clone it, wire it into CI: exit code 0 is a pass, 1 is a failed output, 2 is a tool error.</p>
+          <div class="install"><code>$ pip install failloud</code><span style="color:var(--faint)"># or pip install . from a clone · add [mcp] for the server</span><button id="btnCopyInstall" type="button">copy</button></div>
+        </div>
+        <a class="btn-code" href="https://github.com/Yalakala-Naveen/failloud" target="_blank" rel="noopener">Get the code on GitHub &#8599;</a>
+      </section>
+
+      <footer class="site">
+        <span class="sig">Built by <a href="https://yalakala-naveen.github.io" target="_blank" rel="noopener">Naveen Yalakala</a>, Forward Deployed Engineer</span>
+        <span>FailLoud Playground — the same five deterministic checks, running in this page. Fail loud, specifically.</span>
+      </footer>
+    </div>
+
+    <script>
+    "use strict";
+    /* ================================================================
+       FailLoud — faithful client-side port of the Python checks in
+       ~/workspace/failloud/src/failloud/ (checks/*.py, util.py,
+       models.py, report.py). Same defaults, same verdict semantics:
+       errors fail the run, warnings don't.
+       ================================================================ */
+
+    /* ---------- util.py ---------- */
+    function isDict(v) { return typeof v === "object" && v !== null && !Array.isArray(v); }
+    function iterNodes(node, path, out) {
+      path = path || "$"; out = out || [];
+      out.push([path, node]);
+      if (isDict(node)) { for (var k of Object.keys(node)) iterNodes(node[k], path + "." + k, out); }
+      else if (Array.isArray(node)) { node.forEach(function (v, i) { iterNodes(v, path + "[" + i + "]", out); }); }
+      return out;
+    }
+    function isEmpty(v) {
+      if (v === null || v === undefined) return true;
+      if (typeof v === "string") return v.trim() === "";
+      if (Array.isArray(v) || isDict(v)) return Object.keys(v).length === 0;
+      return false;
+    }
+    function hasContent(v) {
+      if (isDict(v)) return Object.values(v).some(hasContent);
+      if (Array.isArray(v)) return v.some(hasContent);
+      return !isEmpty(v);
+    }
+    function normalizeKey(key) { return String(key).toLowerCase().replace(/[^a-z0-9]/g, ""); }
+    function keyTokens(key) { return new Set(String(key).toLowerCase().split(/[^a-z0-9]+/).filter(Boolean)); }
+    function parseTimestamp(value) {
+      if (typeof value === "boolean") return null;
+      if (typeof value === "number") {
+        var secs = value; if (secs > 1e12) secs /= 1000.0; if (secs < 1) return null;
+        var d = new Date(secs * 1000); return isNaN(d.getTime()) ? null : d.getTime();
+      }
+      if (typeof value !== "string") return null;
+      var text = value.trim(); if (!text) return null;
+      if (/^\d+$/.test(text)) return parseTimestamp(parseInt(text, 10));
+      var candidate = text;
+      // Naive datetimes are treated as UTC, exactly like the Python port.
+      if (!/(Z|[+-]\d{2}:?\d{2})$/i.test(candidate) && /[T ]\d{2}:/.test(candidate)) candidate += "Z";
+      var ms = Date.parse(candidate);
+      return isNaN(ms) ? null : ms;
+    }
+    function referenceTime(doc) {
+      if (isDict(doc)) {
+        for (var key of ["generated_at", "completed_at", "finished_at", "created_at"]) {
+          var parsed = parseTimestamp(doc[key]);
+          if (parsed !== null) return parsed;
+        }
+      }
+      return Date.now();
+    }
+    function resolvePath(doc, dotted) {
+      var current = doc;
+      for (var part of dotted.split(".")) {
+        if (isDict(current) && part in current) current = current[part];
+        else if (Array.isArray(current) && /^\d+$/.test(part) && parseInt(part, 10) < current.length) current = current[parseInt(part, 10)];
+        else return [false, null];
+      }
+      return [true, current];
+    }
+    function lastSeg(path) { return path.split(".").pop(); }
+    function fmtG(n) { return String(parseFloat(Number(n).toPrecision(6))); }
+    function pyRepr(v) {
+      if (typeof v === "string") return "'" + v.replace(/\\/g, "\\\\").replace(/'/g, "\\'").replace(/\n/g, "\\n") + "'";
+      if (v === null || v === undefined) return "None";
+      if (typeof v === "boolean") return v ? "True" : "False";
+      return String(v);
+    }
+    function F(checkId, severity, path, message) { return { check_id: checkId, severity: severity, path: path, message: message }; }
+
+    /* ---------- FL001 placeholder_shipped ---------- */
+    var COMPLETION_VALUES = new Set(["done","complete","completed","success","successful","succeeded","ok","shipped","published","live","delivered","finished","ready"]);
+    var NON_FINAL_VALUES = new Set(["draft","in_progress","in-progress","pending","working","queued","running","failed","error","cancelled","canceled","partial","blocked"]);
+    var EXACT_PLACEHOLDERS = new Set(["tbd","tba","todo","to do","placeholder","dummy","lorem ipsum","coming soon","n/a","xxx","..."]);
+    var SUBSTRING_PLACEHOLDERS = ["lorem ipsum","coming soon","<insert","[insert","{{","}}","placeholder text","sample text","your text here","insert text here","dummy content","mock data","example.com","example.org","todo:"];
+    var PAYLOAD_KEYS = ["output","payload","deliverable","result_content","content","body"];
+    var META_KEYS = new Set(["task","status","state","claims","counts","stats","summary","generated_at","completed_at","created_at","started_at","run_id","agent","model","version"]);
+
+    function completionState(doc) {
+      for (var key of ["status","state","result_status","outcome"]) {
+        var value = doc[key];
+        if (typeof value === "string") {
+          var lowered = value.trim().toLowerCase();
+          if (NON_FINAL_VALUES.has(lowered)) return false;
+          if (COMPLETION_VALUES.has(lowered)) return true;
+        }
+      }
+      return null;
+    }
+    function placeholderMatches(text) {
+      var lowered = text.trim().toLowerCase(), matches = [];
+      if (EXACT_PLACEHOLDERS.has(lowered)) matches.push(lowered);
+      for (var p of SUBSTRING_PLACEHOLDERS) if (lowered.indexOf(p) !== -1 && matches.indexOf(p) === -1) matches.push(p);
+      return matches;
+    }
+    function checkFL001(doc) {
+      if (!isDict(doc)) return [];
+      if (completionState(doc) === false) return [];
+      var payloadPath = "$", payload = null, found = false;
+      for (var key of PAYLOAD_KEYS) if (key in doc) { payloadPath = "$." + key; payload = doc[key]; found = true; break; }
+      if (!found) { payload = {}; for (var k of Object.keys(doc)) if (!META_KEYS.has(k)) payload[k] = doc[k]; }
+      if (!hasContent(payload)) {
+        return [F("FL001", "error", payloadPath, "Output is marked complete but its payload is empty — nothing was actually produced.")];
+      }
+      var byPath = new Map();
+      for (var pair of iterNodes(doc)) {
+        var path = pair[0], value = pair[1];
+        if (typeof value === "string" && !isEmpty(value)) {
+          var m = placeholderMatches(value);
+          if (m.length) byPath.set(path, (byPath.get(path) || []).concat(m));
+        }
+      }
+      var findings = [];
+      for (var p of Array.from(byPath.keys()).sort()) {
+        var unique = Array.from(new Set(byPath.get(p))).sort();
+        findings.push(F("FL001", "error", p, "Placeholder content shipped as final output: matched " + unique.map(pyRepr).join(", ") + "."));
+      }
+      return findings;
+    }
+
+    /* ---------- FL002 unbacked_claim ---------- */
+    var EVIDENCE_KEYS = new Set(["evidence","proof","artifact","artifacts","url","urls","link","links","id","messageid","recordid","receipt","receiptid","confirmation","confirmationid","externalid","path","file","hash","sha","permalink","reference","ticket","postid","threadid"]);
+    var CLAIM_LIST_KEYS = new Set(["claims","actions","actionstaken","steps","completedactions"]);
+    var CLAIM_VERB_RE = /\b(sent|posted|published|emailed|uploaded|deployed|updated|created|deleted|booked|charged|notified|delivered|filed|submitted|released|merged|announced)\b/gi;
+    var URL_RE = /https?:\/\/[^\s)\]]+/;
+    var TEXT_CLAIM_KEYS = new Set(["summary","message","report","description","notes","result"].map(normalizeKey));
+
+    function valueHasEvidence(value) {
+      if (isDict(value)) {
+        for (var k of Object.keys(value)) {
+          if (EVIDENCE_KEYS.has(normalizeKey(k)) && hasContent(value[k])) return true;
+          if (valueHasEvidence(value[k])) return true;
+        }
+        return false;
+      }
+      if (Array.isArray(value)) return value.some(valueHasEvidence);
+      return false;
+    }
+    function claimAssertsCompletion(claim) {
+      var status = claim["status"] || claim["state"];
+      if (typeof status === "string" && ["failed","error","skipped","pending","planned","cancelled"].indexOf(status.trim().toLowerCase()) !== -1) return null;
+      for (var key of ["action","type","verb","did","name","operation"]) {
+        var v = claim[key];
+        if (typeof v === "string" && v.trim()) return v.trim();
+      }
+      if (claim["done"] === true || claim["completed"] === true) return "completed action";
+      if (typeof status === "string" && COMPLETION_VALUES.has(status.trim().toLowerCase())) return "completed action";
+      return null;
+    }
+    function documentHasEvidence(doc) {
+      for (var pair of iterNodes(doc)) {
+        var value = pair[1];
+        if (isDict(value)) for (var k of Object.keys(value)) if (EVIDENCE_KEYS.has(normalizeKey(k)) && !isEmpty(value[k])) return true;
+        if (typeof value === "string" && URL_RE.test(value)) return true;
+      }
+      return false;
+    }
+    function checkFL002(doc) {
+      var findings = [];
+      if (!isDict(doc) && !Array.isArray(doc)) return findings;
+      for (var pair of iterNodes(doc)) {
+        var path = pair[0], value = pair[1];
+        if (!CLAIM_LIST_KEYS.has(normalizeKey(lastSeg(path))) || !Array.isArray(value)) continue;
+        value.forEach(function (claim, index) {
+          if (!isDict(claim)) return;
+          var action = claimAssertsCompletion(claim);
+          if (action === null) return;
+          if (!valueHasEvidence(claim)) {
+            findings.push(F("FL002", "error", path + "[" + index + "]",
+              "Claimed action " + pyRepr(action) + " has no evidence — no id, URL, receipt, or artifact in the claim backs that it happened."));
+          }
+        });
+      }
+      if (isDict(doc) && !documentHasEvidence(doc)) {
+        for (var key of Object.keys(doc)) {
+          var value2 = doc[key];
+          if (TEXT_CLAIM_KEYS.has(normalizeKey(key)) && typeof value2 === "string") {
+            var found2 = value2.match(CLAIM_VERB_RE);
+            if (found2) {
+              var verbs = Array.from(new Set(found2.map(function (s) { return s.toLowerCase(); }))).sort();
+              findings.push(F("FL002", "error", "$." + key,
+                "Narrative claims completed actions (" + verbs.join(", ") + ") but the document contains no evidence — no id, URL, receipt, or artifact — anywhere."));
+            }
+          }
+        }
+      }
+      return findings;
+    }
+
+    /* ---------- FL003 stale_state ---------- */
+    var STATE_CONTAINER_KEYS = new Set(["state","context","handoff","memory","inputstate","workingstate"]);
+    var TIMESTAMP_KEYS = new Set(["contextupdatedat","stateupdatedat","asof","contextasof","dataasof","snapshotat","retrievedat","updatedat","lastupdated","validasof","capturedat","observedat"]);
+    var VERSION_KEYS = new Set(["version","stateversion","revision"]);
+    var EXPECTED_VERSION_KEYS = new Set(["basedonversion","expectedstateversion","expectedversion","assumedstateversion","assumedversion"]);
+    function isTimestampKey(key) { var n = normalizeKey(key); return TIMESTAMP_KEYS.has(n) || n.endsWith("at"); }
+    function walkState(node, path, inState, out) {
+      out = out || []; out.push([path, node, inState]);
+      if (isDict(node)) for (var k of Object.keys(node)) walkState(node[k], path + "." + k, inState || STATE_CONTAINER_KEYS.has(normalizeKey(k)), out);
+      else if (Array.isArray(node)) node.forEach(function (v, i) { walkState(v, path + "[" + i + "]", inState, out); });
+      return out;
+    }
+    function checkFL003(doc, cfg) {
+      var findings = [];
+      if (!isDict(doc)) return findings;
+      var ref = referenceTime(doc);
+      var nodes = walkState(doc, "$", false);
+      var stateContainers = [];
+      for (var triple of nodes) {
+        var path = triple[0], node = triple[1], inState = triple[2];
+        if (isDict(node) && path !== "$" && STATE_CONTAINER_KEYS.has(normalizeKey(lastSeg(path))) && !isEmpty(node)) stateContainers.push([path, node]);
+        if (!inState || !isDict(node)) continue;
+        for (var key of Object.keys(node)) {
+          if (!isTimestampKey(key)) continue;
+          var parsed = parseTimestamp(node[key]);
+          if (parsed === null) continue;
+          var ageHours = (ref - parsed) / 3600000.0;
+          if (ageHours > cfg.maxStateAgeHours) {
+            findings.push(F("FL003", "error", path + "." + key,
+              "State timestamp is " + ageHours.toFixed(1) + "h old at run time (limit " + fmtG(cfg.maxStateAgeHours) + "h) — the run worked from context older than allowed."));
+          }
+        }
+      }
+      for (var sc of stateContainers) {
+        var sub = walkState(sc[1], sc[0], true);
+        var hasTs = sub.some(function (t) {
+          return isDict(t[1]) && Object.keys(t[1]).some(function (k) { return isTimestampKey(k) && parseTimestamp(t[1][k]) !== null; });
+        });
+        if (!hasTs) findings.push(F("FL003", "warning", sc[0], "State is handed over with no freshness timestamp — its age cannot be verified, so staleness would be invisible."));
+      }
+      var stateVersions = [], expectedVersions = [];
+      for (var triple2 of nodes) {
+        var node2 = triple2[1], inState2 = triple2[2];
+        if (!isDict(node2)) continue;
+        for (var k2 of Object.keys(node2)) {
+          var n = normalizeKey(k2), v = node2[k2];
+          if (inState2 && VERSION_KEYS.has(n) && (typeof v === "number" || typeof v === "string")) stateVersions.push(v);
+          if (EXPECTED_VERSION_KEYS.has(n) && (typeof v === "number" || typeof v === "string")) expectedVersions.push(v);
+        }
+      }
+      if (stateVersions.length && expectedVersions.length) {
+        var actual = stateVersions[0], expected = expectedVersions[0];
+        if (String(actual) !== String(expected)) {
+          findings.push(F("FL003", "error", "$",
+            "Run based itself on state version " + pyRepr(expected) + " but the state it carried is version " + pyRepr(actual) + " — the handover and the work disagree about the world."));
+        }
+      }
+      return findings;
+    }
+
+    /* ---------- FL004 count_mismatch ---------- */
+    var COUNT_CONTAINER_KEYS = new Set(["counts","stats","summarycounts","totals","metrics"]);
+    var COUNT_KEY_RES = [/^(.+?)_count$/, /^count_(.+)$/, /^total_(.+)$/, /^num_(.+)$/];
+    function metricOfCountKey(key) {
+      var lk = key.toLowerCase();
+      for (var re of COUNT_KEY_RES) { var m = lk.match(re); if (m) return m[1]; }
+      return null;
+    }
+    function namesMatch(claimMetric, arrayMetric) {
+      var a = normalizeKey(claimMetric), b = normalizeKey(arrayMetric);
+      if (a === b) return true;
+      var ar = a.replace(/s+$/, ""), br = b.replace(/s+$/, "");
+      if (ar === br && ar) return true;
+      var ta = keyTokens(claimMetric), tb = keyTokens(arrayMetric);
+      if (ta.size && tb.size) {
+        var aSub = Array.from(ta).every(function (t) { return tb.has(t); });
+        var bSub = Array.from(tb).every(function (t) { return ta.has(t); });
+        if (aSub || bSub) return true;
+      }
+      return false;
+    }
+    function checkFL004(doc) {
+      var findings = [];
+      if (!isDict(doc) && !Array.isArray(doc)) return findings;
+      var arrays = [];
+      for (var pair of iterNodes(doc)) {
+        if (Array.isArray(pair[1]) && pair[0] !== "$") {
+          var metric = lastSeg(pair[0]);
+          if (metric.charAt(0) === "$") continue;
+          arrays.push([metric, pair[0], pair[1].length]);
+        }
+      }
+      var claims = [], seen = new Set();
+      function addClaim(metric, path, value) {
+        var dk = normalizeKey(metric) + "|" + value;
+        if (seen.has(dk)) return; seen.add(dk); claims.push([metric, path, value]);
+      }
+      for (var pair2 of iterNodes(doc)) {
+        if (!isDict(pair2[1])) continue;
+        var parentKey = pair2[0] !== "$" ? normalizeKey(lastSeg(pair2[0])) : "";
+        for (var k of Object.keys(pair2[1])) {
+          var item = pair2[1][k];
+          if (typeof item !== "number") continue;
+          if (COUNT_CONTAINER_KEYS.has(parentKey)) addClaim(k, pair2[0] + "." + k, item);
+          else { var m = metricOfCountKey(k); if (m !== null) addClaim(m, pair2[0] + "." + k, item); }
+        }
+      }
+      for (var pair3 of iterNodes(doc)) {
+        if (!isDict(pair3[1])) continue;
+        var pk = pair3[0] !== "$" ? normalizeKey(lastSeg(pair3[0])) : "";
+        if (!COUNT_CONTAINER_KEYS.has(pk)) continue;
+        var numeric = Object.keys(pair3[1]).filter(function (k) { return typeof pair3[1][k] === "number"; });
+        for (var k3 of numeric) {
+          if (["total","grandtotal","count"].indexOf(normalizeKey(k3)) !== -1 && numeric.length >= 3) {
+            var parts = numeric.filter(function (x) { return x !== k3; }).reduce(function (s, x) { return s + pair3[1][x]; }, 0);
+            var total = pair3[1][k3];
+            if (total !== parts) findings.push(F("FL004", "error", pair3[0] + "." + k3, "Reported total " + fmtG(total) + " does not equal the sum of its parts (" + fmtG(parts) + ")."));
+          }
+        }
+      }
+      for (var claim of claims) {
+        var matching = arrays.filter(function (a) { return namesMatch(claim[0], a[0]); });
+        if (!matching.length) continue;
+        var best = matching.reduce(function (b, a) { return a[2] > b[2] ? a : b; });
+        if (best[2] !== claim[2]) {
+          var inflated = claim[2] > best[2];
+          findings.push(F("FL004", "error", claim[1],
+            "Count for " + pyRepr(claim[0]) + " is reported as " + fmtG(claim[2]) + " but the itemized record at " + best[1] + " contains " + best[2] + " item(s) — " +
+            (inflated ? "the report overstates what the record supports." : "the report understates its own record.")));
+        }
+      }
+      return findings;
+    }
+
+    /* ---------- FL005 missing_components ---------- */
+    var ALLOW_EMPTY_KEYS = new Set(["error","errors","warnings","cc","bcc","metadata","parentid"]);
+    var SEGMENT_LIST_KEYS = new Set(["segments","scenes","tracks","clips","chapters","shots"]);
+    var START_KEYS = ["start","start_sec","start_time","begin","from"];
+    var END_KEYS = ["end","end_sec","end_time","to"];
+    var DURATION_KEYS = ["duration","duration_sec","length","duration_seconds"];
+    function firstNumber(node, keys) {
+      var lowered = {};
+      for (var k of Object.keys(node)) lowered[normalizeKey(k)] = node[k];
+      for (var key of keys) { var v = lowered[normalizeKey(key)]; if (typeof v === "number") return v; }
+      return null;
+    }
+    function segmentSpan(seg) {
+      var start = firstNumber(seg, START_KEYS), end = firstNumber(seg, END_KEYS), dur = firstNumber(seg, DURATION_KEYS);
+      if (start === null && dur === null) return null;
+      start = start !== null ? start : 0.0;
+      if (end === null && dur !== null) end = start + dur;
+      if (end === null) return null;
+      return [start, end];
+    }
+    function checkSegments(doc, cfg) {
+      var findings = [];
+      for (var pair of iterNodes(doc)) {
+        var path = pair[0], value = pair[1];
+        if (!SEGMENT_LIST_KEYS.has(normalizeKey(lastSeg(path))) || !Array.isArray(value)) continue;
+        var spans = [];
+        value.forEach(function (seg, index) {
+          if (!isDict(seg)) return;
+          var span = segmentSpan(seg); if (!span) return;
+          spans.push([span[0], span[1], index]);
+          if (span[1] - span[0] <= 0) {
+            findings.push(F("FL005", "error", path + "[" + index + "]",
+              "Segment " + index + " has zero length (" + fmtG(span[0]) + "s–" + fmtG(span[1]) + "s) — a component that occupies a slot and contains nothing."));
+          }
+        });
+        spans.sort(function (a, b) { return a[0] - b[0] || a[1] - b[1] || a[2] - b[2]; });
+        for (var i = 1; i < spans.length; i++) {
+          var gap = spans[i][0] - spans[i - 1][1];
+          if (gap > cfg.maxSegmentGapSeconds) {
+            var idx = spans[i][2];
+            findings.push(F("FL005", "error", path + "[" + idx + "]",
+              "Dead stretch of " + gap.toFixed(1) + "s before segment " + idx + " (gap limit " + fmtG(cfg.maxSegmentGapSeconds) + "s) — the deliverable goes silent where content should be."));
+          }
+        }
+      }
+      return findings;
+    }
+    function checkSchema(node, schema, path, findings) {
+      if (!isDict(schema)) return;
+      var required = schema["required"];
+      if (Array.isArray(required) && isDict(node)) {
+        for (var key of required) {
+          if (!(key in node)) findings.push(F("FL005", "error", path + "." + key, "Required component " + pyRepr(key) + " is missing entirely."));
+          else if (isEmpty(node[key])) findings.push(F("FL005", "error", path + "." + key, "Required component " + pyRepr(key) + " is present but empty — it satisfies the shape and delivers nothing."));
+        }
+      }
+      var props = schema["properties"];
+      if (isDict(props) && isDict(node)) for (var pk of Object.keys(props)) if (pk in node) checkSchema(node[pk], props[pk], path + "." + pk, findings);
+      var items = schema["items"];
+      if (isDict(items) && Array.isArray(node)) node.forEach(function (item, i) { checkSchema(item, items, path + "[" + i + "]", findings); });
+    }
+    function checkFL005(doc, cfg) {
+      var findings = [];
+      if (!isDict(doc)) return findings;
+      for (var dotted of cfg.requiredPaths) {
+        var res = resolvePath(doc, dotted);
+        if (!res[0]) findings.push(F("FL005", "error", "$." + dotted, "Required component " + pyRepr(dotted) + " is missing entirely."));
+        else if (isEmpty(res[1])) findings.push(F("FL005", "error", "$." + dotted, "Required component " + pyRepr(dotted) + " is present but empty — it satisfies the shape and delivers nothing."));
+      }
+      if (cfg.schema) checkSchema(doc, cfg.schema, "$", findings);
+      var hasOutput = "output" in doc;
+      var payload = hasOutput ? doc["output"] : doc;
+      if (isDict(payload)) {
+        for (var pair of iterNodes(payload, hasOutput ? "$.output" : "$")) {
+          if (!isDict(pair[1])) continue;
+          var entries = Object.keys(pair[1]);
+          if (!entries.some(function (k) { return !isEmpty(pair[1][k]); })) continue;
+          for (var k of entries) {
+            if (ALLOW_EMPTY_KEYS.has(normalizeKey(k))) continue;
+            if (isEmpty(pair[1][k])) {
+              findings.push(F("FL005", "warning", pair[0] + "." + k,
+                "Field " + pyRepr(k) + " is present but empty while its siblings carry content — verify it was meant to be blank."));
+            }
+          }
+        }
+      }
+      return findings.concat(checkSegments(doc, cfg));
+    }
+
+    /* ---------- engine + report (engine.py / models.py / report.py) ---------- */
+    var CHECKS = [
+      { id: "FL001", name: "placeholder_shipped", run: function (doc) { return checkFL001(doc); },
+        why: "A placeholder that ships is indistinguishable from finished work until a human reads it — by then it is public." },
+      { id: "FL002", name: "unbacked_claim", run: function (doc) { return checkFL002(doc); },
+        why: "A claim without evidence is the producing system grading its own homework; downstream steps build on it as if it were fact." },
+      { id: "FL003", name: "stale_state", run: function (doc, cfg) { return checkFL003(doc, cfg); },
+        why: "Correct work on stale state is wrong work with extra confidence — the plan is flawless for a world that no longer exists." },
+      { id: "FL004", name: "count_mismatch", run: function (doc) { return checkFL004(doc); },
+        why: "The claimed number is what travels into dashboards and decisions; the itemized record is the only part that was ever true." },
+      { id: "FL005", name: "missing_components", run: function (doc, cfg) { return checkFL005(doc, cfg); },
+        why: "Existence is not completeness: a deliverable can pass every outline check while a component inside it is silently absent." }
+    ];
+    function runChecks(doc, cfg) {
+      var outcomes = CHECKS.map(function (c) {
+        var findings = c.run(doc, cfg);
+        var status = findings.some(function (f) { return f.severity === "error"; }) ? "fail" : (findings.length ? "warn" : "pass");
+        return { check_id: c.id, name: c.name, why: c.why, findings: findings, status: status };
+      });
+      var all = outcomes.reduce(function (a, o) { return a.concat(o.findings); }, []);
+      var errors = all.filter(function (f) { return f.severity === "error"; }).length;
+      var warnings = all.length - errors;
+      var verdict = errors ? "FAIL" : (warnings ? "PASS WITH WARNINGS" : "PASS");
+      return { outcomes: outcomes, errorCount: errors, warningCount: warnings, verdict: verdict, passed: errors === 0 };
+    }
+    var STATUS_MARK = { pass: "PASS", warn: "WARN", fail: "FAIL" };
+    function renderTextReport(result, source) {
+      var lines = ["FAILLOUD — agent output verification", "Source: " + source,
+        "Verdict: " + result.verdict + " (" + result.errorCount + " error(s), " + result.warningCount + " warning(s))", ""];
+      for (var o of result.outcomes) {
+        lines.push("[" + o.check_id + "] " + o.name + " — " + STATUS_MARK[o.status]);
+        for (var f of o.findings) lines.push("  " + (f.severity === "error" ? "✗" : "!") + " " + f.path + " — " + f.message);
+      }
+      if (result.errorCount + result.warningCount === 0) lines.push("No silent failures found. The output backs its claims.");
+      return lines.join("\n") + "\n";
+    }
+
+    /* ---------- the real examples, verbatim from examples/ ---------- */
+    var READERS = ["reader01@acme-digest.com","reader02@acme-digest.com","reader03@acme-digest.com","reader04@acme-digest.com","reader05@acme-digest.com","reader06@acme-digest.com","reader07@acme-digest.com","reader08@acme-digest.com","reader09@acme-digest.com"];
+    var FAILING_JSON = JSON.stringify({
+      "based_on": { "expected_state_version": 9 },
+      "claims": [
+        { "action": "email_sent", "evidence": { "message_id": "msg_8f42", "provider": "mail" }, "target": "subscriber-list" },
+        { "action": "card_published", "target": "community-feed" }
+      ],
+      "counts": { "delivered": 12, "sent": 12 },
+      "generated_at": "2026-11-11T14:05:00Z",
+      "items": { "delivered": READERS, "sent": READERS },
+      "output": { "archive_url": "", "body": "Lorem ipsum dolor sit amet, {{first_name}}, your digest is coming soon.", "subject": "Weekly digest - November 11" },
+      "segments": [ { "end": 4.0, "id": "intro", "start": 0.0 }, { "end": 4.0, "id": "main", "start": 4.0 }, { "end": 12.0, "id": "outro", "start": 9.5 } ],
+      "state": { "audience": "subscriber snapshot used for targeting", "context_updated_at": "2026-11-08T09:00:00Z", "version": 7 },
+      "status": "done",
+      "summary": "Sent the digest to 12 subscribers and published the summary card.",
+      "task": "Send the weekly product digest to the subscriber list and publish the summary card"
+    }, null, 2);
+    var PASSING_JSON = JSON.stringify({
+      "based_on": { "expected_state_version": 9 },
+      "claims": [
+        { "action": "email_sent", "evidence": { "message_id": "msg_8f42", "provider": "mail" }, "target": "subscriber-list" },
+        { "action": "card_published", "evidence": { "post_id": "post_2481", "url": "https://community.acme-digest.com/posts/2481" }, "target": "community-feed" }
+      ],
+      "counts": { "delivered": 9, "sent": 9 },
+      "generated_at": "2026-11-11T14:05:00Z",
+      "items": { "delivered": READERS, "sent": READERS },
+      "output": { "archive_url": "https://lists.acme-digest.com/archive/2026-11-11", "body": "This week: the verification checklist we now run before anything ships, two reader questions answered, and the roadmap for December.", "subject": "Weekly digest - November 11" },
+      "segments": [ { "end": 4.0, "id": "intro", "start": 0.0 }, { "end": 9.0, "id": "main", "start": 4.0 }, { "end": 12.0, "id": "outro", "start": 9.0 } ],
+      "state": { "audience": "subscriber snapshot used for targeting", "context_updated_at": "2026-11-11T13:40:00Z", "version": 9 },
+      "status": "done",
+      "summary": "Sent the digest to 9 subscribers and published the summary card.",
+      "task": "Send the weekly product digest to the subscriber list and publish the summary card"
+    }, null, 2);
+
+    /* ---------- UI wiring ---------- */
+    var editor = document.getElementById("editor");
+    var srcName = document.getElementById("srcName");
+    var editorErr = document.getElementById("editorErr");
+    var verdictWord = document.getElementById("verdictWord");
+    var verdictSub = document.getElementById("verdictSub");
+    var cmdLine = document.getElementById("cmdLine");
+    var outcomesEl = document.getElementById("outcomes");
+    var currentSource = "failing_output.json";
+    var lastReportText = "";
+    var lastResult = null;
+
+    function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+    function getConfig() {
+      var age = parseFloat(document.getElementById("cfgAge").value);
+      var gap = parseFloat(document.getElementById("cfgGap").value);
+      return {
+        maxStateAgeHours: isNaN(age) ? 24 : age,
+        maxSegmentGapSeconds: isNaN(gap) ? 2 : gap,
+        requiredPaths: [], schema: null
+      };
+    }
+    function run() {
+      var text = editor.value;
+      editorErr.classList.remove("show"); editorErr.textContent = "";
+      var doc;
+      try { doc = JSON.parse(text); }
+      catch (e) {
+        editorErr.textContent = "✗ Not valid JSON — " + e.message + " Fix the JSON and run again; FailLoud checks parsed documents.";
+        editorErr.classList.add("show");
+        verdictWord.textContent = "NO VERDICT"; verdictWord.className = "verdict-word idle";
+        verdictSub.textContent = "The input could not be parsed as JSON.";
+        cmdLine.innerHTML = "$ failloud check " + esc(currentSource) + " &nbsp;<span class='exit bad'>exit 2 — the tool could not run on this input</span>";
+        outcomesEl.innerHTML = ""; lastResult = null; lastReportText = "";
+        return;
+      }
+      var result = runChecks(doc, getConfig());
+      lastResult = result;
+      lastReportText = renderTextReport(result, currentSource);
+      verdictWord.textContent = result.verdict;
+      verdictWord.className = "verdict-word " + (result.verdict === "FAIL" ? "fail" : (result.verdict === "PASS" ? "pass" : "warn"));
+      verdictSub.innerHTML = "<b>" + result.errorCount + "</b> error(s) &middot; <b>" + result.warningCount + "</b> warning(s) &middot; " +
+        (result.passed ? "this output backs its claims" : "this output should not be trusted or shipped downstream");
+      cmdLine.innerHTML = "$ failloud check " + esc(currentSource) + " &nbsp;<span class='exit " + (result.passed ? "good" : "bad") + "'>exit " + (result.passed ? "0" : "1") + "</span>";
+      var html = "";
+      for (var o of result.outcomes) {
+        html += "<div class='outcome'><div class='outcome-head'><span class='oid'>" + o.check_id + "</span><span class='oname'>" + esc(o.name) + "</span>" +
+          "<span class='status-chip " + o.status + "'>" + STATUS_MARK[o.status] + "</span></div>" +
+          "<p class='why'>" + esc(o.why) + "</p>";
+        if (o.findings.length) {
+          html += "<ul class='findings'>";
+          for (var f of o.findings) {
+            html += "<li class='finding " + f.severity + "'><span class='mark'>" + (f.severity === "error" ? "✗" : "!") + "</span><span><span class='fpath'>" + esc(f.path) + "</span><br /><span class='fmsg'>" + esc(f.message) + "</span></span></li>";
+          }
+          html += "</ul>";
+        } else {
+          html += "<div class='pass-line'><span class='tick'>✓</span> no findings</div>";
+        }
+        html += "</div>";
+      }
+      if (result.errorCount + result.warningCount === 0) html += "<div class='all-pass'>No silent failures found. The output backs its claims.</div>";
+      outcomesEl.innerHTML = html;
+    }
+    function setPreset(which) {
+      document.getElementById("btnFail").classList.toggle("active", which === "fail");
+      document.getElementById("btnPass").classList.toggle("active", which === "pass");
+      editor.value = which === "fail" ? FAILING_JSON : PASSING_JSON;
+      currentSource = which === "fail" ? "failing_output.json" : "passing_output.json";
+      srcName.textContent = currentSource;
+      run();
+    }
+    document.getElementById("btnFail").addEventListener("click", function () { setPreset("fail"); });
+    document.getElementById("btnPass").addEventListener("click", function () { setPreset("pass"); });
+    document.getElementById("btnRun").addEventListener("click", run);
+    document.getElementById("btnClear").addEventListener("click", function () {
+      editor.value = ""; currentSource = "your_input.json"; srcName.textContent = currentSource;
+      document.getElementById("btnFail").classList.remove("active"); document.getElementById("btnPass").classList.remove("active");
+      editor.focus();
+    });
+    editor.addEventListener("input", function () {
+      if (currentSource !== "your_input.json") { currentSource = "your_input.json"; srcName.textContent = currentSource; }
+      document.getElementById("btnFail").classList.remove("active"); document.getElementById("btnPass").classList.remove("active");
+    });
+    document.getElementById("cfgAge").addEventListener("change", run);
+    document.getElementById("cfgGap").addEventListener("change", run);
+    document.getElementById("btnUpload").addEventListener("click", function () { document.getElementById("fileInput").click(); });
+    document.getElementById("fileInput").addEventListener("change", function (ev) {
+      var file = ev.target.files && ev.target.files[0]; if (!file) return;
+      var reader = new FileReader();
+      reader.onload = function () {
+        editor.value = String(reader.result || "");
+        currentSource = file.name; srcName.textContent = file.name;
+        document.getElementById("btnFail").classList.remove("active"); document.getElementById("btnPass").classList.remove("active");
+        run();
+      };
+      reader.readAsText(file);
+      ev.target.value = "";
+    });
+    ["dragover", "dragleave", "drop"].forEach(function (evt) {
+      editor.addEventListener(evt, function (e) {
+        e.preventDefault();
+        editor.classList.toggle("drag", evt === "dragover");
+        if (evt === "drop") {
+          var file = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+          var text = e.dataTransfer && e.dataTransfer.getData("text");
+          if (file) {
+            var reader = new FileReader();
+            reader.onload = function () { editor.value = String(reader.result || ""); currentSource = file.name; srcName.textContent = file.name; run(); };
+            reader.readAsText(file);
+          } else if (text) { editor.value = text; currentSource = "your_input.json"; srcName.textContent = currentSource; run(); }
+        }
+      });
+    });
+    function copyText(text, msgEl, msg) {
+      function done() { msgEl.textContent = msg; setTimeout(function () { msgEl.textContent = ""; }, 2200); }
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, done);
+      else {
+        var ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select();
+        try { document.execCommand("copy"); } catch (e) {}
+        document.body.removeChild(ta); done();
+      }
+    }
+    document.getElementById("btnCopyReport").addEventListener("click", function () {
+      if (!lastReportText) { document.getElementById("copyMsg").textContent = "run the checks first"; setTimeout(function () { document.getElementById("copyMsg").textContent = ""; }, 2000); return; }
+      copyText(lastReportText, document.getElementById("copyMsg"), "report copied ✓");
+    });
+    document.getElementById("btnCopyInstall").addEventListener("click", function () {
+      copyText("pip install failloud", document.getElementById("copyMsg"), "");
+      var b = document.getElementById("btnCopyInstall"); var old = b.textContent; b.textContent = "copied ✓";
+      setTimeout(function () { b.textContent = old; }, 2000);
+    });
+
+    /* First load: run the failing example automatically. */
+    editor.value = FAILING_JSON;
+    run();
+    </script>
+  </body>
+</html>
