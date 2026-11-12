@@ -31,6 +31,10 @@ pip install "failloud[mcp]"     # + the MCP server
 
 Or from a clone: `pip install .` (add `.[mcp]` for the server).
 
+## As an agent skill
+
+The same five checks also ship as a [`SKILL.md`](skill/SKILL.md) — a judgment playbook an agent runs on its own output before claiming done, for Claude Code, Cursor, Copilot and other SKILL.md-compatible agents. Listing copy and worked examples live in [`skill/`](skill/).
+
 ## 60-second demo
 
 The repo ships a realistic agent output that commits all five failures (`examples/failing_output.json`) and its corrected twin (`examples/passing_output.json`):
