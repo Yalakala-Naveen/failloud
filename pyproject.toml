@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "failloud"
-version = "0.2.0"
+version = "0.3.0"
 description = "Verification harness for LLM agent outputs — catches the silent failures agents ship as 'done'."
 readme = "README.md"
 license = { text = "MIT" }

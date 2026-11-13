@@ -150,6 +150,18 @@ FailLoud works on **any JSON an agent produces** — the checks are shape-tolera
 
 Enforce your own required fields with `--require output.archive_url,output.body` or a JSON Schema (`--schema schema.json`; the `required`/`properties`/`items` subset is supported). Thresholds are flags: `--max-state-age-hours`, `--max-segment-gap-seconds`. Run a subset with `--only FL002,FL004`. `--format json` gives machines the same verdict.
 
+## Watch mode (new in 0.3.0)
+
+One-shot checks verify a snapshot. Pipelines produce outputs over time — a runner overwrites the same file as it retries, results land in a directory one by one. `failloud watch` polls a file or a directory of `*.json` outputs and re-verifies each one when its content actually changes (SHA-256 of the bytes, so a touch that changes nothing produces no duplicate verdict):
+
+```console
+$ failloud watch runs/ --receipt-out receipts.jsonl   # continuous; Ctrl-C stops
+$ failloud watch runs/ --once                          # one sweep, CI-style exit code
+$ failloud watch agent_output.json --once              # a single file works too
+```
+
+New files in the directory are picked up on the next poll, deleted files are forgotten, and a file that is mid-write or temporarily invalid JSON is reported as an error and retried when its bytes change — one bad file never kills the watcher. With `--receipt-out`, every verdict is sealed into the hash chain as it happens, so the audit trail builds itself. `--once` follows the check exit contract over the whole sweep: **0** every file passed, **1** any file failed or errored, **2** the target does not exist. `--pattern` and `--recursive` shape directory scans; all the `check` tuning flags (`--require`, `--only`, thresholds) apply unchanged. In Python: `Watcher(path).poll_once()` for one deterministic sweep, or `watch(path, once=True, receipt_out=...)` for a summary.
+
 ## Python API
 
 ```python
@@ -191,14 +203,14 @@ Tools: `check_output` (all checks, JSON result), `check_placeholder`, `check_evi
 
 ```bash
 pip install -e ".[mcp,dev]"
-python -m pytest        # 90 tests, including a live MCP stdio end-to-end test
+python -m pytest        # 109 tests, including a live MCP stdio end-to-end test
 ```
 
 ## Roadmap
 
 - ~~PyPI release~~ — DONE Nov 12, 2026: failloud 0.2.0 is live on PyPI (https://pypi.org/project/failloud/), published via GitHub trusted publishing.
+- ~~`failloud watch` mode~~ — DONE Nov 13, 2026 in 0.3.0 (this repo; the PyPI page updates on the next release publish).
 - Framework adapters that capture outputs directly from popular agent frameworks instead of reading files.
-- A `failloud watch` mode for streaming/runner integration.
 
 ## License
 

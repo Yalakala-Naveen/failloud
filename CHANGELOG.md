@@ -1,5 +1,31 @@
 # Changelog
 
+## 0.3.0 — 2026-11-13
+
+Watch mode: verification that keeps up with a running pipeline.
+
+- New `watch` module: `Watcher.poll_once()` checks every new or changed
+  target in one deterministic sweep; `watch()` drives polling with
+  `once` / `max_polls` / injectable sleep. Change detection is the
+  SHA-256 of the file bytes — rewriting identical bytes never produces a
+  duplicate verdict or receipt.
+- CLI: `failloud watch PATH [--once] [--interval S] [--pattern GLOB]
+  [--recursive] [--receipt-out receipts.jsonl]` watches a single JSON
+  file or a directory of outputs. New files are picked up, deleted files
+  forgotten, and a mid-write or invalid file reports an error and is
+  retried when its bytes change — it never kills the watcher.
+  `--once` follows the check exit contract over the whole sweep
+  (0 all passed, 1 any failed/errored, 2 target missing); continuous
+  watch runs until Ctrl-C and exits 0.
+- With `--receipt-out`, every verdict is sealed into the hash-chained
+  receipt chain as it happens — the audit trail builds itself.
+- All `check` tuning flags (`--require`, `--schema`, `--only`,
+  thresholds, `--format`) apply to watch unchanged. Core stays
+  stdlib-only: polling, not a filesystem-events dependency, so behaviour
+  is identical on Linux, macOS, and Windows.
+- 109 tests (19 new), covering discovery, change detection, error
+  isolation, receipt chaining, and the CLI exit contract.
+
 ## 0.2.0 — 2026-11-12
 
 Hash-chained verification receipts: proof, not just reports.

@@ -26,8 +26,9 @@ from typing import Any
 from .engine import run_checks, run_single
 from .models import CheckConfig, CheckOutcome, CheckResult, Finding, Severity
 from .receipts import Receipt, create_receipt, verify_chain, verify_receipt
+from .watch import WatchEvent, Watcher, WatchSummary, watch
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 
 __all__ = [
     "check_output",
@@ -42,6 +43,10 @@ __all__ = [
     "create_receipt",
     "verify_receipt",
     "verify_chain",
+    "WatchEvent",
+    "Watcher",
+    "WatchSummary",
+    "watch",
     "__version__",
 ]
 
