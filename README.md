@@ -209,7 +209,7 @@ python -m pytest        # 109 tests, including a live MCP stdio end-to-end test
 ## Roadmap
 
 - ~~PyPI release~~ — DONE Nov 12, 2026: failloud 0.2.0 is live on PyPI (https://pypi.org/project/failloud/), published via GitHub trusted publishing.
-- ~~`failloud watch` mode~~ — DONE Nov 13, 2026 in 0.3.0 (this repo; the PyPI page updates on the next release publish).
+- ~~`failloud watch` mode~~ — DONE Nov 13, 2026: failloud 0.3.0 is live on PyPI (https://pypi.org/project/failloud/), published via GitHub trusted publishing from release v0.3.0; clean-venv install verified.
 - Framework adapters that capture outputs directly from popular agent frameworks instead of reading files.
 
 ## License
