@@ -28,7 +28,7 @@ from .models import CheckConfig, CheckOutcome, CheckResult, Finding, Severity
 from .receipts import Receipt, create_receipt, verify_chain, verify_receipt
 from .watch import WatchEvent, Watcher, WatchSummary, watch
 
-__version__ = "0.3.0"
+__version__ = "0.4.0"
 
 __all__ = [
     "check_output",

@@ -192,6 +192,26 @@ FailLoud also ships as an [MCP](https://modelcontextprotocol.io) server, so an a
 
 Tools: `check_output` (all checks, JSON result), `check_placeholder`, `check_evidence`, `check_stale_state`, `check_counts`, `check_completeness`, `failure_report` (the Markdown report), `create_verification_receipt`, and `verify_receipt_chain`. Works with both the 1.x and 2.x Python MCP SDKs.
 
+## LangChain adapter (new in 0.4.0)
+
+Files are one way agent outputs travel; LangChain outputs live in memory. The adapter verifies them where they are produced — no intermediate file, no re-serialization step to forget:
+
+```python
+from failloud.adapters.langchain import FailLoudCallbackHandler, verify
+
+# One call: normalize any LangChain result shape and check it.
+result = verify(chain.invoke(inputs))
+if not result.passed:
+    print(result.verdict)  # FAIL — the five checks ran on the transcript
+
+# Or verify every step inside the loop, as it finishes:
+handler = FailLoudCallbackHandler(raise_on_fail=True)
+chain.invoke(inputs, config={"callbacks": [handler]})
+handler.last_result.verdict
+```
+
+`to_failloud_doc` normalizes bare strings, messages (dicts or objects, including multimodal text blocks), message transcripts, `LLMResult` generations, chain result dicts (`output` / `text` / `result` / `answer`), and agent finishes into the FailLoud envelope; the callback handler hooks `on_llm_end` / `on_chain_end` / `on_agent_finish` and can raise `FailLoudVerificationError` to stop a chain on a silent failure. Tool calls are preserved under `tool_calls` for inspection — never promoted to claims, because a tool call is an intention, not evidence. The adapter is duck-typed and zero-dependency (it never imports LangChain; `pip install "failloud[langchain]"` only adds `langchain-core` so the handler subclasses the real `BaseCallbackHandler`). Runnable demo: `examples/langchain_adapter.py`.
+
 ## Design principles
 
 - **Deterministic.** Same input, same verdict, every time. No model in the verdict path.
@@ -203,14 +223,15 @@ Tools: `check_output` (all checks, JSON result), `check_placeholder`, `check_evi
 
 ```bash
 pip install -e ".[mcp,dev]"
-python -m pytest        # 109 tests, including a live MCP stdio end-to-end test
+python -m pytest        # 126 tests, including a live MCP stdio end-to-end test
 ```
 
 ## Roadmap
 
 - ~~PyPI release~~ — DONE Nov 12, 2026: failloud 0.2.0 is live on PyPI (https://pypi.org/project/failloud/), published via GitHub trusted publishing.
 - ~~`failloud watch` mode~~ — DONE Nov 13, 2026: failloud 0.3.0 is live on PyPI (https://pypi.org/project/failloud/), published via GitHub trusted publishing from release v0.3.0; clean-venv install verified.
-- Framework adapters that capture outputs directly from popular agent frameworks instead of reading files.
+- ~~Framework adapters~~ — FIRST ONE DONE Nov 14, 2026: the LangChain adapter (normalizer + callback handler) ships in failloud 0.4.0. More frameworks follow the same duck-typed pattern.
+- Provisional verdicts + second-pass verification: re-check a "done" against the system of record after the fact, not only at completion.
 
 ## License
 

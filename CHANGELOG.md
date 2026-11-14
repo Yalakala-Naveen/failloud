@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.4.0 — 2026-11-14
+
+Framework adapters, starting with LangChain: verify outputs in the loop.
+
+- New `failloud.adapters.langchain` module: `to_failloud_doc` normalizes
+  the shapes LangChain returns — bare strings, messages (dicts or
+  objects, including multimodal text blocks), message transcripts,
+  `LLMResult` generations, chain result dicts, agent finishes — into the
+  FailLoud envelope, and `verify` checks a raw result in one call.
+- `FailLoudCallbackHandler` hooks `on_llm_end` / `on_chain_end` /
+  `on_agent_finish`, recording a verdict per finished step; with
+  `raise_on_fail=True` it raises `FailLoudVerificationError` so a chain
+  stops on a silent failure instead of building on it.
+- Tool calls are preserved under `tool_calls` for inspection, never
+  promoted to claims — a tool call is an intention, not evidence.
+- Duck-typed and zero-dependency: the adapter never imports LangChain.
+  New optional extra `failloud[langchain]` adds `langchain-core` so the
+  handler subclasses the real `BaseCallbackHandler` when present.
+- Runnable demo at `examples/langchain_adapter.py`.
+- 126 tests (17 new), covering every normalized shape, placeholder and
+  empty-output detection through the adapter, and the handler contract.
+
 ## 0.3.0 — 2026-11-13
 
 Watch mode: verification that keeps up with a running pipeline.
