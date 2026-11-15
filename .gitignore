@@ -10,3 +10,4 @@ venv/
 .ruff_cache/
 *.report.md
 .DS_Store
+.venv-publish/

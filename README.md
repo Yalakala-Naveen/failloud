@@ -190,7 +190,7 @@ FailLoud also ships as an [MCP](https://modelcontextprotocol.io) server, so an a
 }
 ```
 
-Tools: `check_output` (all checks, JSON result), `check_placeholder`, `check_evidence`, `check_stale_state`, `check_counts`, `check_completeness`, `failure_report` (the Markdown report), `create_verification_receipt`, and `verify_receipt_chain`. Works with both the 1.x and 2.x Python MCP SDKs.
+Tools: `check_output` (all checks, JSON result), `check_placeholder`, `check_evidence`, `check_stale_state`, `check_counts`, `check_completeness`, `failure_report` (the Markdown report), `create_verification_receipt`, `verify_receipt_chain`, and `recheck_against_record` (the second pass). Works with both the 1.x and 2.x Python MCP SDKs.
 
 ## LangChain adapter (new in 0.4.0)
 
@@ -212,6 +212,26 @@ handler.last_result.verdict
 
 `to_failloud_doc` normalizes bare strings, messages (dicts or objects, including multimodal text blocks), message transcripts, `LLMResult` generations, chain result dicts (`output` / `text` / `result` / `answer`), and agent finishes into the FailLoud envelope; the callback handler hooks `on_llm_end` / `on_chain_end` / `on_agent_finish` and can raise `FailLoudVerificationError` to stop a chain on a silent failure. Tool calls are preserved under `tool_calls` for inspection — never promoted to claims, because a tool call is an intention, not evidence. The adapter is duck-typed and zero-dependency (it never imports LangChain; `pip install "failloud[langchain]"` only adds `langchain-core` so the handler subclasses the real `BaseCallbackHandler`). Runnable demo: `examples/langchain_adapter.py`.
 
+## Second-pass verification (new in 0.5.0)
+
+The five checks verify an output against *itself*. That has a hole, named by a reviewer on the launch thread: an output can be **consistently wrong** — "9 sent", 9 items listed, an id on every claim — and one of those messages still bounced an hour later. At completion time every internal measure said PASS. The world disagreed afterwards.
+
+So a passing FailLoud verdict is **provisional**: it means "this document does not contradict itself", not "this happened". The second pass checks the output against the world. Feed it the original output and a later snapshot from the system of record — a provider delivery export, a database extract, the receiving system's own log:
+
+```console
+$ failloud check examples/second_pass_original.json   # PASS — provisional
+$ failloud recheck examples/second_pass_original.json examples/second_pass_record.json
+FAILLOUD — second-pass verification
+First pass: PASS (provisional)
+Second pass: CONTRADICTED
+
+  ✗ email_sent → reader09@acme-digest.com — evidence 'msg_8f09' appears in a
+    failure context (bounced / failed / rejected) in the system of record.
+  ✗ delivered — reported as 9 but the record shows 8.
+```
+
+Every claim and every reported count comes back **confirmed**, **contradicted**, or **unverifiable**: evidence found in the record with no failure marker confirms a claim; evidence sitting under a bounce/failure key — or in an entry whose status says it failed — contradicts it; a record that never mentions the evidence has *not* confirmed it, and the second pass says so instead of upgrading silence into a pass. A first-pass FAIL is final and is never resurrected by a friendly record. Exit codes: **0** confirmed, **1** contradicted / unverifiable / already failed, **2** the tool could not run. In Python: `recheck_output(original, record)` and `provisional_label(result)`; over MCP: `recheck_against_record`.
+
 ## Design principles
 
 - **Deterministic.** Same input, same verdict, every time. No model in the verdict path.
@@ -223,7 +243,7 @@ handler.last_result.verdict
 
 ```bash
 pip install -e ".[mcp,dev]"
-python -m pytest        # 126 tests, including a live MCP stdio end-to-end test
+python -m pytest        # 144 tests, including a live MCP stdio end-to-end test
 ```
 
 ## Roadmap
@@ -231,7 +251,7 @@ python -m pytest        # 126 tests, including a live MCP stdio end-to-end test
 - ~~PyPI release~~ — DONE Nov 12, 2026: failloud 0.2.0 is live on PyPI (https://pypi.org/project/failloud/), published via GitHub trusted publishing.
 - ~~`failloud watch` mode~~ — DONE Nov 13, 2026: failloud 0.3.0 is live on PyPI (https://pypi.org/project/failloud/), published via GitHub trusted publishing from release v0.3.0; clean-venv install verified.
 - ~~Framework adapters~~ — FIRST ONE DONE Nov 14, 2026: the LangChain adapter (normalizer + callback handler) ships in failloud 0.4.0. More frameworks follow the same duck-typed pattern.
-- Provisional verdicts + second-pass verification: re-check a "done" against the system of record after the fact, not only at completion.
+- ~~Provisional verdicts + second-pass verification~~ — DONE Nov 15, 2026: failloud 0.5.0 — every PASS is labelled provisional, and `failloud recheck` re-judges claims and counts against a later system-of-record snapshot (confirmed / contradicted / unverifiable).
 
 ## License
 

@@ -1,5 +1,32 @@
 # Changelog
 
+## 0.5.0 — 2026-11-15
+
+Second-pass verification: a PASS is provisional until the record confirms it.
+
+- New `recheck` module: `provisional_label` names every first-pass
+  verdict honestly (a FAIL is final; a pass is PROVISIONAL), and
+  `recheck_output(original, record)` re-judges a completed output
+  against a later snapshot from the system of record — a provider
+  delivery export, a database extract, the receiving system's log.
+- Every claim and every reported count comes back `confirmed`,
+  `contradicted`, or `unverifiable`. Evidence found in the record with
+  no failure marker confirms; evidence under a bounce/failure key, or
+  in an entry whose status says it failed, contradicts; a record that
+  never mentions the evidence does not confirm it — silence is never
+  upgraded into a pass. Record list lengths override the record's own
+  reported numbers (FL004's doctrine: the list is the true part).
+- Motivated by the Nov 12 launch-thread critique: output-only checks
+  pass a *consistently wrong* output ("9 sent" where one bounces
+  later). The shipped example pair (`examples/second_pass_original.json`
+  + `second_pass_record.json`) is exactly that case: provisional PASS,
+  then CONTRADICTED, pinpointing the bounced message and the count.
+- CLI: `failloud recheck OUTPUT RECORD [--format text|json]` — exit 0
+  confirmed, 1 contradicted / unverifiable / already failed, 2 tool
+  error. MCP server: new `recheck_against_record` tool.
+- 144 tests (18 new), covering the bounce case, status-marked failures,
+  unverifiable silence, count reconciliation, and the CLI/MCP contracts.
+
 ## 0.4.0 — 2026-11-14
 
 Framework adapters, starting with LangChain: verify outputs in the loop.

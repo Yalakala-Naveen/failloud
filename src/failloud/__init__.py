@@ -26,9 +26,16 @@ from typing import Any
 from .engine import run_checks, run_single
 from .models import CheckConfig, CheckOutcome, CheckResult, Finding, Severity
 from .receipts import Receipt, create_receipt, verify_chain, verify_receipt
+from .recheck import (
+    ClaimRecheck,
+    CountRecheck,
+    SecondPassResult,
+    provisional_label,
+    recheck_output,
+)
 from .watch import WatchEvent, Watcher, WatchSummary, watch
 
-__version__ = "0.4.0"
+__version__ = "0.5.0"
 
 __all__ = [
     "check_output",
@@ -47,6 +54,11 @@ __all__ = [
     "Watcher",
     "WatchSummary",
     "watch",
+    "ClaimRecheck",
+    "CountRecheck",
+    "SecondPassResult",
+    "provisional_label",
+    "recheck_output",
     "__version__",
 ]
 

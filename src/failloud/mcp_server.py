@@ -31,6 +31,7 @@ from typing import Any
 from .engine import run_checks, run_single
 from .models import CheckConfig
 from .receipts import create_receipt, verify_chain
+from .recheck import provisional_label, recheck_output
 from .report import render_markdown
 
 try:
@@ -194,6 +195,31 @@ def verify_receipt_chain(receipts_json: str) -> str:
         {"valid": not problems, "count": len(payload), "problems": problems},
         indent=2,
     )
+
+
+@server.tool()
+def recheck_against_record(output_json: str, record_json: str) -> str:
+    """Second pass: re-judge an agent output against the system of record.
+
+    A first-pass PASS is provisional — the output only had to agree with
+    itself. Pass the original output and a later snapshot from the system
+    of record (a provider export, a database extract) and every claim and
+    reported count comes back confirmed, contradicted, or unverifiable.
+    Evidence that now sits in a failure context (bounced, rejected,
+    failed) contradicts the claim that carried it. Returns JSON with the
+    first verdict, the provisional label, the second-pass verdict
+    (CONFIRMED / CONTRADICTED / UNVERIFIABLE / FAIL), and the per-claim
+    and per-count detail."""
+    doc = _parse(output_json)
+    try:
+        record = json.loads(record_json)
+    except json.JSONDecodeError as exc:
+        raise ValueError(f"record_json is not valid JSON: {exc}") from exc
+    first = run_checks(doc, _config())
+    result = recheck_output(doc, record, first_result=first)
+    payload = result.to_dict()
+    payload["first_pass_label"] = provisional_label(first)
+    return json.dumps(payload, indent=2)
 
 
 def main() -> None:

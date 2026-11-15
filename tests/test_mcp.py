@@ -67,6 +67,23 @@ async def _exercise_inner() -> dict:
                 {"receipts_json": json.dumps([receipt_payload])},
             )
             chain_payload = json.loads(chain_call.content[0].text)
+
+            recheck_doc = json.dumps({
+                "status": "done",
+                "claims": [{"action": "email_sent", "target": "a@x.com",
+                            "evidence": {"message_id": "m1"}}],
+                "counts": {"delivered": 1},
+                "output": {"body": "Real deliverable body."},
+            })
+            recheck_record = json.dumps({
+                "bounced": [{"message_id": "m1", "reason": "mailbox not found"}],
+                "counts": {"delivered": 0},
+            })
+            recheck_call = await session.call_tool(
+                "recheck_against_record",
+                {"output_json": recheck_doc, "record_json": recheck_record},
+            )
+            recheck_payload = json.loads(recheck_call.content[0].text)
     return {
         "tools": names,
         "receipt": receipt_payload,
@@ -74,6 +91,7 @@ async def _exercise_inner() -> dict:
         "fail": fail_payload,
         "pass": pass_payload,
         "report": report_text,
+        "recheck": recheck_payload,
     }
 
 
@@ -89,6 +107,7 @@ def test_mcp_server_end_to_end():
         "failure_report",
         "create_verification_receipt",
         "verify_receipt_chain",
+        "recheck_against_record",
     ):
         assert expected in result["tools"]
     assert result["fail"]["verdict"] == "FAIL"
@@ -97,3 +116,6 @@ def test_mcp_server_end_to_end():
     assert result["receipt"]["verdict"] == "PASS"
     assert len(result["receipt"]["receipt_hash"]) == 64
     assert result["chain"] == {"valid": True, "count": 1, "problems": []}
+    assert result["recheck"]["first_pass_label"] == "PROVISIONAL PASS"
+    assert result["recheck"]["verdict"] == "CONTRADICTED"
+    assert result["recheck"]["claims"][0]["status"] == "contradicted"

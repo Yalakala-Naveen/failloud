@@ -13,6 +13,10 @@
     failloud checks            # list the checks and what they catch
     failloud verify-receipts receipts.jsonl
                                # verify a hash-chained receipt file
+    failloud recheck OUTPUT RECORD
+                               # second pass: re-judge a (provisionally)
+                               # passed output against a later snapshot
+                               # from the system of record
 
 Exit codes: ``0`` the output passed, ``1`` verification failed (the agent
 output, not the tool), ``2`` the tool itself could not run (bad input,
@@ -21,6 +25,9 @@ chain verifies, ``1`` it does not, ``2`` the file could not be read.
 ``watch --once`` follows the check contract over the whole sweep: ``0``
 every file passed, ``1`` any file failed or errored, ``2`` the target
 does not exist. Continuous ``watch`` runs until Ctrl-C and exits ``0``.
+``recheck``: ``0`` the record CONFIRMED the output, ``1`` it CONTRADICTED
+it, left claims/counts UNVERIFIABLE, or the output already FAILed the
+first pass (not confirmed is not a pass), ``2`` a file could not be read.
 """
 
 from __future__ import annotations
@@ -36,6 +43,7 @@ from .checks import MODULES
 from .engine import run_checks
 from .models import CheckConfig
 from .receipts import read_chain, seal_to_chain, verify_chain
+from .recheck import SecondPassResult, provisional_label, recheck_output
 from .report import render_json, render_markdown, render_text
 from .watch import WatchEvent, watch as run_watch
 
@@ -168,6 +176,71 @@ def _cmd_watch(args: argparse.Namespace) -> int:
         )
         return 0 if summary.ok else 1
     return 0
+
+
+_RECHECK_MARKS = {"confirmed": "✓", "contradicted": "✗", "unverifiable": "?"}
+
+
+def _render_recheck(result: SecondPassResult, original: str, record: str) -> str:
+    lines = [
+        "FAILLOUD — second-pass verification",
+        f"Original: {original}",
+        f"Record: {record}",
+        f"First pass: {result.first_verdict}"
+        + (" (provisional)" if result.provisional else " (final)"),
+        f"Second pass: {result.verdict}",
+        "",
+        f"Claims ({len(result.claims)}):",
+    ]
+    if not result.claims:
+        lines.append("  (no completion claims in the original output)")
+    for claim in result.claims:
+        lines.append(
+            f"  {_RECHECK_MARKS[claim.status]} {claim.action}"
+            + (f" → {claim.target}" if claim.target else "")
+            + f" — {claim.reason}"
+        )
+    lines.append("")
+    lines.append(f"Counts ({len(result.counts)}):")
+    if not result.counts:
+        lines.append("  (no reported counts in the original output)")
+    for count in result.counts:
+        lines.append(
+            f"  {_RECHECK_MARKS[count.status]} {count.metric} — {count.reason}"
+        )
+    lines.append("")
+    if result.verdict == "CONFIRMED":
+        lines.append("The system of record confirms this output.")
+    elif result.verdict == "CONTRADICTED":
+        lines.append("The system of record contradicts this output — do not trust the original verdict.")
+    elif result.verdict == "FAIL":
+        lines.append("The output already failed the first pass; a second pass cannot resurrect it.")
+    else:
+        lines.append("The record neither confirms nor contradicts this output — it stays provisional.")
+    return "\n".join(lines) + "\n"
+
+
+def _cmd_recheck(args: argparse.Namespace) -> int:
+    try:
+        original = _load_json(args.file)
+        record = _load_json(args.record)
+    except (OSError, json.JSONDecodeError) as exc:
+        print(f"failloud: cannot read input: {exc}", file=sys.stderr)
+        return 2
+    try:
+        config = _build_config(args)
+        first = run_checks(original, config)
+        result = recheck_output(original, record, first_result=first)
+    except ValueError as exc:
+        print(f"failloud: {exc}", file=sys.stderr)
+        return 2
+    if args.format == "json":
+        payload = result.to_dict()
+        payload["first_pass_label"] = provisional_label(first)
+        sys.stdout.write(json.dumps(payload, indent=2) + "\n")
+    else:
+        sys.stdout.write(_render_recheck(result, args.file, args.record))
+    return 0 if result.confirmed else 1
 
 
 def _cmd_checks(_args: argparse.Namespace) -> int:
@@ -311,6 +384,43 @@ def build_parser() -> argparse.ArgumentParser:
     )
     verify.add_argument("file", help="Path to the receipts JSONL file.")
     verify.set_defaults(func=_cmd_verify_receipts)
+
+    recheck = sub.add_parser(
+        "recheck",
+        help="Second pass: re-judge an output against a later system-of-record snapshot.",
+    )
+    recheck.add_argument("file", help="Path to the original agent output JSON.")
+    recheck.add_argument(
+        "record",
+        help="Path to the system-of-record snapshot JSON (e.g. a provider "
+        "delivery export taken after the run completed).",
+    )
+    recheck.add_argument(
+        "--format",
+        choices=("text", "json"),
+        default="text",
+        help="Report format (default: text).",
+    )
+    recheck.add_argument(
+        "--require",
+        help="Comma-separated dotted paths that must exist and be non-empty "
+        "(first-pass tuning, as in 'check').",
+    )
+    recheck.add_argument("--schema", help="Path to a JSON Schema file (first pass).")
+    recheck.add_argument(
+        "--max-state-age-hours",
+        type=float,
+        default=24.0,
+        help="State older than this is stale (default: 24).",
+    )
+    recheck.add_argument(
+        "--max-segment-gap-seconds",
+        type=float,
+        default=2.0,
+        help="Segment gap longer than this is a dead stretch (default: 2.0).",
+    )
+    recheck.add_argument("--only", help="Comma-separated check ids for the first pass.")
+    recheck.set_defaults(func=_cmd_recheck)
     return parser
 
 
