@@ -1,0 +1,13 @@
+# Smithery configuration for the FailLoud MCP server (stdio, local).
+# Used by Smithery's indexer/submit flow to generate install configs.
+startCommand:
+  type: stdio
+  configSchema:
+    type: object
+    properties: {}
+  commandFunction: |-
+    (config) => ({
+      command: "uvx",
+      args: ["--from", "failloud[mcp]", "failloud-mcp"],
+      env: {}
+    })
