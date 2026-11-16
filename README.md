@@ -1,3 +1,4 @@
+<!-- mcp-name: io.github.Yalakala-Naveen/failloud -->
 # FailLoud
 
 **A verification harness for LLM agent outputs. It catches the silent failures agents ship as `done`.**
