@@ -1,5 +1,37 @@
 # Changelog
 
+## 0.6.0 — 2026-11-16
+
+FL006: RAG groundedness — the check the Problem Watch asked for.
+
+- New `groundedness` check, FL006 `unsupported_answer`: for RAG-shaped
+  outputs (an answer plus retrieved sources), every citation — a
+  `citations` entry or an inline marker like `[2]` / `[doc_a]` — must
+  resolve to a source that was actually retrieved; a cited source with
+  no text is an error; and every number stated in the answer must
+  appear in the cited sources (or in all retrieved sources when the
+  answer cites none specifically). An answer that cites none of its
+  sources is a warning, not an error.
+- Honest scope, stated in the module and the README: FL006 verifies
+  citations and figures deterministically — it does NOT judge semantic
+  entailment, and no model sits in the verdict path. An answer can
+  pass FL006 and still misread its sources; it cannot pass while
+  inventing citations or numbers.
+- Motivated by the "RAG retrieves and cites, and the answer is still
+  wrong" family: 10 independent public posts by Nov 15, 2026 (Career
+  Company Problem Watch), no payment signals — the demand is stated
+  exactly that way in the README.
+- MCP server: new `check_groundedness` tool. Shipped example pair
+  (`examples/rag_failing.json` → 4 FL006 errors: fabricated
+  `refund_policy` citation, fabricated `[9]` marker, unsupported
+  numbers 25 and 3; `examples/rag_passing.json` → clean PASS).
+- The Playground (docs/index.html) runs the same FL006 in the browser.
+- 162 tests (15 new), covering fabricated inline/explicit citations,
+  citations with no retrieval at all, unsupported numbers, number
+  formats (1,200 ≡ 1200 ≡ 1200.0), cited-pool-only number checking,
+  empty cited sources, the no-citations warning, Markdown links not
+  being citations, and short-id resolution (`a`, the Nov 15 lesson).
+
 ## 0.5.1 — 2026-11-15
 
 MCP Registry readiness: the two gaps that would have failed a registry

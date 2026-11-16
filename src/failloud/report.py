@@ -22,6 +22,7 @@ WHY_IT_MATTERS = {
     "FL003": "Correct work on stale state is wrong work with extra confidence — the plan is flawless for a world that no longer exists.",
     "FL004": "The claimed number is what travels into dashboards and decisions; the itemized record is the only part that was ever true.",
     "FL005": "Existence is not completeness: a deliverable can pass every outline check while a component inside it is silently absent.",
+    "FL006": "A citation is a claim about a source: an answer that cites what was never retrieved, or states figures no source contains, is graded by its own bibliography — and fails it.",
 }
 
 _STATUS_MARK = {"pass": "PASS", "warn": "WARN", "fail": "FAIL"}

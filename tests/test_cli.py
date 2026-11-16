@@ -69,8 +69,8 @@ def test_require_flag_enforces_paths(tmp_path):
     assert code == 1
 
 
-def test_checks_subcommand_lists_all_five(capsys):
+def test_checks_subcommand_lists_all_six(capsys):
     assert main(["checks"]) == 0
     out = capsys.readouterr().out
-    for check_id in ("FL001", "FL002", "FL003", "FL004", "FL005"):
+    for check_id in ("FL001", "FL002", "FL003", "FL004", "FL005", "FL006"):
         assert check_id in out

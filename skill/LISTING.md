@@ -6,10 +6,12 @@ FailLoud Verify: The Done-Check for AI Agent Output
 
 ## Short description
 
-Five verification checks your agent runs on its own output before it
+Six verification checks your agent runs on its own output before it
 claims done — catching placeholder content shipped as final, claims with
-no evidence, stale state, counts that contradict the record, and silently
-missing components. Ends in a failure report, not an unbacked "done".
+no evidence, stale state, counts that contradict the record, silently
+missing components, and RAG answers whose citations or numbers the
+retrieved sources do not support. Ends in a failure report, not an
+unbacked "done".
 
 ## Full description
 
@@ -24,7 +26,7 @@ agent graded its own homework.
 
 FailLoud Verify is the gate that runs before the claim. It teaches your
 agent to inspect its own output the way a skeptical reviewer would —
-five checks, each a concrete procedure with a pass rule, a fail rule, and
+six checks, each a concrete procedure with a pass rule, a fail rule, and
 a required action on fail:
 
 - **FL001 placeholder_shipped** — output declared done while the payload is
@@ -48,6 +50,10 @@ a required action on fail:
 - **FL005 missing_components** — required fields missing or present but
   empty, and dead stretches inside segmented deliverables (zero-length
   segments, silent gaps over the limit).
+- **FL006 unsupported_answer** — for RAG outputs: citations that resolve
+  to no retrieved source, cited sources carrying no text, and numbers
+  stated in the answer that appear in no source. Deterministic citation
+  and figure checking — semantic entailment is explicitly out of scope.
 
 On any error the agent gets exactly two moves: fix the output and re-run,
 or report honestly — status restated as failed/partial, claims narrowed
@@ -63,9 +69,9 @@ downstream cascade, this is the checklist that catches it first.
 
 **What's inside.** One SKILL.md (installs into Claude Code, Cursor,
 Copilot and 20+ agents) with: the trigger rules for when to run the gate,
-the output envelope that verifies best, all five check procedures with
+the output envelope that verifies best, all six check procedures with
 exact patterns, thresholds and evidence rules, the verdict rules, a
-worked example (a failing agent output walked through all five checks,
+worked example (a failing agent output walked through the checks,
 plus its corrected passing twin — both JSON files included), and the
 failure-report template.
 

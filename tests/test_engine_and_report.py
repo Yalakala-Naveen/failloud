@@ -15,7 +15,7 @@ FAILING_DOC = {
 }
 
 
-def test_all_five_checks_run_by_default():
+def test_all_six_checks_run_by_default():
     result = check_output(FAILING_DOC)
     assert [o.check_id for o in result.outcomes] == [
         "FL001",
@@ -23,6 +23,7 @@ def test_all_five_checks_run_by_default():
         "FL003",
         "FL004",
         "FL005",
+        "FL006",
     ]
 
 

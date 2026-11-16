@@ -1,6 +1,6 @@
 ---
 name: failloud-verify
-description: Verifies an AI agent's own output before the agent claims the work is done. Use when an agent is about to report a task as done, complete, successful, sent, posted, published, or delivered — or before handing an output document to a downstream step or a human — to catch five silent failures: placeholder content shipped as final, claimed actions with no evidence, work based on stale state, counts that disagree with the itemized record, and required components that are missing or silently empty. Produces a failure report the agent must fix or honestly report instead of an unbacked "done".
+description: Verifies an AI agent's own output before the agent claims the work is done. Use when an agent is about to report a task as done, complete, successful, sent, posted, published, or delivered — or before handing an output document to a downstream step or a human — to catch six silent failures: placeholder content shipped as final, claimed actions with no evidence, work based on stale state, counts that disagree with the itemized record, required components that are missing or silently empty, and RAG answers whose citations or numbers the retrieved sources do not support. Produces a failure report the agent must fix or honestly report instead of an unbacked "done".
 ---
 
 # FailLoud Verify — the done-check
@@ -8,21 +8,21 @@ description: Verifies an AI agent's own output before the agent claims the work 
 Agents rarely fail loudly. They report `done` with an empty payload, claim
 they sent things nothing proves, plan from state that went stale, and quote
 counts their own records contradict. This skill is the gate that runs
-**before** any of that is reported: five checks, executed on the agent's own
+**before** any of that is reported: six checks, executed on the agent's own
 output, in order. Every check below is a procedure with a pass rule, a fail
 rule, and a required action on fail.
 
 **Honest scope.** This skill is the *judgment playbook*: it teaches you to
 inspect your output the way the FailLoud tool does. A deterministic version
 exists — `pip install failloud` (CLI + MCP server, zero-dependency core,
-same five checks, same finding messages, exit codes 0/1/2) — and wherever a
+same six checks, same finding messages, exit codes 0/1/2) — and wherever a
 machine can run it, prefer it: its verdict is reproducible and no model
 sits in the path. Use this skill where the tool cannot run, and to shape
 outputs so the tool can verify them later.
 
 ## When to run it
 
-Run all five checks, in order, at these moments:
+Run all six checks, in order, at these moments:
 
 - Before you report a task as done / complete / success / shipped /
   published / delivered — in a status field, a summary, or a message to a
@@ -32,7 +32,7 @@ Run all five checks, in order, at these moments:
 
 If the output is explicitly a draft (`status: draft`, `in_progress`,
 `pending`, `partial`, `blocked`, …), FL001 is exempt — placeholders are
-honest in drafts. The other four checks still apply.
+honest in drafts. The other five checks still apply.
 
 ## The envelope that verifies best
 
@@ -212,6 +212,37 @@ no dead stretches.
 state plainly what was not delivered. For segments: fill the hole or
 re-cut — never ship a deliverable with a silent stretch inside it.
 
+## FL006 — unsupported_answer
+
+*Why it matters: a citation is a claim about a source — an answer that
+cites what was never retrieved, or states figures no source contains, is
+graded by its own bibliography, and fails it.*
+
+**Applies only to RAG-shaped outputs:** an answer (`answer`,
+`final_answer`, `response`) together with retrieved sources (`sources`,
+`retrieved`, `chunks`, `documents`, `passages`, …), explicit
+`citations`, or inline citation markers. Anything else is out of scope.
+
+**Fail (error) if any of these holds:**
+
+- A citation — a `citations` entry or an inline marker like `[2]` /
+  `[doc_a]` — does not resolve to a source that was actually retrieved.
+- A cited source carries no text.
+- A number stated in the answer appears in no cited source (or in no
+  retrieved source, when the answer cites none specifically). Number
+  formats reconcile: `1,200` ≡ `1200` ≡ `1200.0`.
+
+**Warning if:** sources were retrieved and the answer cites none of
+them — its claims cannot be traced to what was retrieved.
+
+**Honest scope.** This check does NOT judge whether the prose follows
+semantically from a source. It verifies citations and figures — the
+parts of grounding that can be checked exactly.
+
+**On fail.** Remove the fabricated citation or retrieve the real
+source; correct the number to what the sources state, or drop it.
+Never let a confident citation stand in for a retrieved source.
+
 ## The verdict
 
 - **FAIL** — at least one error finding. The output must not be reported as
@@ -249,7 +280,7 @@ a digest run that reports `status: done`. Running the checks:
 **Verdict: FAIL — 8 errors, 1 warning.** Its corrected twin
 (`examples/passing_output.json`) — counts 9/9 matching the lists, evidence
 with `post_id` + URL on both claims, real body copy, state 25 minutes old
-at version 9, segments 0–4 / 4–9 / 9–12 with no gaps — passes all five
+at version 9, segments 0–4 / 4–9 / 9–12 with no gaps — passes all six
 checks with zero findings.
 
 ## The failure report

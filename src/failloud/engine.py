@@ -30,7 +30,7 @@ def run_checks(doc: Any, config: CheckConfig | None = None) -> CheckResult:
 
 
 def run_single(doc: Any, check_id: str, config: CheckConfig | None = None) -> CheckOutcome:
-    """Run exactly one check by id (``FL001``…``FL005``)."""
+    """Run exactly one check by id (``FL001``…``FL006``)."""
     module = BY_ID.get(check_id.upper())
     if module is None:
         raise ValueError(

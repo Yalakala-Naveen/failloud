@@ -212,15 +212,16 @@
         <p class="prompt-line"><span class="u">naveen@failloud</span>:<span class="p">~/playground</span>$ failloud check agent_output.json</p>
         <h1 class="wordmark">Fail<span class="loud">Loud</span><span class="cursor" aria-hidden="true"></span></h1>
         <p class="tagline">FailLoud catches agents claiming <strong>&ldquo;done&rdquo;</strong> when the work is <strong>placeholder, unbacked, stale, miscounted, or missing pieces</strong>. Paste an agent&rsquo;s JSON output below and watch it get checked — deterministically, line by line. No model grades the homework.</p>
-        <span class="honest-note"><b>Same checks, in your browser.</b> This playground runs the five real FailLoud checks client-side — nothing you paste is uploaded anywhere. The CLI + MCP server is the production tool.</span>
+        <span class="honest-note"><b>Same checks, in your browser.</b> This playground runs the six real FailLoud checks client-side — nothing you paste is uploaded anywhere. The CLI + MCP server is the production tool.</span>
       </header>
 
-      <section class="checks-strip" aria-label="The five checks">
+      <section class="checks-strip" aria-label="The six checks">
         <div class="check-chip"><div class="cid">FL001</div><div class="cname">placeholder_shipped</div><div class="cdesc">Done, but the payload is empty or still holds lorem ipsum, {{template}} braces, &ldquo;coming soon&rdquo;.</div></div>
         <div class="check-chip"><div class="cid">FL002</div><div class="cname">unbacked_claim</div><div class="cdesc">&ldquo;Sent / posted / published&rdquo; with no message id, URL, receipt, or artifact to back it.</div></div>
         <div class="check-chip"><div class="cid">FL003</div><div class="cname">stale_state</div><div class="cdesc">Work based on state older than allowed (24h by default), untimestamped, or version-skewed.</div></div>
         <div class="check-chip"><div class="cid">FL004</div><div class="cname">count_mismatch</div><div class="cdesc">The report says 12, the itemized record lists 9. The list is the only part that was ever true.</div></div>
         <div class="check-chip"><div class="cid">FL005</div><div class="cname">missing_components</div><div class="cdesc">Fields present but silently empty, zero-length segments, dead stretches in the deliverable.</div></div>
+        <div class="check-chip"><div class="cid">FL006</div><div class="cname">unsupported_answer</div><div class="cdesc">A RAG answer citing sources never retrieved, or stating numbers no source contains.</div></div>
       </section>
 
       <main class="play">
@@ -266,7 +267,7 @@
       <section class="funnel">
         <div class="f-text">
           <h2>Liked what it caught? Get the code.</h2>
-          <p>The full FailLoud — the command-line tool and the MCP server an agent can call <em>inside the loop</em>, before acting on a sub-agent&rsquo;s output — lives on GitHub, MIT-licensed, zero-dependency core, 144 tests. Star it, clone it, wire it into CI: exit code 0 is a pass, 1 is a failed output, 2 is a tool error.</p>
+          <p>The full FailLoud — the command-line tool and the MCP server an agent can call <em>inside the loop</em>, before acting on a sub-agent&rsquo;s output — lives on GitHub, MIT-licensed, zero-dependency core, 162 tests. Star it, clone it, wire it into CI: exit code 0 is a pass, 1 is a failed output, 2 is a tool error.</p>
           <div class="install"><code>$ pip install failloud</code><span style="color:var(--faint)"># or pip install . from a clone · add [mcp] for the server</span><button id="btnCopyInstall" type="button">copy</button></div>
         </div>
         <a class="btn-code" href="https://github.com/Yalakala-Naveen/failloud" target="_blank" rel="noopener">Get the code on GitHub &#8599;</a>
@@ -274,7 +275,7 @@
 
       <footer class="site">
         <span class="sig">Built by <a href="https://yalakala-naveen.github.io" target="_blank" rel="noopener">Naveen Yalakala</a>, Forward Deployed Engineer</span>
-        <span>FailLoud Playground — the same five deterministic checks, running in this page. Fail loud, specifically.</span>
+        <span>FailLoud Playground — the same six deterministic checks, running in this page. Fail loud, specifically.</span>
       </footer>
     </div>
 
@@ -694,6 +695,117 @@
       return findings.concat(checkSegments(doc, cfg));
     }
 
+    /* ---------- FL006 unsupported_answer ---------- */
+    var FL006_SOURCE_KEYS = new Set(["sources","retrieved","retrievedsources","retrievedchunks","retrieveddocs","retrieveddocuments","chunks","documents","contextdocuments","passages"]);
+    var FL006_ANSWER_KEYS = new Set(["answer","finalanswer","response"]);
+    var FL006_TEXT_KEYS = ["text","content","passage","snippet","body","chunk"];
+    var FL006_ID_KEYS = ["id","source_id","doc_id","ref","key"];
+    function fl006Canon(token) {
+      var text = token.replace(/^\$/, "").replace(/%$/, "").replace(/,/g, "");
+      var value = parseFloat(text);
+      if (isNaN(value)) return null;
+      return Number.isInteger(value) ? String(value) : String(value);
+    }
+    function fl006Numbers(text) {
+      var found = new Set();
+      var re = /\$?\d[\d,]*(?:\.\d+)?%?/g, m;
+      while ((m = re.exec(text)) !== null) { var c = fl006Canon(m[0]); if (c !== null) found.add(c); }
+      return found;
+    }
+    function fl006SourceText(entry) {
+      if (typeof entry === "string") return entry;
+      if (isDict(entry)) {
+        var parts = [];
+        for (var key of FL006_TEXT_KEYS) if (typeof entry[key] === "string") parts.push(entry[key]);
+        if (parts.length) return parts.join("\n");
+        var leaves = [];
+        for (var pair of iterNodes(entry)) if (typeof pair[1] === "string") leaves.push(pair[1]);
+        return leaves.join("\n");
+      }
+      return "";
+    }
+    function fl006SourceId(entry, index) {
+      if (isDict(entry)) {
+        var lowered = {};
+        for (var k of Object.keys(entry)) lowered[normalizeKey(k)] = entry[k];
+        for (var key of FL006_ID_KEYS) {
+          var v = lowered[normalizeKey(key)];
+          if ((typeof v === "string" || typeof v === "number") && String(v).trim()) return String(v).trim();
+        }
+      }
+      return String(index + 1);
+    }
+    function fl006CitationRef(entry) {
+      if ((typeof entry === "string" || typeof entry === "number") && String(entry).trim()) return String(entry).trim();
+      if (isDict(entry)) {
+        var lowered = {};
+        for (var k of Object.keys(entry)) lowered[normalizeKey(k)] = entry[k];
+        for (var key of ["source_id","id","ref","source","index","doc_id"]) {
+          var v = lowered[normalizeKey(key)];
+          if ((typeof v === "string" || typeof v === "number") && String(v).trim()) return String(v).trim();
+        }
+      }
+      return null;
+    }
+    function checkFL006(doc) {
+      var findings = [];
+      if (!isDict(doc) && !Array.isArray(doc)) return findings;
+      var sources = [], answers = [], citationBlocks = [];
+      for (var pair of iterNodes(doc)) {
+        var path = pair[0], value = pair[1];
+        var key = path === "$" ? "" : normalizeKey(lastSeg(path));
+        if (FL006_SOURCE_KEYS.has(key) && Array.isArray(value)) {
+          value.forEach(function (entry, index) {
+            sources.push({ path: path + "[" + index + "]", ref: fl006SourceId(entry, index), indexRef: String(index + 1), text: fl006SourceText(entry) });
+          });
+        } else if (FL006_ANSWER_KEYS.has(key) && typeof value === "string" && value.trim()) {
+          answers.push([path, value]);
+        } else if ((key === "citations" || key === "citation") && Array.isArray(value)) {
+          citationBlocks.push([path, value]);
+        }
+      }
+      if (!answers.length) return findings;
+      var byRef = {};
+      for (var s of sources) { byRef[s.ref] = byRef[s.ref] || s; byRef[s.indexRef] = byRef[s.indexRef] || s; byRef[s.ref.toLowerCase()] = byRef[s.ref.toLowerCase()] || s; }
+      var explicitRefs = [];
+      for (var cb of citationBlocks) for (var entry of cb[1]) { var r = fl006CitationRef(entry); if (r !== null) explicitRefs.push([cb[0], r]); }
+      for (var er of explicitRefs) {
+        if (!(er[1] in byRef) && !(er[1].toLowerCase() in byRef)) {
+          findings.push(F("FL006", "error", er[0], "Citation " + pyRepr(er[1]) + " does not resolve to any retrieved source — the answer cites a source that was never retrieved."));
+        }
+      }
+      for (var ans of answers) {
+        var answerPath = ans[0], answer = ans[1];
+        var markers = [], mre = /\[([A-Za-z0-9][A-Za-z0-9_\-.]{0,31})\]/g, mm;
+        while ((mm = mre.exec(answer)) !== null) { if (answer.charAt(mm.index + mm[0].length) === "(") continue; markers.push(mm[1]); }
+        var cited = [], seenCited = new Set();
+        function cite(src) { if (src && !seenCited.has(src.path)) { seenCited.add(src.path); cited.push(src); } }
+        var unresolved = [];
+        for (var ref of markers) { var src = byRef[ref] || byRef[ref.toLowerCase()]; if (!src) unresolved.push(ref); else cite(src); }
+        for (var er2 of explicitRefs) cite(byRef[er2[1]] || byRef[er2[1].toLowerCase()]);
+        for (var uref of new Set(unresolved)) {
+          findings.push(F("FL006", "error", answerPath, "Citation [" + uref + "] does not resolve to any retrieved source — the answer cites a source that was never retrieved."));
+        }
+        for (var cs of cited) {
+          if (!cs.text.trim()) findings.push(F("FL006", "error", cs.path, "Cited source " + pyRepr(cs.ref) + " carries no text — a citation to an empty source backs nothing."));
+        }
+        var pool = cited.length ? cited : sources;
+        if (pool.length) {
+          var supported = new Set();
+          for (var ps of pool) for (var n of fl006Numbers(ps.text)) supported.add(n);
+          var answerNums = fl006Numbers(answer.replace(/\[([A-Za-z0-9][A-Za-z0-9_\-.]{0,31})\]/g, ""));
+          var unsupported = Array.from(answerNums).filter(function (n) { return !supported.has(n); }).sort(function (a, b) { return parseFloat(a) - parseFloat(b); });
+          for (var un of unsupported) {
+            findings.push(F("FL006", "error", answerPath, "Answer states the number " + un + " but it appears in no " + (cited.length ? "cited source" : "retrieved source") + " — a figure the sources do not support."));
+          }
+        }
+        if (sources.length && !markers.length && !explicitRefs.length) {
+          findings.push(F("FL006", "warning", answerPath, "Answer cites none of the retrieved sources — its claims cannot be traced to what was retrieved."));
+        }
+      }
+      return findings;
+    }
+
     /* ---------- engine + report (engine.py / models.py / report.py) ---------- */
     var CHECKS = [
       { id: "FL001", name: "placeholder_shipped", run: function (doc) { return checkFL001(doc); },
@@ -705,7 +817,9 @@
       { id: "FL004", name: "count_mismatch", run: function (doc) { return checkFL004(doc); },
         why: "The claimed number is what travels into dashboards and decisions; the itemized record is the only part that was ever true." },
       { id: "FL005", name: "missing_components", run: function (doc, cfg) { return checkFL005(doc, cfg); },
-        why: "Existence is not completeness: a deliverable can pass every outline check while a component inside it is silently absent." }
+        why: "Existence is not completeness: a deliverable can pass every outline check while a component inside it is silently absent." },
+      { id: "FL006", name: "unsupported_answer", run: function (doc) { return checkFL006(doc); },
+        why: "A citation is a claim about a source: an answer that cites what was never retrieved, or states figures no source contains, is graded by its own bibliography — and fails it." }
     ];
     function runChecks(doc, cfg) {
       var outcomes = CHECKS.map(function (c) {

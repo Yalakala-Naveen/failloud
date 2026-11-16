@@ -142,6 +142,15 @@ def check_completeness(
 
 
 @server.tool()
+def check_groundedness(output_json: str) -> str:
+    """FL006 only: does a RAG answer's grounding hold — do its citations
+    resolve to retrieved sources, are the cited sources non-empty, and
+    does every number in the answer appear in the sources?"""
+    outcome = run_single(_parse(output_json), "FL006")
+    return json.dumps(outcome.to_dict(), indent=2)
+
+
+@server.tool()
 def failure_report(output_json: str, required_paths: str = "") -> str:
     """Run all checks and return the Markdown FAILURE REPORT — the
     human-readable artifact to attach to a run, issue, or pull request."""

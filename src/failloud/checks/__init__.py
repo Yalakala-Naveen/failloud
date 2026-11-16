@@ -8,9 +8,16 @@ from __future__ import annotations
 
 from types import ModuleType
 
-from . import completeness, counts, evidence, placeholder, stale
+from . import completeness, counts, evidence, groundedness, placeholder, stale
 
-MODULES: list[ModuleType] = [placeholder, evidence, stale, counts, completeness]
+MODULES: list[ModuleType] = [
+    placeholder,
+    evidence,
+    stale,
+    counts,
+    completeness,
+    groundedness,
+]
 
 BY_ID: dict[str, ModuleType] = {m.CHECK_ID: m for m in MODULES}
 

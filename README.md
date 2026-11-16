@@ -11,7 +11,7 @@ FailLoud reads an agent's output the way a skeptical reviewer would — and prod
 
 **▶ Try it in your browser: [FailLoud Playground](https://yalakala-naveen.github.io/failloud/)** — paste an agent output, get the failure report. No install, nothing uploaded.
 
-## The five silent failures
+## The six silent failures
 
 | Check | Name | What it catches |
 |---|---|---|
@@ -20,6 +20,7 @@ FailLoud reads an agent's output the way a skeptical reviewer would — and prod
 | FL003 | `stale_state` | Work based on state/context already older than allowed, state with no freshness timestamp at all, or a state-version skew between handover and run. *A pipeline planned flawlessly from a snapshot of a world that no longer existed.* |
 | FL004 | `count_mismatch` | A reported count that disagrees with the itemized record in the same document, or a total that isn't the sum of its parts. *Reports counted actions attempted; audiences read them as actions completed. Only the list was ever true.* |
 | FL005 | `missing_components` | Required fields present-but-empty, and dead stretches inside segmented deliverables (zero-length segments, silent gaps). *A delivered video passed every existence check while one segment inside it was silent.* |
+| FL006 | `unsupported_answer` | A RAG answer whose citations resolve to nothing that was retrieved, whose cited sources are empty, or whose numbers appear in no source. *Retrieval gets checked by every dashboard; whether the answer is backed by what was retrieved is checked by nobody.* |
 
 These are not eval scores. FailLoud never asks a model whether an output "looks good" — every verdict is deterministic, reproducible, and explainable line by line. No LLM sits in the verdict path.
 
@@ -34,11 +35,11 @@ Or from a clone: `pip install .` (add `.[mcp]` for the server).
 
 ## As an agent skill
 
-The same five checks also ship as a [`SKILL.md`](skill/SKILL.md) — a judgment playbook an agent runs on its own output before claiming done, for Claude Code, Cursor, Copilot and other SKILL.md-compatible agents. Listing copy and worked examples live in [`skill/`](skill/).
+The same six checks also ship as a [`SKILL.md`](skill/SKILL.md) — a judgment playbook an agent runs on its own output before claiming done, for Claude Code, Cursor, Copilot and other SKILL.md-compatible agents. Listing copy and worked examples live in [`skill/`](skill/).
 
 ## 60-second demo
 
-The repo ships a realistic agent output that commits all five failures (`examples/failing_output.json`) and its corrected twin (`examples/passing_output.json`):
+The repo ships a realistic agent output that commits the first five failures (`examples/failing_output.json`) and its corrected twin (`examples/passing_output.json`):
 
 ```console
 $ failloud check examples/failing_output.json
@@ -60,6 +61,7 @@ Verdict: FAIL (8 error(s), 1 warning(s))
   ! $.output.archive_url — Field 'archive_url' is present but empty while its siblings carry content — verify it was meant to be blank.
   ✗ $.segments[1] — Segment 1 has zero length (4s–4s) — a component that occupies a slot and contains nothing.
   ✗ $.segments[2] — Dead stretch of 5.5s before segment 2 (gap limit 2s) — the deliverable goes silent where content should be.
+[FL006] unsupported_answer — PASS
 
 $ echo $?
 1
@@ -74,6 +76,7 @@ Verdict: PASS (0 error(s), 0 warning(s))
 [FL003] stale_state — PASS
 [FL004] count_mismatch — PASS
 [FL005] missing_components — PASS
+[FL006] unsupported_answer — PASS
 No silent failures found. The output backs its claims.
 ```
 
@@ -101,6 +104,7 @@ $ failloud check examples/failing_output.json --format md --out report.md
 | FL003 | stale_state | FAIL | 2 |
 | FL004 | count_mismatch | FAIL | 2 |
 | FL005 | missing_components | FAIL | 3 |
+| FL006 | unsupported_answer | PASS | 0 |
 
 ## Findings
 
@@ -191,7 +195,7 @@ FailLoud also ships as an [MCP](https://modelcontextprotocol.io) server, so an a
 }
 ```
 
-Tools: `check_output` (all checks, JSON result), `check_placeholder`, `check_evidence`, `check_stale_state`, `check_counts`, `check_completeness`, `failure_report` (the Markdown report), `create_verification_receipt`, `verify_receipt_chain`, and `recheck_against_record` (the second pass). Works with both the 1.x and 2.x Python MCP SDKs.
+Tools: `check_output` (all checks, JSON result), `check_placeholder`, `check_evidence`, `check_stale_state`, `check_counts`, `check_completeness`, `check_groundedness`, `failure_report` (the Markdown report), `create_verification_receipt`, `verify_receipt_chain`, and `recheck_against_record` (the second pass). Works with both the 1.x and 2.x Python MCP SDKs.
 
 ## LangChain adapter (new in 0.4.0)
 
@@ -203,7 +207,7 @@ from failloud.adapters.langchain import FailLoudCallbackHandler, verify
 # One call: normalize any LangChain result shape and check it.
 result = verify(chain.invoke(inputs))
 if not result.passed:
-    print(result.verdict)  # FAIL — the five checks ran on the transcript
+    print(result.verdict)  # FAIL — the checks ran on the transcript
 
 # Or verify every step inside the loop, as it finishes:
 handler = FailLoudCallbackHandler(raise_on_fail=True)
@@ -215,7 +219,7 @@ handler.last_result.verdict
 
 ## Second-pass verification (new in 0.5.0)
 
-The five checks verify an output against *itself*. That has a hole, named by a reviewer on the launch thread: an output can be **consistently wrong** — "9 sent", 9 items listed, an id on every claim — and one of those messages still bounced an hour later. At completion time every internal measure said PASS. The world disagreed afterwards.
+The original five checks verify an output against *itself*. That has a hole, named by a reviewer on the launch thread: an output can be **consistently wrong** — "9 sent", 9 items listed, an id on every claim — and one of those messages still bounced an hour later. At completion time every internal measure said PASS. The world disagreed afterwards.
 
 So a passing FailLoud verdict is **provisional**: it means "this document does not contradict itself", not "this happened". The second pass checks the output against the world. Feed it the original output and a later snapshot from the system of record — a provider delivery export, a database extract, the receiving system's own log:
 
@@ -233,6 +237,37 @@ Second pass: CONTRADICTED
 
 Every claim and every reported count comes back **confirmed**, **contradicted**, or **unverifiable**: evidence found in the record with no failure marker confirms a claim; evidence sitting under a bounce/failure key — or in an entry whose status says it failed — contradicts it; a record that never mentions the evidence has *not* confirmed it, and the second pass says so instead of upgrading silence into a pass. A first-pass FAIL is final and is never resurrected by a friendly record. Exit codes: **0** confirmed, **1** contradicted / unverifiable / already failed, **2** the tool could not run. In Python: `recheck_output(original, record)` and `provisional_label(result)`; over MCP: `recheck_against_record`.
 
+## RAG groundedness — FL006 (new in 0.6.0)
+
+The first five checks verify an output against itself; the second pass verifies it against the system of record. A RAG answer has a third judge sitting in the same document: **the sources it was given**. FL006 is that judge.
+
+The demand was public before the check existed: by Nov 15, 2026, ten independent practitioners had posted the same complaint — the system retrieves, it cites, and the answer is *still wrong* (Career Company Problem Watch; no payment signals in any of the ten — the flag rests on the count, and it is recorded that way). Retrieval is measured by every dashboard. Whether the answer is backed by what was retrieved was measured by nobody.
+
+FL006 verifies the parts of grounding that can be verified **deterministically**:
+
+- **Citation integrity** — every citation (a `citations` entry, or an inline marker like `[2]` / `[doc_a]`) must resolve to a source that was actually retrieved. A citation pointing at nothing is fabricated, however confident it looks.
+- **Cited-source emptiness** — a cited source carrying no text backs nothing.
+- **Numeric support** — every number in the answer must appear in the cited sources (or in all retrieved sources when the answer cites none specifically). `1,200`, `1200`, and `1200.0` are the same number. An answer that cites none of its retrieved sources earns a warning, not an error.
+
+**What FL006 does not claim:** semantic entailment. It does not judge whether the prose *follows* from a source — no model sits in the verdict path. An answer can pass FL006 and still misread its sources; it cannot pass while inventing citations or figures.
+
+```console
+$ failloud check examples/rag_failing.json --only FL006
+FAILLOUD — agent output verification
+Source: examples/rag_failing.json
+Verdict: FAIL (4 error(s), 0 warning(s))
+
+[FL006] unsupported_answer — FAIL
+  ✗ $.citations — Citation 'refund_policy' does not resolve to any retrieved source — the answer cites a source that was never retrieved.
+  ✗ $.answer — Citation [9] does not resolve to any retrieved source — the answer cites a source that was never retrieved.
+  ✗ $.answer — Answer states the number 3 but it appears in no cited source — a figure the sources do not support.
+  ✗ $.answer — Answer states the number 25 but it appears in no cited source — a figure the sources do not support.
+
+$ failloud check examples/rag_passing.json   # all six checks — PASS
+```
+
+The check activates only on RAG-shaped documents — an `answer` / `final_answer` / `response` string together with `sources` / `retrieved` / `chunks` / `documents` / `passages`, explicit `citations`, or inline citation markers. Any other document is out of scope and produces no findings. In Python it runs as part of `check_output`; on its own via `run_single(doc, "FL006")`; over MCP: `check_groundedness`.
+
 ## Design principles
 
 - **Deterministic.** Same input, same verdict, every time. No model in the verdict path.
@@ -244,7 +279,7 @@ Every claim and every reported count comes back **confirmed**, **contradicted**,
 
 ```bash
 pip install -e ".[mcp,dev]"
-python -m pytest        # 144 tests, including a live MCP stdio end-to-end test
+python -m pytest        # 162 tests, including a live MCP stdio end-to-end test
 ```
 
 ## Roadmap
@@ -253,6 +288,7 @@ python -m pytest        # 144 tests, including a live MCP stdio end-to-end test
 - ~~`failloud watch` mode~~ — DONE Nov 13, 2026: failloud 0.3.0 is live on PyPI (https://pypi.org/project/failloud/), published via GitHub trusted publishing from release v0.3.0; clean-venv install verified.
 - ~~Framework adapters~~ — FIRST ONE DONE Nov 14, 2026: the LangChain adapter (normalizer + callback handler) ships in failloud 0.4.0. More frameworks follow the same duck-typed pattern.
 - ~~Provisional verdicts + second-pass verification~~ — DONE Nov 15, 2026: failloud 0.5.0 — every PASS is labelled provisional, and `failloud recheck` re-judges claims and counts against a later system-of-record snapshot (confirmed / contradicted / unverifiable).
+- ~~RAG groundedness (FL006)~~ — DONE Nov 16, 2026: failloud 0.6.0 — citations must resolve to retrieved sources, cited sources must carry text, and every number in the answer must appear in the sources.
 
 ## License
 
