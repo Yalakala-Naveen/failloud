@@ -1,5 +1,30 @@
 # Changelog
 
+## 0.5.1 — 2026-11-15
+
+MCP Registry readiness: the two gaps that would have failed a registry
+listing, fixed. No behaviour changes to the checks themselves.
+
+- New `failloud mcp` subcommand: runs the MCP server over stdio,
+  launching exactly what the `failloud-mcp` script launches. Registry
+  clients start the server with
+  `uvx --from failloud[mcp] failloud mcp`; in 0.5.0 that command did
+  not exist (the server was only reachable via `failloud-mcp`), so the
+  registry's run command would have failed on first launch. Without
+  the `mcp` extra installed, the subcommand exits 2 with the install
+  hint instead of a traceback.
+- The package README — the long description the registry reads from
+  PyPI for ownership verification — now carries the registry ownership
+  marker (`mcp-name: io.github.Yalakala-Naveen/failloud`). The marker
+  was added to the repo README after 0.5.0 shipped, so 0.5.0's
+  published README could never have verified.
+- `server.json` updated to 0.5.1 (manifest version, package version,
+  and the `--from failloud[mcp]==0.5.1` runtime pin) and re-validated
+  against the official registry schema.
+- 147 tests (3 new), covering the subcommand's registration, that it
+  dispatches to the same server entry point as `failloud-mcp`, and a
+  live stdio handshake through `failloud mcp`.
+
 ## 0.5.0 — 2026-11-15
 
 Second-pass verification: a PASS is provisional until the record confirms it.

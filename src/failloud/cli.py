@@ -17,6 +17,10 @@
                                # second pass: re-judge a (provisionally)
                                # passed output against a later snapshot
                                # from the system of record
+    failloud mcp               # run the MCP server over stdio — the
+                               # same server as the failloud-mcp script;
+                               # this is how MCP Registry clients launch
+                               # it (uvx --from failloud[mcp] failloud mcp)
 
 Exit codes: ``0`` the output passed, ``1`` verification failed (the agent
 output, not the tool), ``2`` the tool itself could not run (bad input,
@@ -243,6 +247,19 @@ def _cmd_recheck(args: argparse.Namespace) -> int:
     return 0 if result.confirmed else 1
 
 
+def _cmd_mcp(_args: argparse.Namespace) -> int:
+    # Imported lazily: the core CLI is stdlib-only, and the server needs
+    # the "mcp" extra. A missing extra is a tool error (exit 2), with the
+    # install hint mcp_server raises.
+    try:
+        from . import mcp_server
+    except ImportError as exc:
+        print(f"failloud: {exc}", file=sys.stderr)
+        return 2
+    mcp_server.main()
+    return 0
+
+
 def _cmd_checks(_args: argparse.Namespace) -> int:
     for module in MODULES:
         print(f"{module.CHECK_ID}  {module.NAME}")
@@ -377,6 +394,13 @@ def build_parser() -> argparse.ArgumentParser:
 
     checks = sub.add_parser("checks", help="List the checks and what they catch.")
     checks.set_defaults(func=_cmd_checks)
+
+    mcp_parser = sub.add_parser(
+        "mcp",
+        help="Run the MCP server over stdio (same server as failloud-mcp; "
+        "needs the 'mcp' extra).",
+    )
+    mcp_parser.set_defaults(func=_cmd_mcp)
 
     verify = sub.add_parser(
         "verify-receipts",

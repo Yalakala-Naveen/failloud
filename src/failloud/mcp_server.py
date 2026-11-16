@@ -9,6 +9,8 @@ loop, one tool call away from the work.
 Run it directly::
 
     failloud-mcp            # after pip install "failloud[mcp]"
+    failloud mcp            # same server, through the main CLI — the
+                            # launch command MCP Registry clients use
     python -m failloud.mcp_server
 
 Or register it with an MCP client::
