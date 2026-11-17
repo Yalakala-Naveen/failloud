@@ -1,0 +1,71 @@
+name: 'FailLoud Check'
+description: 'Verify an LLM agent output before it ships as done — catches placeholder content, unbacked claims, stale state, count mismatches, missing components, and RAG answers whose citations and numbers the retrieved sources do not support. Deterministic, zero-dependency, no model in the verdict path.'
+author: 'Naveen Yalakala'
+branding:
+  icon: 'check-circle'
+  color: 'red'
+inputs:
+  path:
+    description: 'Path to the agent output JSON file to verify (e.g. agent_output.json)'
+    required: true
+  format:
+    description: 'Report format: text, md, or json'
+    required: false
+    default: 'text'
+  only:
+    description: 'Comma-separated check IDs to run (e.g. FL001,FL004,FL006). Empty runs all six checks.'
+    required: false
+    default: ''
+  require:
+    description: 'Comma-separated required field paths (e.g. output.url,output.body)'
+    required: false
+    default: ''
+  version:
+    description: 'FailLoud version to install from PyPI (e.g. 0.6.0). Empty installs the latest release.'
+    required: false
+    default: ''
+outputs:
+  verdict:
+    description: 'PASS or FAIL — the FailLoud verdict for the checked file'
+    value: ${{ steps.check.outputs.verdict }}
+runs:
+  using: 'composite'
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    - name: Install FailLoud
+      shell: bash
+      run: |
+        if [ -n "${{ inputs.version }}" ]; then
+          pip install "failloud==${{ inputs.version }}"
+        else
+          pip install failloud
+        fi
+    - name: Run FailLoud check
+      id: check
+      shell: bash
+      run: |
+        args=(check "${{ inputs.path }}" --format "${{ inputs.format }}")
+        if [ -n "${{ inputs.only }}" ]; then
+          args+=(--only "${{ inputs.only }}")
+        fi
+        if [ -n "${{ inputs.require }}" ]; then
+          args+=(--require "${{ inputs.require }}")
+        fi
+        set +e
+        failloud "${args[@]}"
+        code=$?
+        set -e
+        if [ "$code" -eq 0 ]; then
+          echo "verdict=PASS" >> "$GITHUB_OUTPUT"
+        elif [ "$code" -eq 1 ]; then
+          echo "verdict=FAIL" >> "$GITHUB_OUTPUT"
+          echo "::error::FailLoud verification FAILED for ${{ inputs.path }} — see the report above."
+          exit 1
+        else
+          echo "verdict=ERROR" >> "$GITHUB_OUTPUT"
+          echo "::error::FailLoud could not run (exit $code) — check the file path and format."
+          exit "$code"
+        fi

@@ -115,6 +115,42 @@ $ failloud check examples/failing_output.json --format md --out report.md
 - **ERROR** `$.counts.sent` — Count for 'sent' is reported as 12 but the itemized record at $.items.sent contains 9 item(s) — the report overstates what the record supports.
 ```
 
+## GitHub Action
+
+Run FailLoud in CI on every agent output your pipeline produces. The Action wraps `failloud check` and follows the same exit contract — the job fails when the output fails:
+
+```yaml
+name: Verify agent outputs
+on: [push, pull_request]
+jobs:
+  failloud:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: FailLoud check
+        uses: Yalakala-Naveen/failloud@v0.6.0
+        with:
+          path: agent_output.json        # the JSON file to verify (required)
+          # format: md                   # text (default), md, or json
+          # only: FL001,FL004,FL006      # run a subset of checks
+          # require: output.url,output.body
+          # version: 0.6.0               # pin a PyPI version (default: latest)
+```
+
+The step exposes a `verdict` output (`PASS` / `FAIL`) for downstream steps. Exit codes: **0** the output passed, **1** verification failed (the output, not the tool), **2** FailLoud could not run.
+
+## The "verified by FailLoud" badge
+
+If your project's agent outputs pass FailLoud in CI, say so — add this badge to your README:
+
+```markdown
+[![verified by FailLoud](https://img.shields.io/badge/verified%20by-FailLoud-brightgreen)](https://github.com/Yalakala-Naveen/failloud)
+```
+
+It renders as: [![verified by FailLoud](https://img.shields.io/badge/verified%20by-FailLoud-brightgreen)](https://github.com/Yalakala-Naveen/failloud)
+
+The badge is a claim, and FailLoud's whole point is that claims need evidence — only add it while a FailLoud check actually runs and passes in your CI.
+
 ## Verification receipts (new in 0.2.0)
 
 A report says what FailLoud found; a **receipt proves it**. Seal any run into a hash-chained receipt file:
