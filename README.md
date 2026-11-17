@@ -11,6 +11,8 @@ FailLoud reads an agent's output the way a skeptical reviewer would — and prod
 
 **▶ Try it in your browser: [FailLoud Playground](https://yalakala-naveen.github.io/failloud/)** — paste an agent output, get the failure report. No install, nothing uploaded.
 
+[![M8ven Score](https://m8ven.ai/badge/mcp/yalakala-naveen-failloud-1pd22i?v=cac0edb1189a4e6f659095346a1ec9b3)](https://m8ven.ai/mcp/yalakala-naveen-failloud-1pd22i?s=readme)
+
 ## The six silent failures
 
 | Check | Name | What it catches |
