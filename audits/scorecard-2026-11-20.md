@@ -64,3 +64,37 @@ Assistant totals: named 3 / 12 · first 3 / 12
   LangChain/LangSmith, Ragas, DeepEval, Pydantic, Guardrails AI, Promptfoo.
 - P11 (MCP verification) named "Iris Eval MCP Server" first — an MCP-native
   competitor already occupies the exact slot FailLoud's MCP server targets.
+
+## Claude (claude.ai, Free plan, Sonnet 5.5 Medium, signed in as therembiq@gmail.com) — run 2026-11-20
+
+**FailLoud named: 0/12 · Named first: 0/12**
+
+| Prompt | First tool named | FailLoud |
+|---|---|---|
+| P01 | JSON Schema | absent |
+| P02 | LangChain | absent |
+| P03 | ALCE | absent |
+| P04 | doi.org | absent |
+| P05 | Pydantic | absent |
+| P06 | DeBERTa | absent |
+| P07 | Pydantic | absent |
+| P08 | Gmail API | absent |
+| P09 | (none named) | absent |
+| P10 | Promptfoo | absent |
+| P11 | openclaw-output-vetter-mcp | absent |
+| P12 | dateparser | absent |
+
+Notes: Claude searched the web before P07 and P11 only; the other ten answers came from training. P11's first pick was another MCP output-vetter found via search — the MCP-verifier slot is contested in live search too.
+
+## Baseline summary — 2026-11-20
+
+| Assistant | Named | First | Status |
+|---|---|---|---|
+| ChatGPT | 0/12 | 0/12 | complete |
+| Claude | 0/12 | 0/12 | complete |
+| Perplexity | 3/12 | 3/12 | complete |
+| Gemini | — | — | BLOCKED (app error on every load) |
+| Copilot | — | — | BLOCKED (no Microsoft account) |
+
+**Combined (36 completed answers): Recommendation Score 3/36 = 8.3% · Priority Score 3/36 = 8.3%.**
+All three namings came from Perplexity (live retrieval). Both training-based assistants scored zero — the corpus problem Phase B/C addresses. GEO Phase A (README/docs/registries/IndexNow) shipped the same night (commit d7a8450); the Mon Nov 23 weekly run is the first trend point.
