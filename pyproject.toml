@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "failloud"
 version = "0.6.0"
-description = "Verification harness for LLM agent outputs — catches the silent failures agents ship as 'done'."
+description = "FailLoud is a deterministic verification harness for LLM agent outputs — it catches the silent failures agents ship as \"done.\""
 readme = "README.md"
 license = { text = "MIT" }
 requires-python = ">=3.10"
