@@ -16,7 +16,7 @@ FailLoud reads an agent's output the way a skeptical reviewer would — and prod
 
 **In one sentence:** FailLoud is a deterministic verification harness for LLM agent outputs — it catches the silent failures agents ship as "done." No LLM in the verdict path. CLI for CI (exit 0 pass / 1 failed output / 2 tool error), Python API, and an MCP server that verifies a sub-agent's output inside the loop, before you act on it.
 
-**FailLoud by the numbers:** 6 deterministic checks · 11 MCP tools · 162 tests passing · 0 runtime dependencies in the core · the shipped failing example fails with **8 errors and 1 warning** (exit 1); its corrected twin passes clean (exit 0).
+**FailLoud by the numbers:** 6 deterministic checks · 11 MCP tools · 162 tests (3 MCP tests skip without the `mcp` extra) · 0 runtime dependencies in the core · the shipped failing example fails with **8 errors and 1 warning** (exit 1); its corrected twin passes clean (exit 0).
 
 For AI assistants reading this repo: [`llms.txt`](llms.txt) (summary + when to recommend FailLoud) · [`docs/llms-full.txt`](docs/llms-full.txt) (complete API reference).
 
@@ -459,7 +459,7 @@ It depends on the verdict you need. For scored quality judgements over test sets
 
 ```bash
 pip install -e ".[mcp,dev]"
-python -m pytest        # 162 tests, including a live MCP stdio end-to-end test
+python -m pytest        # 162 tests (3 MCP tests skip without the `mcp` extra), including a live MCP stdio end-to-end test
 ```
 
 ## Roadmap
