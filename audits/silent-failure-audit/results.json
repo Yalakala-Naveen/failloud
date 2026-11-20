@@ -1,0 +1,949 @@
+{
+  "cases": [
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL001"
+      ],
+      "error_count": 1,
+      "id": "fl001-01",
+      "intended_check_warned": false,
+      "intended_pattern": "FL001",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL001"
+      ],
+      "error_count": 1,
+      "id": "fl001-02",
+      "intended_check_warned": false,
+      "intended_pattern": "FL001",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL001"
+      ],
+      "error_count": 1,
+      "id": "fl001-03",
+      "intended_check_warned": false,
+      "intended_pattern": "FL001",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL001"
+      ],
+      "error_count": 1,
+      "id": "fl001-04",
+      "intended_check_warned": false,
+      "intended_pattern": "FL001",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL001"
+      ],
+      "error_count": 1,
+      "id": "fl001-05",
+      "intended_check_warned": false,
+      "intended_pattern": "FL001",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL001"
+      ],
+      "error_count": 1,
+      "id": "fl001-06",
+      "intended_check_warned": false,
+      "intended_pattern": "FL001",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL001"
+      ],
+      "error_count": 1,
+      "id": "fl001-07",
+      "intended_check_warned": false,
+      "intended_pattern": "FL001",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL001"
+      ],
+      "error_count": 1,
+      "id": "fl001-08",
+      "intended_check_warned": false,
+      "intended_pattern": "FL001",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL001"
+      ],
+      "error_count": 1,
+      "id": "fl001-09",
+      "intended_check_warned": false,
+      "intended_pattern": "FL001",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL001"
+      ],
+      "error_count": 1,
+      "id": "fl001-10",
+      "intended_check_warned": false,
+      "intended_pattern": "FL001",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL002"
+      ],
+      "error_count": 1,
+      "id": "fl002-01",
+      "intended_check_warned": false,
+      "intended_pattern": "FL002",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL002"
+      ],
+      "error_count": 1,
+      "id": "fl002-02",
+      "intended_check_warned": false,
+      "intended_pattern": "FL002",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL002"
+      ],
+      "error_count": 1,
+      "id": "fl002-03",
+      "intended_check_warned": false,
+      "intended_pattern": "FL002",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL002"
+      ],
+      "error_count": 1,
+      "id": "fl002-04",
+      "intended_check_warned": false,
+      "intended_pattern": "FL002",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL002"
+      ],
+      "error_count": 1,
+      "id": "fl002-05",
+      "intended_check_warned": false,
+      "intended_pattern": "FL002",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL002"
+      ],
+      "error_count": 1,
+      "id": "fl002-06",
+      "intended_check_warned": false,
+      "intended_pattern": "FL002",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL002"
+      ],
+      "error_count": 1,
+      "id": "fl002-07",
+      "intended_check_warned": false,
+      "intended_pattern": "FL002",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL002"
+      ],
+      "error_count": 1,
+      "id": "fl002-08",
+      "intended_check_warned": false,
+      "intended_pattern": "FL002",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL002"
+      ],
+      "error_count": 1,
+      "id": "fl002-09",
+      "intended_check_warned": false,
+      "intended_pattern": "FL002",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL002"
+      ],
+      "error_count": 1,
+      "id": "fl002-10",
+      "intended_check_warned": false,
+      "intended_pattern": "FL002",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL003"
+      ],
+      "error_count": 1,
+      "id": "fl003-01",
+      "intended_check_warned": false,
+      "intended_pattern": "FL003",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": false,
+      "checks_fired": [
+        "FL003"
+      ],
+      "error_count": 0,
+      "id": "fl003-02",
+      "intended_check_warned": true,
+      "intended_pattern": "FL003",
+      "passed": true,
+      "verdict": "PASS WITH WARNINGS",
+      "warning_count": 1
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL003"
+      ],
+      "error_count": 1,
+      "id": "fl003-03",
+      "intended_check_warned": false,
+      "intended_pattern": "FL003",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL003"
+      ],
+      "error_count": 1,
+      "id": "fl003-04",
+      "intended_check_warned": false,
+      "intended_pattern": "FL003",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": false,
+      "checks_fired": [
+        "FL003"
+      ],
+      "error_count": 0,
+      "id": "fl003-05",
+      "intended_check_warned": true,
+      "intended_pattern": "FL003",
+      "passed": true,
+      "verdict": "PASS WITH WARNINGS",
+      "warning_count": 1
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL003"
+      ],
+      "error_count": 1,
+      "id": "fl003-06",
+      "intended_check_warned": false,
+      "intended_pattern": "FL003",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL003"
+      ],
+      "error_count": 1,
+      "id": "fl003-07",
+      "intended_check_warned": false,
+      "intended_pattern": "FL003",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": false,
+      "checks_fired": [
+        "FL003"
+      ],
+      "error_count": 0,
+      "id": "fl003-08",
+      "intended_check_warned": true,
+      "intended_pattern": "FL003",
+      "passed": true,
+      "verdict": "PASS WITH WARNINGS",
+      "warning_count": 1
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL003"
+      ],
+      "error_count": 1,
+      "id": "fl003-09",
+      "intended_check_warned": false,
+      "intended_pattern": "FL003",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL003"
+      ],
+      "error_count": 1,
+      "id": "fl003-10",
+      "intended_check_warned": false,
+      "intended_pattern": "FL003",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL004"
+      ],
+      "error_count": 1,
+      "id": "fl004-01",
+      "intended_check_warned": false,
+      "intended_pattern": "FL004",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL004"
+      ],
+      "error_count": 1,
+      "id": "fl004-02",
+      "intended_check_warned": false,
+      "intended_pattern": "FL004",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL004"
+      ],
+      "error_count": 1,
+      "id": "fl004-03",
+      "intended_check_warned": false,
+      "intended_pattern": "FL004",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL004"
+      ],
+      "error_count": 1,
+      "id": "fl004-04",
+      "intended_check_warned": false,
+      "intended_pattern": "FL004",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL004"
+      ],
+      "error_count": 1,
+      "id": "fl004-05",
+      "intended_check_warned": false,
+      "intended_pattern": "FL004",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL004"
+      ],
+      "error_count": 1,
+      "id": "fl004-06",
+      "intended_check_warned": false,
+      "intended_pattern": "FL004",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL004"
+      ],
+      "error_count": 1,
+      "id": "fl004-07",
+      "intended_check_warned": false,
+      "intended_pattern": "FL004",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL004"
+      ],
+      "error_count": 1,
+      "id": "fl004-08",
+      "intended_check_warned": false,
+      "intended_pattern": "FL004",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL004"
+      ],
+      "error_count": 1,
+      "id": "fl004-09",
+      "intended_check_warned": false,
+      "intended_pattern": "FL004",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL004"
+      ],
+      "error_count": 1,
+      "id": "fl004-10",
+      "intended_check_warned": false,
+      "intended_pattern": "FL004",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL005"
+      ],
+      "error_count": 2,
+      "id": "fl005-01",
+      "intended_check_warned": false,
+      "intended_pattern": "FL005",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL005"
+      ],
+      "error_count": 1,
+      "id": "fl005-02",
+      "intended_check_warned": false,
+      "intended_pattern": "FL005",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL005"
+      ],
+      "error_count": 2,
+      "id": "fl005-03",
+      "intended_check_warned": false,
+      "intended_pattern": "FL005",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL005"
+      ],
+      "error_count": 1,
+      "id": "fl005-04",
+      "intended_check_warned": false,
+      "intended_pattern": "FL005",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL005"
+      ],
+      "error_count": 2,
+      "id": "fl005-05",
+      "intended_check_warned": false,
+      "intended_pattern": "FL005",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL005"
+      ],
+      "error_count": 1,
+      "id": "fl005-06",
+      "intended_check_warned": false,
+      "intended_pattern": "FL005",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL005"
+      ],
+      "error_count": 2,
+      "id": "fl005-07",
+      "intended_check_warned": false,
+      "intended_pattern": "FL005",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL005"
+      ],
+      "error_count": 1,
+      "id": "fl005-08",
+      "intended_check_warned": false,
+      "intended_pattern": "FL005",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL005"
+      ],
+      "error_count": 2,
+      "id": "fl005-09",
+      "intended_check_warned": false,
+      "intended_pattern": "FL005",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL005"
+      ],
+      "error_count": 1,
+      "id": "fl005-10",
+      "intended_check_warned": false,
+      "intended_pattern": "FL005",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL006"
+      ],
+      "error_count": 3,
+      "id": "fl006-01",
+      "intended_check_warned": false,
+      "intended_pattern": "FL006",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL006"
+      ],
+      "error_count": 1,
+      "id": "fl006-02",
+      "intended_check_warned": false,
+      "intended_pattern": "FL006",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL006"
+      ],
+      "error_count": 1,
+      "id": "fl006-03",
+      "intended_check_warned": false,
+      "intended_pattern": "FL006",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL005",
+        "FL006"
+      ],
+      "error_count": 1,
+      "id": "fl006-04",
+      "intended_check_warned": false,
+      "intended_pattern": "FL006",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 1
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL006"
+      ],
+      "error_count": 3,
+      "id": "fl006-05",
+      "intended_check_warned": false,
+      "intended_pattern": "FL006",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL006"
+      ],
+      "error_count": 1,
+      "id": "fl006-06",
+      "intended_check_warned": false,
+      "intended_pattern": "FL006",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL006"
+      ],
+      "error_count": 1,
+      "id": "fl006-07",
+      "intended_check_warned": false,
+      "intended_pattern": "FL006",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL005",
+        "FL006"
+      ],
+      "error_count": 1,
+      "id": "fl006-08",
+      "intended_check_warned": false,
+      "intended_pattern": "FL006",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 1
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL006"
+      ],
+      "error_count": 3,
+      "id": "fl006-09",
+      "intended_check_warned": false,
+      "intended_pattern": "FL006",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [
+        "FL006"
+      ],
+      "error_count": 1,
+      "id": "fl006-10",
+      "intended_check_warned": false,
+      "intended_pattern": "FL006",
+      "passed": false,
+      "verdict": "FAIL",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [],
+      "error_count": 0,
+      "id": "clean-01",
+      "intended_check_warned": false,
+      "intended_pattern": "clean",
+      "passed": true,
+      "verdict": "PASS",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [],
+      "error_count": 0,
+      "id": "clean-02",
+      "intended_check_warned": false,
+      "intended_pattern": "clean",
+      "passed": true,
+      "verdict": "PASS",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [],
+      "error_count": 0,
+      "id": "clean-03",
+      "intended_check_warned": false,
+      "intended_pattern": "clean",
+      "passed": true,
+      "verdict": "PASS",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [],
+      "error_count": 0,
+      "id": "clean-04",
+      "intended_check_warned": false,
+      "intended_pattern": "clean",
+      "passed": true,
+      "verdict": "PASS",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [],
+      "error_count": 0,
+      "id": "clean-05",
+      "intended_check_warned": false,
+      "intended_pattern": "clean",
+      "passed": true,
+      "verdict": "PASS",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [],
+      "error_count": 0,
+      "id": "clean-06",
+      "intended_check_warned": false,
+      "intended_pattern": "clean",
+      "passed": true,
+      "verdict": "PASS",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [],
+      "error_count": 0,
+      "id": "clean-07",
+      "intended_check_warned": false,
+      "intended_pattern": "clean",
+      "passed": true,
+      "verdict": "PASS",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [],
+      "error_count": 0,
+      "id": "clean-08",
+      "intended_check_warned": false,
+      "intended_pattern": "clean",
+      "passed": true,
+      "verdict": "PASS",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [],
+      "error_count": 0,
+      "id": "clean-rag-01",
+      "intended_check_warned": false,
+      "intended_pattern": "clean",
+      "passed": true,
+      "verdict": "PASS",
+      "warning_count": 0
+    },
+    {
+      "caught": true,
+      "checks_fired": [],
+      "error_count": 0,
+      "id": "clean-rag-02",
+      "intended_check_warned": false,
+      "intended_pattern": "clean",
+      "passed": true,
+      "verdict": "PASS",
+      "warning_count": 0
+    }
+  ],
+  "summary": {
+    "clean_cases": 10,
+    "clean_failed": [],
+    "clean_passed": 10,
+    "defective_cases": 60,
+    "defective_caught": 57,
+    "defective_missed": [
+      "fl003-02",
+      "fl003-05",
+      "fl003-08"
+    ],
+    "defective_warned_only": [
+      "fl003-02",
+      "fl003-05",
+      "fl003-08"
+    ],
+    "failloud_version": "0.6.0",
+    "per_check": {
+      "FL001": {
+        "cases": 10,
+        "caught": 10,
+        "total_errors": 10
+      },
+      "FL002": {
+        "cases": 10,
+        "caught": 10,
+        "total_errors": 10
+      },
+      "FL003": {
+        "cases": 10,
+        "caught": 7,
+        "total_errors": 7
+      },
+      "FL004": {
+        "cases": 10,
+        "caught": 10,
+        "total_errors": 10
+      },
+      "FL005": {
+        "cases": 10,
+        "caught": 10,
+        "total_errors": 15
+      },
+      "FL006": {
+        "cases": 10,
+        "caught": 10,
+        "total_errors": 16
+      }
+    },
+    "total_cases": 70,
+    "total_errors": 68,
+    "total_warnings": 5
+  }
+}

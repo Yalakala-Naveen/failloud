@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="color-scheme" content="dark" />
+<meta name="description" content="The Silent Failure Audit: 60 synthetic agent outputs claimed 'done' while shipping a silent failure. FailLoud caught 57 (95.0%); 10 of 10 clean outputs passed with no false alarms. Dataset and script published." />
+<link rel="canonical" href="https://yalakala-naveen.github.io/failloud/silent-failure-audit/" />
+<link rel="icon" href="data:," />
+<title>The Silent Failure Audit — 60 agent outputs that claimed "done" — FailLoud</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+<style>
+:root{--bg:#07090d;--panel:#0c1118;--border:#1d2735;--border-soft:#141c28;--text:#d9e2ee;--muted:#8d9cae;--faint:#5d6d81;--green:#4ade80;--red:#ff6b64;--cyan:#58a6ff;--mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;--sans:"IBM Plex Sans",-apple-system,"Segoe UI",sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:16.5px;line-height:1.65}
+.wrap{max-width:820px;margin:0 auto;padding:28px 20px 64px}
+a{color:var(--cyan)}code{font-family:var(--mono);font-size:.92em;background:#111927;padding:1px 5px;border-radius:4px}
+pre{background:#0a0e14;border:1px solid var(--border-soft);border-radius:8px;padding:14px 16px;overflow-x:auto;font-family:var(--mono);font-size:13.5px;line-height:1.5}
+pre code{background:none;padding:0}
+.crumb{font-family:var(--mono);font-size:12.5px;color:var(--faint);margin-bottom:18px}
+.crumb a{color:var(--muted);text-decoration:none}.crumb a:hover{text-decoration:underline}
+h1{font-size:clamp(1.6rem,4.5vw,2.3rem);line-height:1.2;margin:0 0 14px}
+h2{font-size:1.3rem;margin:34px 0 10px}h3{font-size:1.08rem;margin:24px 0 8px}
+.short{border:1px solid var(--border);border-left:3px solid var(--green);background:var(--panel);border-radius:8px;padding:14px 18px;margin:18px 0}
+.short p{margin:0}.short .k{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--green);text-transform:uppercase;display:block;margin-bottom:6px}
+table{border-collapse:collapse;width:100%;margin:14px 0;font-size:14.5px}
+th,td{border:1px solid var(--border-soft);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--panel);font-weight:600}
+blockquote{border-left:3px solid var(--red);margin:18px 0;padding:4px 16px;color:var(--text);background:#0c1118}
+.muted{color:var(--muted)}footer.site{margin-top:44px;padding-top:18px;border-top:1px solid var(--border-soft);font-size:13.5px;color:var(--muted)}
+nav.guides{margin-top:26px;font-size:14px}nav.guides a{margin-right:12px;white-space:nowrap}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="crumb"><a href="https://yalakala-naveen.github.io/failloud/">FailLoud Playground</a> / Research</p>
+<h1>The Silent Failure Audit: how many "done" agent outputs are lying?</h1>
+<div class="short"><span class="k">Short answer</span><p><strong>FailLoud</strong> is a deterministic verification harness for LLM agent outputs — it catches the silent failures agents ship as "done." In this audit, 60 synthetic agent outputs claimed <code>done</code> while shipping exactly one silent failure each. <strong>FailLoud caught 57 of them (95.0%)</strong>, and <strong>10 of 10 genuinely clean outputs passed with no false alarms</strong>. The dataset, the generator script, and every per-case verdict are published — every number on this page regenerates from one command.</p></div>
+<h2>Method, in one paragraph</h2>
+<p>The audit builds 70 synthetic agent outputs deterministically — no randomness, no hand-picked results. Sixty are defective: 10 per silent-failure pattern (FL001–FL006), each claiming <code>done</code>, each carrying exactly one planted defect, skinned across 10 everyday scenarios — a newsletter send, a ticket export, an invoice batch, a social post, a CRM sync, a report publish, a podcast cut, an inventory update, release notes, meeting-notes distribution. Ten are clean controls that claim <code>done</code> and are, in fact, complete. Every case runs through <code>failloud check_output</code> with the default configuration; a defective case counts as caught when its pattern's check fires at error severity.</p>
+<h2>Results by pattern</h2>
+<table>
+<tr><th>Planted pattern</th><th>Cases</th><th>Caught</th><th>Errors raised</th></tr>
+<tr><td>FL001 <code>placeholder_shipped</code></td><td>10</td><td>10</td><td>10</td></tr>
+<tr><td>FL002 <code>unbacked_claim</code></td><td>10</td><td>10</td><td>10</td></tr>
+<tr><td>FL003 <code>stale_state</code></td><td>10</td><td>7</td><td>7</td></tr>
+<tr><td>FL004 <code>count_mismatch</code></td><td>10</td><td>10</td><td>10</td></tr>
+<tr><td>FL005 <code>missing_components</code></td><td>10</td><td>10</td><td>15</td></tr>
+<tr><td>FL006 <code>unsupported_answer</code></td><td>10</td><td>10</td><td>16</td></tr>
+<tr><td>Clean controls</td><td>10</td><td>10 passed</td><td>0</td></tr>
+</table>
+<p class="muted">Totals across the dataset: 68 errors, 5 warnings, FailLoud 0.6.0.</p>
+<h2>The one gap, reported as found</h2>
+<p>All three FL003 misses are the same variant: state handed over with <strong>no freshness timestamp at all</strong>. FailLoud raises a <em>warning</em> for unmeasurable freshness — not an error — so those three runs still pass overall. The stale-timestamp and version-skew variants fail as errors, 7 of 7. An audit that hides its misses is marketing; this one publishes them, because the warning-versus-error line for untimestamped state is a real design question the data should inform.</p>
+<h2>Reproduce it</h2>
+<pre><code>$ git clone https://github.com/Yalakala-Naveen/failloud
+$ cd failloud/audits/silent-failure-audit
+$ PYTHONPATH=../../src python run_audit.py</code></pre>
+<p>The dataset (<code>cases.json</code>), per-case verdicts (<code>results.json</code>), and the summary (<code>results.md</code>) live in <a href="https://github.com/Yalakala-Naveen/failloud/tree/main/audits/silent-failure-audit">audits/silent-failure-audit</a> in the repository. Quote it as: "57 of 60 (95.0%) silent-failure outputs caught; 10 of 10 clean outputs passed."</p>
+<nav class="guides"><a href="../agent-says-done/">Agent says "done"</a><a href="../verify-agent-tool-calls/">Verify tool calls</a><a href="../what-is-agent-output-verification/">What is agent output verification?</a></nav>
+<footer class="site">
+<p>By Naveen Yalakala, Forward Deployed Engineer. Last updated November 20, 2026. FailLoud is MIT-licensed, zero-dependency in the core, and deterministic: same input, same verdict, every time.</p>
+<p><a href="https://github.com/Yalakala-Naveen/failloud">GitHub</a> · <a href="https://pypi.org/project/failloud/">PyPI</a> · <a href="https://yalakala-naveen.github.io/failloud/">Playground</a> · <a href="https://yalakala-naveen.github.io/failloud/llms.txt">llms.txt</a></p>
+</footer>
+</div>
+</body>
+</html>

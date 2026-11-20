@@ -1,0 +1,4681 @@
+[
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "email_sent",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-901"
+          },
+          "target": "subscriber-list"
+        },
+        {
+          "action": "card_published",
+          "evidence": {
+            "record_id": "rec-902",
+            "url": "https://ops.acmehq.io/community-feed/1"
+          },
+          "target": "community-feed"
+        }
+      ],
+      "counts": {
+        "handled": 9
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "reader01@acme-digest.com",
+          "reader02@acme-digest.com",
+          "reader03@acme-digest.com",
+          "reader04@acme-digest.com",
+          "reader05@acme-digest.com",
+          "reader06@acme-digest.com",
+          "reader07@acme-digest.com",
+          "reader08@acme-digest.com",
+          "reader09@acme-digest.com"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/9",
+        "body": "Lorem ipsum dolor sit amet, {{customer_name}}, your update is coming soon. TODO: replace with the real summary.",
+        "subject": "Weekly digest"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "subscriber-list snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Send the weekly product digest to the subscriber list \u2014 completed for 9 items.",
+      "task": "Send the weekly product digest to the subscriber list"
+    },
+    "id": "fl001-01",
+    "intended_pattern": "FL001"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "tickets_exported",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-1401"
+          },
+          "target": "helpdesk"
+        },
+        {
+          "action": "archive_published",
+          "evidence": {
+            "record_id": "rec-1402",
+            "url": "https://ops.acmehq.io/archive/1"
+          },
+          "target": "archive"
+        }
+      ],
+      "counts": {
+        "handled": 14
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "ticket-0001",
+          "ticket-0002",
+          "ticket-0003",
+          "ticket-0004",
+          "ticket-0005",
+          "ticket-0006",
+          "ticket-0007",
+          "ticket-0008",
+          "ticket-0009",
+          "ticket-0010",
+          "ticket-0011",
+          "ticket-0012",
+          "ticket-0013",
+          "ticket-0014"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/14",
+        "body": "Lorem ipsum dolor sit amet, {{customer_name}}, your update is coming soon. TODO: replace with the real summary.",
+        "subject": "Resolved tickets export"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "helpdesk snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Export the resolved support tickets to the helpdesk archive \u2014 completed for 14 items.",
+      "task": "Export the resolved support tickets to the helpdesk archive"
+    },
+    "id": "fl001-02",
+    "intended_pattern": "FL001"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "invoices_issued",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-701"
+          },
+          "target": "billing"
+        },
+        {
+          "action": "ledger_posted",
+          "evidence": {
+            "record_id": "rec-702",
+            "url": "https://ops.acmehq.io/ledger/1"
+          },
+          "target": "ledger"
+        }
+      ],
+      "counts": {
+        "handled": 7
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "INV-2026-001",
+          "INV-2026-002",
+          "INV-2026-003",
+          "INV-2026-004",
+          "INV-2026-005",
+          "INV-2026-006",
+          "INV-2026-007"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/7",
+        "body": "Lorem ipsum dolor sit amet, {{customer_name}}, your update is coming soon. TODO: replace with the real summary.",
+        "subject": "November invoice batch"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "billing snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Run the monthly invoice batch for active accounts \u2014 completed for 7 items.",
+      "task": "Run the monthly invoice batch for active accounts"
+    },
+    "id": "fl001-03",
+    "intended_pattern": "FL001"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "post_published",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-501"
+          },
+          "target": "social-feed"
+        },
+        {
+          "action": "thread_scheduled",
+          "evidence": {
+            "record_id": "rec-502",
+            "url": "https://ops.acmehq.io/scheduler/1"
+          },
+          "target": "scheduler"
+        }
+      ],
+      "counts": {
+        "handled": 5
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "post-01",
+          "post-02",
+          "post-03",
+          "post-04",
+          "post-05"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/5",
+        "body": "Lorem ipsum dolor sit amet, {{customer_name}}, your update is coming soon. TODO: replace with the real summary.",
+        "subject": "Launch announcement"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "social-feed snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Publish the launch announcement to all social channels \u2014 completed for 5 items.",
+      "task": "Publish the launch announcement to all social channels"
+    },
+    "id": "fl001-04",
+    "intended_pattern": "FL001"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "contacts_synced",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-2101"
+          },
+          "target": "crm"
+        },
+        {
+          "action": "sync_report_filed",
+          "evidence": {
+            "record_id": "rec-2102",
+            "url": "https://ops.acmehq.io/ops-log/1"
+          },
+          "target": "ops-log"
+        }
+      ],
+      "counts": {
+        "handled": 21
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "contact-0001",
+          "contact-0002",
+          "contact-0003",
+          "contact-0004",
+          "contact-0005",
+          "contact-0006",
+          "contact-0007",
+          "contact-0008",
+          "contact-0009",
+          "contact-0010",
+          "contact-0011",
+          "contact-0012",
+          "contact-0013",
+          "contact-0014",
+          "contact-0015",
+          "contact-0016",
+          "contact-0017",
+          "contact-0018",
+          "contact-0019",
+          "contact-0020",
+          "contact-0021"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/21",
+        "body": "Lorem ipsum dolor sit amet, {{customer_name}}, your update is coming soon. TODO: replace with the real summary.",
+        "subject": "CRM sync"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "crm snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Sync the cleaned contact list into the CRM \u2014 completed for 21 items.",
+      "task": "Sync the cleaned contact list into the CRM"
+    },
+    "id": "fl001-05",
+    "intended_pattern": "FL001"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "report_published",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-601"
+          },
+          "target": "team-wiki"
+        },
+        {
+          "action": "charts_embedded",
+          "evidence": {
+            "record_id": "rec-602",
+            "url": "https://ops.acmehq.io/report/1"
+          },
+          "target": "report"
+        }
+      ],
+      "counts": {
+        "handled": 6
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "chart-01",
+          "chart-02",
+          "chart-03",
+          "chart-04",
+          "chart-05",
+          "chart-06"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/6",
+        "body": "Lorem ipsum dolor sit amet, {{customer_name}}, your update is coming soon. TODO: replace with the real summary.",
+        "subject": "Quarterly metrics report"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "team-wiki snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Publish the quarterly metrics report to the team wiki \u2014 completed for 6 items.",
+      "task": "Publish the quarterly metrics report to the team wiki"
+    },
+    "id": "fl001-06",
+    "intended_pattern": "FL001"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "segments_cut",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-301"
+          },
+          "target": "editor"
+        },
+        {
+          "action": "episode_uploaded",
+          "evidence": {
+            "record_id": "rec-302",
+            "url": "https://ops.acmehq.io/podcast-host/1"
+          },
+          "target": "podcast-host"
+        }
+      ],
+      "counts": {
+        "handled": 3
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "seg-01",
+          "seg-02",
+          "seg-03"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/3",
+        "body": "Lorem ipsum dolor sit amet, {{customer_name}}, your update is coming soon. TODO: replace with the real summary.",
+        "subject": "Interview episode cut"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "editor snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Cut the interview recording into publishable segments \u2014 completed for 3 items.",
+      "task": "Cut the interview recording into publishable segments"
+    },
+    "id": "fl001-07",
+    "intended_pattern": "FL001"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "stock_updated",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-1801"
+          },
+          "target": "catalogue"
+        },
+        {
+          "action": "adjustment_log_written",
+          "evidence": {
+            "record_id": "rec-1802",
+            "url": "https://ops.acmehq.io/warehouse-log/1"
+          },
+          "target": "warehouse-log"
+        }
+      ],
+      "counts": {
+        "handled": 18
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "SKU-00001",
+          "SKU-00002",
+          "SKU-00003",
+          "SKU-00004",
+          "SKU-00005",
+          "SKU-00006",
+          "SKU-00007",
+          "SKU-00008",
+          "SKU-00009",
+          "SKU-00010",
+          "SKU-00011",
+          "SKU-00012",
+          "SKU-00013",
+          "SKU-00014",
+          "SKU-00015",
+          "SKU-00016",
+          "SKU-00017",
+          "SKU-00018"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/18",
+        "body": "Lorem ipsum dolor sit amet, {{customer_name}}, your update is coming soon. TODO: replace with the real summary.",
+        "subject": "Inventory adjustment"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "catalogue snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Apply the overnight inventory adjustments to the catalogue \u2014 completed for 18 items.",
+      "task": "Apply the overnight inventory adjustments to the catalogue"
+    },
+    "id": "fl001-08",
+    "intended_pattern": "FL001"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "notes_published",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-801"
+          },
+          "target": "docs-site"
+        },
+        {
+          "action": "changelog_updated",
+          "evidence": {
+            "record_id": "rec-802",
+            "url": "https://ops.acmehq.io/changelog/1"
+          },
+          "target": "changelog"
+        }
+      ],
+      "counts": {
+        "handled": 8
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "note-01",
+          "note-02",
+          "note-03",
+          "note-04",
+          "note-05",
+          "note-06",
+          "note-07",
+          "note-08"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/8",
+        "body": "Lorem ipsum dolor sit amet, {{customer_name}}, your update is coming soon. TODO: replace with the real summary.",
+        "subject": "Release notes"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "docs-site snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Publish the release notes for the new version \u2014 completed for 8 items.",
+      "task": "Publish the release notes for the new version"
+    },
+    "id": "fl001-09",
+    "intended_pattern": "FL001"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "notes_sent",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-1101"
+          },
+          "target": "attendees"
+        },
+        {
+          "action": "actions_filed",
+          "evidence": {
+            "record_id": "rec-1102",
+            "url": "https://ops.acmehq.io/tracker/1"
+          },
+          "target": "tracker"
+        }
+      ],
+      "counts": {
+        "handled": 11
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "attendee-01",
+          "attendee-02",
+          "attendee-03",
+          "attendee-04",
+          "attendee-05",
+          "attendee-06",
+          "attendee-07",
+          "attendee-08",
+          "attendee-09",
+          "attendee-10",
+          "attendee-11"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/11",
+        "body": "Lorem ipsum dolor sit amet, {{customer_name}}, your update is coming soon. TODO: replace with the real summary.",
+        "subject": "Meeting notes"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "attendees snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Distribute the meeting notes to all attendees \u2014 completed for 11 items.",
+      "task": "Distribute the meeting notes to all attendees"
+    },
+    "id": "fl001-10",
+    "intended_pattern": "FL001"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "email_sent",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-901"
+          },
+          "target": "subscriber-list"
+        },
+        {
+          "action": "card_published",
+          "target": "community-feed"
+        }
+      ],
+      "counts": {
+        "handled": 9
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "reader01@acme-digest.com",
+          "reader02@acme-digest.com",
+          "reader03@acme-digest.com",
+          "reader04@acme-digest.com",
+          "reader05@acme-digest.com",
+          "reader06@acme-digest.com",
+          "reader07@acme-digest.com",
+          "reader08@acme-digest.com",
+          "reader09@acme-digest.com"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/9",
+        "body": "This week: the verification checklist, two reader questions, and the December roadmap.",
+        "subject": "Weekly digest"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "subscriber-list snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Send the weekly product digest to the subscriber list \u2014 completed for 9 items.",
+      "task": "Send the weekly product digest to the subscriber list"
+    },
+    "id": "fl002-01",
+    "intended_pattern": "FL002"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "tickets_exported",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-1401"
+          },
+          "target": "helpdesk"
+        },
+        {
+          "action": "archive_published",
+          "target": "archive"
+        }
+      ],
+      "counts": {
+        "handled": 14
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "ticket-0001",
+          "ticket-0002",
+          "ticket-0003",
+          "ticket-0004",
+          "ticket-0005",
+          "ticket-0006",
+          "ticket-0007",
+          "ticket-0008",
+          "ticket-0009",
+          "ticket-0010",
+          "ticket-0011",
+          "ticket-0012",
+          "ticket-0013",
+          "ticket-0014"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/14",
+        "body": "Fourteen resolved tickets exported with full transcripts and resolution notes attached.",
+        "subject": "Resolved tickets export"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "helpdesk snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Export the resolved support tickets to the helpdesk archive \u2014 completed for 14 items.",
+      "task": "Export the resolved support tickets to the helpdesk archive"
+    },
+    "id": "fl002-02",
+    "intended_pattern": "FL002"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "invoices_issued",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-701"
+          },
+          "target": "billing"
+        },
+        {
+          "action": "ledger_posted",
+          "target": "ledger"
+        }
+      ],
+      "counts": {
+        "handled": 7
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "INV-2026-001",
+          "INV-2026-002",
+          "INV-2026-003",
+          "INV-2026-004",
+          "INV-2026-005",
+          "INV-2026-006",
+          "INV-2026-007"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/7",
+        "body": "Seven invoices issued; totals reconciled against the ledger before posting.",
+        "subject": "November invoice batch"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "billing snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Run the monthly invoice batch for active accounts \u2014 completed for 7 items.",
+      "task": "Run the monthly invoice batch for active accounts"
+    },
+    "id": "fl002-03",
+    "intended_pattern": "FL002"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "post_published",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-501"
+          },
+          "target": "social-feed"
+        },
+        {
+          "action": "thread_scheduled",
+          "target": "scheduler"
+        }
+      ],
+      "counts": {
+        "handled": 5
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "post-01",
+          "post-02",
+          "post-03",
+          "post-04",
+          "post-05"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/5",
+        "body": "The launch post is live with the demo link and the release notes thread scheduled.",
+        "subject": "Launch announcement"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "social-feed snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Publish the launch announcement to all social channels \u2014 completed for 5 items.",
+      "task": "Publish the launch announcement to all social channels"
+    },
+    "id": "fl002-04",
+    "intended_pattern": "FL002"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "contacts_synced",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-2101"
+          },
+          "target": "crm"
+        },
+        {
+          "action": "sync_report_filed",
+          "target": "ops-log"
+        }
+      ],
+      "counts": {
+        "handled": 21
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "contact-0001",
+          "contact-0002",
+          "contact-0003",
+          "contact-0004",
+          "contact-0005",
+          "contact-0006",
+          "contact-0007",
+          "contact-0008",
+          "contact-0009",
+          "contact-0010",
+          "contact-0011",
+          "contact-0012",
+          "contact-0013",
+          "contact-0014",
+          "contact-0015",
+          "contact-0016",
+          "contact-0017",
+          "contact-0018",
+          "contact-0019",
+          "contact-0020",
+          "contact-0021"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/21",
+        "body": "Twenty-one contacts deduplicated, merged, and synced; the sync report is filed.",
+        "subject": "CRM sync"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "crm snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Sync the cleaned contact list into the CRM \u2014 completed for 21 items.",
+      "task": "Sync the cleaned contact list into the CRM"
+    },
+    "id": "fl002-05",
+    "intended_pattern": "FL002"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "report_published",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-601"
+          },
+          "target": "team-wiki"
+        },
+        {
+          "action": "charts_embedded",
+          "target": "report"
+        }
+      ],
+      "counts": {
+        "handled": 6
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "chart-01",
+          "chart-02",
+          "chart-03",
+          "chart-04",
+          "chart-05",
+          "chart-06"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/6",
+        "body": "The report is published with all six charts embedded and the methodology appendix attached.",
+        "subject": "Quarterly metrics report"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "team-wiki snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Publish the quarterly metrics report to the team wiki \u2014 completed for 6 items.",
+      "task": "Publish the quarterly metrics report to the team wiki"
+    },
+    "id": "fl002-06",
+    "intended_pattern": "FL002"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "segments_cut",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-301"
+          },
+          "target": "editor"
+        },
+        {
+          "action": "episode_uploaded",
+          "target": "podcast-host"
+        }
+      ],
+      "counts": {
+        "handled": 3
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "seg-01",
+          "seg-02",
+          "seg-03"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/3",
+        "body": "Three segments cut clean, loudness matched, and the episode uploaded for review.",
+        "subject": "Interview episode cut"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "editor snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Cut the interview recording into publishable segments \u2014 completed for 3 items.",
+      "task": "Cut the interview recording into publishable segments"
+    },
+    "id": "fl002-07",
+    "intended_pattern": "FL002"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "stock_updated",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-1801"
+          },
+          "target": "catalogue"
+        },
+        {
+          "action": "adjustment_log_written",
+          "target": "warehouse-log"
+        }
+      ],
+      "counts": {
+        "handled": 18
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "SKU-00001",
+          "SKU-00002",
+          "SKU-00003",
+          "SKU-00004",
+          "SKU-00005",
+          "SKU-00006",
+          "SKU-00007",
+          "SKU-00008",
+          "SKU-00009",
+          "SKU-00010",
+          "SKU-00011",
+          "SKU-00012",
+          "SKU-00013",
+          "SKU-00014",
+          "SKU-00015",
+          "SKU-00016",
+          "SKU-00017",
+          "SKU-00018"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/18",
+        "body": "Eighteen SKUs adjusted to the overnight counts; the adjustment log is written.",
+        "subject": "Inventory adjustment"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "catalogue snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Apply the overnight inventory adjustments to the catalogue \u2014 completed for 18 items.",
+      "task": "Apply the overnight inventory adjustments to the catalogue"
+    },
+    "id": "fl002-08",
+    "intended_pattern": "FL002"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "notes_published",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-801"
+          },
+          "target": "docs-site"
+        },
+        {
+          "action": "changelog_updated",
+          "target": "changelog"
+        }
+      ],
+      "counts": {
+        "handled": 8
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "note-01",
+          "note-02",
+          "note-03",
+          "note-04",
+          "note-05",
+          "note-06",
+          "note-07",
+          "note-08"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/8",
+        "body": "Release notes published with the migration guide linked and the changelog updated.",
+        "subject": "Release notes"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "docs-site snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Publish the release notes for the new version \u2014 completed for 8 items.",
+      "task": "Publish the release notes for the new version"
+    },
+    "id": "fl002-09",
+    "intended_pattern": "FL002"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "notes_sent",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-1101"
+          },
+          "target": "attendees"
+        },
+        {
+          "action": "actions_filed",
+          "target": "tracker"
+        }
+      ],
+      "counts": {
+        "handled": 11
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "attendee-01",
+          "attendee-02",
+          "attendee-03",
+          "attendee-04",
+          "attendee-05",
+          "attendee-06",
+          "attendee-07",
+          "attendee-08",
+          "attendee-09",
+          "attendee-10",
+          "attendee-11"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/11",
+        "body": "Notes sent to all eleven attendees with decisions and action items filed in the tracker.",
+        "subject": "Meeting notes"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "attendees snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Distribute the meeting notes to all attendees \u2014 completed for 11 items.",
+      "task": "Distribute the meeting notes to all attendees"
+    },
+    "id": "fl002-10",
+    "intended_pattern": "FL002"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "email_sent",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-901"
+          },
+          "target": "subscriber-list"
+        },
+        {
+          "action": "card_published",
+          "evidence": {
+            "record_id": "rec-902",
+            "url": "https://ops.acmehq.io/community-feed/1"
+          },
+          "target": "community-feed"
+        }
+      ],
+      "counts": {
+        "handled": 9
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "reader01@acme-digest.com",
+          "reader02@acme-digest.com",
+          "reader03@acme-digest.com",
+          "reader04@acme-digest.com",
+          "reader05@acme-digest.com",
+          "reader06@acme-digest.com",
+          "reader07@acme-digest.com",
+          "reader08@acme-digest.com",
+          "reader09@acme-digest.com"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/9",
+        "body": "This week: the verification checklist, two reader questions, and the December roadmap.",
+        "subject": "Weekly digest"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "subscriber-list snapshot used for the run",
+        "context_updated_at": "2026-11-15T08:53:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Send the weekly product digest to the subscriber list \u2014 completed for 9 items.",
+      "task": "Send the weekly product digest to the subscriber list"
+    },
+    "id": "fl003-01",
+    "intended_pattern": "FL003"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "tickets_exported",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-1401"
+          },
+          "target": "helpdesk"
+        },
+        {
+          "action": "archive_published",
+          "evidence": {
+            "record_id": "rec-1402",
+            "url": "https://ops.acmehq.io/archive/1"
+          },
+          "target": "archive"
+        }
+      ],
+      "counts": {
+        "handled": 14
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "ticket-0001",
+          "ticket-0002",
+          "ticket-0003",
+          "ticket-0004",
+          "ticket-0005",
+          "ticket-0006",
+          "ticket-0007",
+          "ticket-0008",
+          "ticket-0009",
+          "ticket-0010",
+          "ticket-0011",
+          "ticket-0012",
+          "ticket-0013",
+          "ticket-0014"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/14",
+        "body": "Fourteen resolved tickets exported with full transcripts and resolution notes attached.",
+        "subject": "Resolved tickets export"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "helpdesk snapshot used for the run",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Export the resolved support tickets to the helpdesk archive \u2014 completed for 14 items.",
+      "task": "Export the resolved support tickets to the helpdesk archive"
+    },
+    "id": "fl003-02",
+    "intended_pattern": "FL003"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "invoices_issued",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-701"
+          },
+          "target": "billing"
+        },
+        {
+          "action": "ledger_posted",
+          "evidence": {
+            "record_id": "rec-702",
+            "url": "https://ops.acmehq.io/ledger/1"
+          },
+          "target": "ledger"
+        }
+      ],
+      "counts": {
+        "handled": 7
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "INV-2026-001",
+          "INV-2026-002",
+          "INV-2026-003",
+          "INV-2026-004",
+          "INV-2026-005",
+          "INV-2026-006",
+          "INV-2026-007"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/7",
+        "body": "Seven invoices issued; totals reconciled against the ledger before posting.",
+        "subject": "November invoice batch"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "billing snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 7
+      },
+      "status": "done",
+      "summary": "Run the monthly invoice batch for active accounts \u2014 completed for 7 items.",
+      "task": "Run the monthly invoice batch for active accounts"
+    },
+    "id": "fl003-03",
+    "intended_pattern": "FL003"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "post_published",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-501"
+          },
+          "target": "social-feed"
+        },
+        {
+          "action": "thread_scheduled",
+          "evidence": {
+            "record_id": "rec-502",
+            "url": "https://ops.acmehq.io/scheduler/1"
+          },
+          "target": "scheduler"
+        }
+      ],
+      "counts": {
+        "handled": 5
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "post-01",
+          "post-02",
+          "post-03",
+          "post-04",
+          "post-05"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/5",
+        "body": "The launch post is live with the demo link and the release notes thread scheduled.",
+        "subject": "Launch announcement"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "social-feed snapshot used for the run",
+        "context_updated_at": "2026-11-15T08:53:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Publish the launch announcement to all social channels \u2014 completed for 5 items.",
+      "task": "Publish the launch announcement to all social channels"
+    },
+    "id": "fl003-04",
+    "intended_pattern": "FL003"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "contacts_synced",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-2101"
+          },
+          "target": "crm"
+        },
+        {
+          "action": "sync_report_filed",
+          "evidence": {
+            "record_id": "rec-2102",
+            "url": "https://ops.acmehq.io/ops-log/1"
+          },
+          "target": "ops-log"
+        }
+      ],
+      "counts": {
+        "handled": 21
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "contact-0001",
+          "contact-0002",
+          "contact-0003",
+          "contact-0004",
+          "contact-0005",
+          "contact-0006",
+          "contact-0007",
+          "contact-0008",
+          "contact-0009",
+          "contact-0010",
+          "contact-0011",
+          "contact-0012",
+          "contact-0013",
+          "contact-0014",
+          "contact-0015",
+          "contact-0016",
+          "contact-0017",
+          "contact-0018",
+          "contact-0019",
+          "contact-0020",
+          "contact-0021"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/21",
+        "body": "Twenty-one contacts deduplicated, merged, and synced; the sync report is filed.",
+        "subject": "CRM sync"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "crm snapshot used for the run",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Sync the cleaned contact list into the CRM \u2014 completed for 21 items.",
+      "task": "Sync the cleaned contact list into the CRM"
+    },
+    "id": "fl003-05",
+    "intended_pattern": "FL003"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "report_published",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-601"
+          },
+          "target": "team-wiki"
+        },
+        {
+          "action": "charts_embedded",
+          "evidence": {
+            "record_id": "rec-602",
+            "url": "https://ops.acmehq.io/report/1"
+          },
+          "target": "report"
+        }
+      ],
+      "counts": {
+        "handled": 6
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "chart-01",
+          "chart-02",
+          "chart-03",
+          "chart-04",
+          "chart-05",
+          "chart-06"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/6",
+        "body": "The report is published with all six charts embedded and the methodology appendix attached.",
+        "subject": "Quarterly metrics report"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "team-wiki snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 7
+      },
+      "status": "done",
+      "summary": "Publish the quarterly metrics report to the team wiki \u2014 completed for 6 items.",
+      "task": "Publish the quarterly metrics report to the team wiki"
+    },
+    "id": "fl003-06",
+    "intended_pattern": "FL003"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "segments_cut",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-301"
+          },
+          "target": "editor"
+        },
+        {
+          "action": "episode_uploaded",
+          "evidence": {
+            "record_id": "rec-302",
+            "url": "https://ops.acmehq.io/podcast-host/1"
+          },
+          "target": "podcast-host"
+        }
+      ],
+      "counts": {
+        "handled": 3
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "seg-01",
+          "seg-02",
+          "seg-03"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/3",
+        "body": "Three segments cut clean, loudness matched, and the episode uploaded for review.",
+        "subject": "Interview episode cut"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "editor snapshot used for the run",
+        "context_updated_at": "2026-11-15T08:53:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Cut the interview recording into publishable segments \u2014 completed for 3 items.",
+      "task": "Cut the interview recording into publishable segments"
+    },
+    "id": "fl003-07",
+    "intended_pattern": "FL003"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "stock_updated",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-1801"
+          },
+          "target": "catalogue"
+        },
+        {
+          "action": "adjustment_log_written",
+          "evidence": {
+            "record_id": "rec-1802",
+            "url": "https://ops.acmehq.io/warehouse-log/1"
+          },
+          "target": "warehouse-log"
+        }
+      ],
+      "counts": {
+        "handled": 18
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "SKU-00001",
+          "SKU-00002",
+          "SKU-00003",
+          "SKU-00004",
+          "SKU-00005",
+          "SKU-00006",
+          "SKU-00007",
+          "SKU-00008",
+          "SKU-00009",
+          "SKU-00010",
+          "SKU-00011",
+          "SKU-00012",
+          "SKU-00013",
+          "SKU-00014",
+          "SKU-00015",
+          "SKU-00016",
+          "SKU-00017",
+          "SKU-00018"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/18",
+        "body": "Eighteen SKUs adjusted to the overnight counts; the adjustment log is written.",
+        "subject": "Inventory adjustment"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "catalogue snapshot used for the run",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Apply the overnight inventory adjustments to the catalogue \u2014 completed for 18 items.",
+      "task": "Apply the overnight inventory adjustments to the catalogue"
+    },
+    "id": "fl003-08",
+    "intended_pattern": "FL003"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "notes_published",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-801"
+          },
+          "target": "docs-site"
+        },
+        {
+          "action": "changelog_updated",
+          "evidence": {
+            "record_id": "rec-802",
+            "url": "https://ops.acmehq.io/changelog/1"
+          },
+          "target": "changelog"
+        }
+      ],
+      "counts": {
+        "handled": 8
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "note-01",
+          "note-02",
+          "note-03",
+          "note-04",
+          "note-05",
+          "note-06",
+          "note-07",
+          "note-08"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/8",
+        "body": "Release notes published with the migration guide linked and the changelog updated.",
+        "subject": "Release notes"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "docs-site snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 7
+      },
+      "status": "done",
+      "summary": "Publish the release notes for the new version \u2014 completed for 8 items.",
+      "task": "Publish the release notes for the new version"
+    },
+    "id": "fl003-09",
+    "intended_pattern": "FL003"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "notes_sent",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-1101"
+          },
+          "target": "attendees"
+        },
+        {
+          "action": "actions_filed",
+          "evidence": {
+            "record_id": "rec-1102",
+            "url": "https://ops.acmehq.io/tracker/1"
+          },
+          "target": "tracker"
+        }
+      ],
+      "counts": {
+        "handled": 11
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "attendee-01",
+          "attendee-02",
+          "attendee-03",
+          "attendee-04",
+          "attendee-05",
+          "attendee-06",
+          "attendee-07",
+          "attendee-08",
+          "attendee-09",
+          "attendee-10",
+          "attendee-11"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/11",
+        "body": "Notes sent to all eleven attendees with decisions and action items filed in the tracker.",
+        "subject": "Meeting notes"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "attendees snapshot used for the run",
+        "context_updated_at": "2026-11-15T08:53:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Distribute the meeting notes to all attendees \u2014 completed for 11 items.",
+      "task": "Distribute the meeting notes to all attendees"
+    },
+    "id": "fl003-10",
+    "intended_pattern": "FL003"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "email_sent",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-901"
+          },
+          "target": "subscriber-list"
+        },
+        {
+          "action": "card_published",
+          "evidence": {
+            "record_id": "rec-902",
+            "url": "https://ops.acmehq.io/community-feed/1"
+          },
+          "target": "community-feed"
+        }
+      ],
+      "counts": {
+        "handled": 11
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "reader01@acme-digest.com",
+          "reader02@acme-digest.com",
+          "reader03@acme-digest.com",
+          "reader04@acme-digest.com",
+          "reader05@acme-digest.com",
+          "reader06@acme-digest.com",
+          "reader07@acme-digest.com",
+          "reader08@acme-digest.com",
+          "reader09@acme-digest.com"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/9",
+        "body": "This week: the verification checklist, two reader questions, and the December roadmap.",
+        "subject": "Weekly digest"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "subscriber-list snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Send the weekly product digest to the subscriber list \u2014 completed for 9 items.",
+      "task": "Send the weekly product digest to the subscriber list"
+    },
+    "id": "fl004-01",
+    "intended_pattern": "FL004"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "tickets_exported",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-1401"
+          },
+          "target": "helpdesk"
+        },
+        {
+          "action": "archive_published",
+          "evidence": {
+            "record_id": "rec-1402",
+            "url": "https://ops.acmehq.io/archive/1"
+          },
+          "target": "archive"
+        }
+      ],
+      "counts": {
+        "handled": 17
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "ticket-0001",
+          "ticket-0002",
+          "ticket-0003",
+          "ticket-0004",
+          "ticket-0005",
+          "ticket-0006",
+          "ticket-0007",
+          "ticket-0008",
+          "ticket-0009",
+          "ticket-0010",
+          "ticket-0011",
+          "ticket-0012",
+          "ticket-0013",
+          "ticket-0014"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/14",
+        "body": "Fourteen resolved tickets exported with full transcripts and resolution notes attached.",
+        "subject": "Resolved tickets export"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "helpdesk snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Export the resolved support tickets to the helpdesk archive \u2014 completed for 14 items.",
+      "task": "Export the resolved support tickets to the helpdesk archive"
+    },
+    "id": "fl004-02",
+    "intended_pattern": "FL004"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "invoices_issued",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-701"
+          },
+          "target": "billing"
+        },
+        {
+          "action": "ledger_posted",
+          "evidence": {
+            "record_id": "rec-702",
+            "url": "https://ops.acmehq.io/ledger/1"
+          },
+          "target": "ledger"
+        }
+      ],
+      "counts": {
+        "handled": 11
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "INV-2026-001",
+          "INV-2026-002",
+          "INV-2026-003",
+          "INV-2026-004",
+          "INV-2026-005",
+          "INV-2026-006",
+          "INV-2026-007"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/7",
+        "body": "Seven invoices issued; totals reconciled against the ledger before posting.",
+        "subject": "November invoice batch"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "billing snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Run the monthly invoice batch for active accounts \u2014 completed for 7 items.",
+      "task": "Run the monthly invoice batch for active accounts"
+    },
+    "id": "fl004-03",
+    "intended_pattern": "FL004"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "post_published",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-501"
+          },
+          "target": "social-feed"
+        },
+        {
+          "action": "thread_scheduled",
+          "evidence": {
+            "record_id": "rec-502",
+            "url": "https://ops.acmehq.io/scheduler/1"
+          },
+          "target": "scheduler"
+        }
+      ],
+      "counts": {
+        "handled": 10
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "post-01",
+          "post-02",
+          "post-03",
+          "post-04",
+          "post-05"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/5",
+        "body": "The launch post is live with the demo link and the release notes thread scheduled.",
+        "subject": "Launch announcement"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "social-feed snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Publish the launch announcement to all social channels \u2014 completed for 5 items.",
+      "task": "Publish the launch announcement to all social channels"
+    },
+    "id": "fl004-04",
+    "intended_pattern": "FL004"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "contacts_synced",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-2101"
+          },
+          "target": "crm"
+        },
+        {
+          "action": "sync_report_filed",
+          "evidence": {
+            "record_id": "rec-2102",
+            "url": "https://ops.acmehq.io/ops-log/1"
+          },
+          "target": "ops-log"
+        }
+      ],
+      "counts": {
+        "handled": 23
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "contact-0001",
+          "contact-0002",
+          "contact-0003",
+          "contact-0004",
+          "contact-0005",
+          "contact-0006",
+          "contact-0007",
+          "contact-0008",
+          "contact-0009",
+          "contact-0010",
+          "contact-0011",
+          "contact-0012",
+          "contact-0013",
+          "contact-0014",
+          "contact-0015",
+          "contact-0016",
+          "contact-0017",
+          "contact-0018",
+          "contact-0019",
+          "contact-0020",
+          "contact-0021"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/21",
+        "body": "Twenty-one contacts deduplicated, merged, and synced; the sync report is filed.",
+        "subject": "CRM sync"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "crm snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Sync the cleaned contact list into the CRM \u2014 completed for 21 items.",
+      "task": "Sync the cleaned contact list into the CRM"
+    },
+    "id": "fl004-05",
+    "intended_pattern": "FL004"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "report_published",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-601"
+          },
+          "target": "team-wiki"
+        },
+        {
+          "action": "charts_embedded",
+          "evidence": {
+            "record_id": "rec-602",
+            "url": "https://ops.acmehq.io/report/1"
+          },
+          "target": "report"
+        }
+      ],
+      "counts": {
+        "handled": 9
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "chart-01",
+          "chart-02",
+          "chart-03",
+          "chart-04",
+          "chart-05",
+          "chart-06"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/6",
+        "body": "The report is published with all six charts embedded and the methodology appendix attached.",
+        "subject": "Quarterly metrics report"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "team-wiki snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Publish the quarterly metrics report to the team wiki \u2014 completed for 6 items.",
+      "task": "Publish the quarterly metrics report to the team wiki"
+    },
+    "id": "fl004-06",
+    "intended_pattern": "FL004"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "segments_cut",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-301"
+          },
+          "target": "editor"
+        },
+        {
+          "action": "episode_uploaded",
+          "evidence": {
+            "record_id": "rec-302",
+            "url": "https://ops.acmehq.io/podcast-host/1"
+          },
+          "target": "podcast-host"
+        }
+      ],
+      "counts": {
+        "handled": 7
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "seg-01",
+          "seg-02",
+          "seg-03"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/3",
+        "body": "Three segments cut clean, loudness matched, and the episode uploaded for review.",
+        "subject": "Interview episode cut"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "editor snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Cut the interview recording into publishable segments \u2014 completed for 3 items.",
+      "task": "Cut the interview recording into publishable segments"
+    },
+    "id": "fl004-07",
+    "intended_pattern": "FL004"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "stock_updated",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-1801"
+          },
+          "target": "catalogue"
+        },
+        {
+          "action": "adjustment_log_written",
+          "evidence": {
+            "record_id": "rec-1802",
+            "url": "https://ops.acmehq.io/warehouse-log/1"
+          },
+          "target": "warehouse-log"
+        }
+      ],
+      "counts": {
+        "handled": 23
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "SKU-00001",
+          "SKU-00002",
+          "SKU-00003",
+          "SKU-00004",
+          "SKU-00005",
+          "SKU-00006",
+          "SKU-00007",
+          "SKU-00008",
+          "SKU-00009",
+          "SKU-00010",
+          "SKU-00011",
+          "SKU-00012",
+          "SKU-00013",
+          "SKU-00014",
+          "SKU-00015",
+          "SKU-00016",
+          "SKU-00017",
+          "SKU-00018"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/18",
+        "body": "Eighteen SKUs adjusted to the overnight counts; the adjustment log is written.",
+        "subject": "Inventory adjustment"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "catalogue snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Apply the overnight inventory adjustments to the catalogue \u2014 completed for 18 items.",
+      "task": "Apply the overnight inventory adjustments to the catalogue"
+    },
+    "id": "fl004-08",
+    "intended_pattern": "FL004"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "notes_published",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-801"
+          },
+          "target": "docs-site"
+        },
+        {
+          "action": "changelog_updated",
+          "evidence": {
+            "record_id": "rec-802",
+            "url": "https://ops.acmehq.io/changelog/1"
+          },
+          "target": "changelog"
+        }
+      ],
+      "counts": {
+        "handled": 10
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "note-01",
+          "note-02",
+          "note-03",
+          "note-04",
+          "note-05",
+          "note-06",
+          "note-07",
+          "note-08"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/8",
+        "body": "Release notes published with the migration guide linked and the changelog updated.",
+        "subject": "Release notes"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "docs-site snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Publish the release notes for the new version \u2014 completed for 8 items.",
+      "task": "Publish the release notes for the new version"
+    },
+    "id": "fl004-09",
+    "intended_pattern": "FL004"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "notes_sent",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-1101"
+          },
+          "target": "attendees"
+        },
+        {
+          "action": "actions_filed",
+          "evidence": {
+            "record_id": "rec-1102",
+            "url": "https://ops.acmehq.io/tracker/1"
+          },
+          "target": "tracker"
+        }
+      ],
+      "counts": {
+        "handled": 14
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "attendee-01",
+          "attendee-02",
+          "attendee-03",
+          "attendee-04",
+          "attendee-05",
+          "attendee-06",
+          "attendee-07",
+          "attendee-08",
+          "attendee-09",
+          "attendee-10",
+          "attendee-11"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/11",
+        "body": "Notes sent to all eleven attendees with decisions and action items filed in the tracker.",
+        "subject": "Meeting notes"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "attendees snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Distribute the meeting notes to all attendees \u2014 completed for 11 items.",
+      "task": "Distribute the meeting notes to all attendees"
+    },
+    "id": "fl004-10",
+    "intended_pattern": "FL004"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "email_sent",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-901"
+          },
+          "target": "subscriber-list"
+        },
+        {
+          "action": "card_published",
+          "evidence": {
+            "record_id": "rec-902",
+            "url": "https://ops.acmehq.io/community-feed/1"
+          },
+          "target": "community-feed"
+        }
+      ],
+      "counts": {
+        "handled": 9
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "reader01@acme-digest.com",
+          "reader02@acme-digest.com",
+          "reader03@acme-digest.com",
+          "reader04@acme-digest.com",
+          "reader05@acme-digest.com",
+          "reader06@acme-digest.com",
+          "reader07@acme-digest.com",
+          "reader08@acme-digest.com",
+          "reader09@acme-digest.com"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/9",
+        "body": "This week: the verification checklist, two reader questions, and the December roadmap.",
+        "subject": "Weekly digest"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 4.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.5
+        }
+      ],
+      "state": {
+        "context": "subscriber-list snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Send the weekly product digest to the subscriber list \u2014 completed for 9 items.",
+      "task": "Send the weekly product digest to the subscriber list"
+    },
+    "id": "fl005-01",
+    "intended_pattern": "FL005"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "tickets_exported",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-1401"
+          },
+          "target": "helpdesk"
+        },
+        {
+          "action": "archive_published",
+          "evidence": {
+            "record_id": "rec-1402",
+            "url": "https://ops.acmehq.io/archive/1"
+          },
+          "target": "archive"
+        }
+      ],
+      "counts": {
+        "handled": 14
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "ticket-0001",
+          "ticket-0002",
+          "ticket-0003",
+          "ticket-0004",
+          "ticket-0005",
+          "ticket-0006",
+          "ticket-0007",
+          "ticket-0008",
+          "ticket-0009",
+          "ticket-0010",
+          "ticket-0011",
+          "ticket-0012",
+          "ticket-0013",
+          "ticket-0014"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/14",
+        "body": "Fourteen resolved tickets exported with full transcripts and resolution notes attached.",
+        "subject": "Resolved tickets export"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 17.5,
+          "id": "outro",
+          "start": 14.5
+        }
+      ],
+      "state": {
+        "context": "helpdesk snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Export the resolved support tickets to the helpdesk archive \u2014 completed for 14 items.",
+      "task": "Export the resolved support tickets to the helpdesk archive"
+    },
+    "id": "fl005-02",
+    "intended_pattern": "FL005"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "invoices_issued",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-701"
+          },
+          "target": "billing"
+        },
+        {
+          "action": "ledger_posted",
+          "evidence": {
+            "record_id": "rec-702",
+            "url": "https://ops.acmehq.io/ledger/1"
+          },
+          "target": "ledger"
+        }
+      ],
+      "counts": {
+        "handled": 7
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "INV-2026-001",
+          "INV-2026-002",
+          "INV-2026-003",
+          "INV-2026-004",
+          "INV-2026-005",
+          "INV-2026-006",
+          "INV-2026-007"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/7",
+        "body": "Seven invoices issued; totals reconciled against the ledger before posting.",
+        "subject": "November invoice batch"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 4.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.5
+        }
+      ],
+      "state": {
+        "context": "billing snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Run the monthly invoice batch for active accounts \u2014 completed for 7 items.",
+      "task": "Run the monthly invoice batch for active accounts"
+    },
+    "id": "fl005-03",
+    "intended_pattern": "FL005"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "post_published",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-501"
+          },
+          "target": "social-feed"
+        },
+        {
+          "action": "thread_scheduled",
+          "evidence": {
+            "record_id": "rec-502",
+            "url": "https://ops.acmehq.io/scheduler/1"
+          },
+          "target": "scheduler"
+        }
+      ],
+      "counts": {
+        "handled": 5
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "post-01",
+          "post-02",
+          "post-03",
+          "post-04",
+          "post-05"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/5",
+        "body": "The launch post is live with the demo link and the release notes thread scheduled.",
+        "subject": "Launch announcement"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 17.5,
+          "id": "outro",
+          "start": 14.5
+        }
+      ],
+      "state": {
+        "context": "social-feed snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Publish the launch announcement to all social channels \u2014 completed for 5 items.",
+      "task": "Publish the launch announcement to all social channels"
+    },
+    "id": "fl005-04",
+    "intended_pattern": "FL005"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "contacts_synced",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-2101"
+          },
+          "target": "crm"
+        },
+        {
+          "action": "sync_report_filed",
+          "evidence": {
+            "record_id": "rec-2102",
+            "url": "https://ops.acmehq.io/ops-log/1"
+          },
+          "target": "ops-log"
+        }
+      ],
+      "counts": {
+        "handled": 21
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "contact-0001",
+          "contact-0002",
+          "contact-0003",
+          "contact-0004",
+          "contact-0005",
+          "contact-0006",
+          "contact-0007",
+          "contact-0008",
+          "contact-0009",
+          "contact-0010",
+          "contact-0011",
+          "contact-0012",
+          "contact-0013",
+          "contact-0014",
+          "contact-0015",
+          "contact-0016",
+          "contact-0017",
+          "contact-0018",
+          "contact-0019",
+          "contact-0020",
+          "contact-0021"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/21",
+        "body": "Twenty-one contacts deduplicated, merged, and synced; the sync report is filed.",
+        "subject": "CRM sync"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 4.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.5
+        }
+      ],
+      "state": {
+        "context": "crm snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Sync the cleaned contact list into the CRM \u2014 completed for 21 items.",
+      "task": "Sync the cleaned contact list into the CRM"
+    },
+    "id": "fl005-05",
+    "intended_pattern": "FL005"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "report_published",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-601"
+          },
+          "target": "team-wiki"
+        },
+        {
+          "action": "charts_embedded",
+          "evidence": {
+            "record_id": "rec-602",
+            "url": "https://ops.acmehq.io/report/1"
+          },
+          "target": "report"
+        }
+      ],
+      "counts": {
+        "handled": 6
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "chart-01",
+          "chart-02",
+          "chart-03",
+          "chart-04",
+          "chart-05",
+          "chart-06"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/6",
+        "body": "The report is published with all six charts embedded and the methodology appendix attached.",
+        "subject": "Quarterly metrics report"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 17.5,
+          "id": "outro",
+          "start": 14.5
+        }
+      ],
+      "state": {
+        "context": "team-wiki snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Publish the quarterly metrics report to the team wiki \u2014 completed for 6 items.",
+      "task": "Publish the quarterly metrics report to the team wiki"
+    },
+    "id": "fl005-06",
+    "intended_pattern": "FL005"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "segments_cut",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-301"
+          },
+          "target": "editor"
+        },
+        {
+          "action": "episode_uploaded",
+          "evidence": {
+            "record_id": "rec-302",
+            "url": "https://ops.acmehq.io/podcast-host/1"
+          },
+          "target": "podcast-host"
+        }
+      ],
+      "counts": {
+        "handled": 3
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "seg-01",
+          "seg-02",
+          "seg-03"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/3",
+        "body": "Three segments cut clean, loudness matched, and the episode uploaded for review.",
+        "subject": "Interview episode cut"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 4.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.5
+        }
+      ],
+      "state": {
+        "context": "editor snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Cut the interview recording into publishable segments \u2014 completed for 3 items.",
+      "task": "Cut the interview recording into publishable segments"
+    },
+    "id": "fl005-07",
+    "intended_pattern": "FL005"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "stock_updated",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-1801"
+          },
+          "target": "catalogue"
+        },
+        {
+          "action": "adjustment_log_written",
+          "evidence": {
+            "record_id": "rec-1802",
+            "url": "https://ops.acmehq.io/warehouse-log/1"
+          },
+          "target": "warehouse-log"
+        }
+      ],
+      "counts": {
+        "handled": 18
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "SKU-00001",
+          "SKU-00002",
+          "SKU-00003",
+          "SKU-00004",
+          "SKU-00005",
+          "SKU-00006",
+          "SKU-00007",
+          "SKU-00008",
+          "SKU-00009",
+          "SKU-00010",
+          "SKU-00011",
+          "SKU-00012",
+          "SKU-00013",
+          "SKU-00014",
+          "SKU-00015",
+          "SKU-00016",
+          "SKU-00017",
+          "SKU-00018"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/18",
+        "body": "Eighteen SKUs adjusted to the overnight counts; the adjustment log is written.",
+        "subject": "Inventory adjustment"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 17.5,
+          "id": "outro",
+          "start": 14.5
+        }
+      ],
+      "state": {
+        "context": "catalogue snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Apply the overnight inventory adjustments to the catalogue \u2014 completed for 18 items.",
+      "task": "Apply the overnight inventory adjustments to the catalogue"
+    },
+    "id": "fl005-08",
+    "intended_pattern": "FL005"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "notes_published",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-801"
+          },
+          "target": "docs-site"
+        },
+        {
+          "action": "changelog_updated",
+          "evidence": {
+            "record_id": "rec-802",
+            "url": "https://ops.acmehq.io/changelog/1"
+          },
+          "target": "changelog"
+        }
+      ],
+      "counts": {
+        "handled": 8
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "note-01",
+          "note-02",
+          "note-03",
+          "note-04",
+          "note-05",
+          "note-06",
+          "note-07",
+          "note-08"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/8",
+        "body": "Release notes published with the migration guide linked and the changelog updated.",
+        "subject": "Release notes"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 4.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.5
+        }
+      ],
+      "state": {
+        "context": "docs-site snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Publish the release notes for the new version \u2014 completed for 8 items.",
+      "task": "Publish the release notes for the new version"
+    },
+    "id": "fl005-09",
+    "intended_pattern": "FL005"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "notes_sent",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-1101"
+          },
+          "target": "attendees"
+        },
+        {
+          "action": "actions_filed",
+          "evidence": {
+            "record_id": "rec-1102",
+            "url": "https://ops.acmehq.io/tracker/1"
+          },
+          "target": "tracker"
+        }
+      ],
+      "counts": {
+        "handled": 11
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "attendee-01",
+          "attendee-02",
+          "attendee-03",
+          "attendee-04",
+          "attendee-05",
+          "attendee-06",
+          "attendee-07",
+          "attendee-08",
+          "attendee-09",
+          "attendee-10",
+          "attendee-11"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/11",
+        "body": "Notes sent to all eleven attendees with decisions and action items filed in the tracker.",
+        "subject": "Meeting notes"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 17.5,
+          "id": "outro",
+          "start": 14.5
+        }
+      ],
+      "state": {
+        "context": "attendees snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Distribute the meeting notes to all attendees \u2014 completed for 11 items.",
+      "task": "Distribute the meeting notes to all attendees"
+    },
+    "id": "fl005-10",
+    "intended_pattern": "FL005"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "answer": "The Pro plan costs 29 dollars a month [1] and includes 10 seats [2]. Refunds are issued within 3 days [3].",
+      "citations": [
+        "pricing",
+        "seats",
+        "refund_policy"
+      ],
+      "sources": [
+        {
+          "id": "pricing",
+          "text": "The Pro plan costs 29 dollars a month."
+        },
+        {
+          "id": "seats",
+          "text": "The Pro plan includes 10 seats by default."
+        }
+      ],
+      "status": "done",
+      "task": "Answer the customer's pricing question from the retrieved help pages"
+    },
+    "id": "fl006-01",
+    "intended_pattern": "FL006"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "answer": "The Pro plan costs 29 dollars a month [1] and includes 10 seats [2]. See the enterprise addendum [9].",
+      "citations": [
+        "pricing",
+        "seats"
+      ],
+      "sources": [
+        {
+          "id": "pricing",
+          "text": "The Pro plan costs 29 dollars a month."
+        },
+        {
+          "id": "seats",
+          "text": "The Pro plan includes 10 seats by default."
+        }
+      ],
+      "status": "done",
+      "task": "Answer the customer's pricing question from the retrieved help pages"
+    },
+    "id": "fl006-02",
+    "intended_pattern": "FL006"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "answer": "The Pro plan costs 29 dollars a month [1] and includes 25 seats [2].",
+      "citations": [
+        "pricing",
+        "seats"
+      ],
+      "sources": [
+        {
+          "id": "pricing",
+          "text": "The Pro plan costs 29 dollars a month."
+        },
+        {
+          "id": "seats",
+          "text": "The Pro plan includes 10 seats by default."
+        }
+      ],
+      "status": "done",
+      "task": "Answer the customer's pricing question from the retrieved help pages"
+    },
+    "id": "fl006-03",
+    "intended_pattern": "FL006"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "answer": "The Pro plan costs 29 dollars a month [1] and includes 10 seats [2]. Usage limits are described in the limits page [3].",
+      "citations": [
+        "pricing",
+        "seats",
+        "limits"
+      ],
+      "sources": [
+        {
+          "id": "pricing",
+          "text": "The Pro plan costs 29 dollars a month."
+        },
+        {
+          "id": "seats",
+          "text": "The Pro plan includes 10 seats by default."
+        },
+        {
+          "id": "limits",
+          "text": ""
+        }
+      ],
+      "status": "done",
+      "task": "Answer the customer's pricing question from the retrieved help pages"
+    },
+    "id": "fl006-04",
+    "intended_pattern": "FL006"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "answer": "The Pro plan costs 29 dollars a month [1] and includes 10 seats [2]. Refunds are issued within 3 days [3].",
+      "citations": [
+        "pricing",
+        "seats",
+        "refund_policy"
+      ],
+      "sources": [
+        {
+          "id": "pricing",
+          "text": "The Pro plan costs 29 dollars a month."
+        },
+        {
+          "id": "seats",
+          "text": "The Pro plan includes 10 seats by default."
+        }
+      ],
+      "status": "done",
+      "task": "Answer the customer's pricing question from the retrieved help pages"
+    },
+    "id": "fl006-05",
+    "intended_pattern": "FL006"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "answer": "The Pro plan costs 29 dollars a month [1] and includes 10 seats [2]. See the enterprise addendum [9].",
+      "citations": [
+        "pricing",
+        "seats"
+      ],
+      "sources": [
+        {
+          "id": "pricing",
+          "text": "The Pro plan costs 29 dollars a month."
+        },
+        {
+          "id": "seats",
+          "text": "The Pro plan includes 10 seats by default."
+        }
+      ],
+      "status": "done",
+      "task": "Answer the customer's pricing question from the retrieved help pages"
+    },
+    "id": "fl006-06",
+    "intended_pattern": "FL006"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "answer": "The Pro plan costs 29 dollars a month [1] and includes 25 seats [2].",
+      "citations": [
+        "pricing",
+        "seats"
+      ],
+      "sources": [
+        {
+          "id": "pricing",
+          "text": "The Pro plan costs 29 dollars a month."
+        },
+        {
+          "id": "seats",
+          "text": "The Pro plan includes 10 seats by default."
+        }
+      ],
+      "status": "done",
+      "task": "Answer the customer's pricing question from the retrieved help pages"
+    },
+    "id": "fl006-07",
+    "intended_pattern": "FL006"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "answer": "The Pro plan costs 29 dollars a month [1] and includes 10 seats [2]. Usage limits are described in the limits page [3].",
+      "citations": [
+        "pricing",
+        "seats",
+        "limits"
+      ],
+      "sources": [
+        {
+          "id": "pricing",
+          "text": "The Pro plan costs 29 dollars a month."
+        },
+        {
+          "id": "seats",
+          "text": "The Pro plan includes 10 seats by default."
+        },
+        {
+          "id": "limits",
+          "text": ""
+        }
+      ],
+      "status": "done",
+      "task": "Answer the customer's pricing question from the retrieved help pages"
+    },
+    "id": "fl006-08",
+    "intended_pattern": "FL006"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "answer": "The Pro plan costs 29 dollars a month [1] and includes 10 seats [2]. Refunds are issued within 3 days [3].",
+      "citations": [
+        "pricing",
+        "seats",
+        "refund_policy"
+      ],
+      "sources": [
+        {
+          "id": "pricing",
+          "text": "The Pro plan costs 29 dollars a month."
+        },
+        {
+          "id": "seats",
+          "text": "The Pro plan includes 10 seats by default."
+        }
+      ],
+      "status": "done",
+      "task": "Answer the customer's pricing question from the retrieved help pages"
+    },
+    "id": "fl006-09",
+    "intended_pattern": "FL006"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "answer": "The Pro plan costs 29 dollars a month [1] and includes 10 seats [2]. See the enterprise addendum [9].",
+      "citations": [
+        "pricing",
+        "seats"
+      ],
+      "sources": [
+        {
+          "id": "pricing",
+          "text": "The Pro plan costs 29 dollars a month."
+        },
+        {
+          "id": "seats",
+          "text": "The Pro plan includes 10 seats by default."
+        }
+      ],
+      "status": "done",
+      "task": "Answer the customer's pricing question from the retrieved help pages"
+    },
+    "id": "fl006-10",
+    "intended_pattern": "FL006"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "email_sent",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-901"
+          },
+          "target": "subscriber-list"
+        },
+        {
+          "action": "card_published",
+          "evidence": {
+            "record_id": "rec-902",
+            "url": "https://ops.acmehq.io/community-feed/1"
+          },
+          "target": "community-feed"
+        }
+      ],
+      "counts": {
+        "handled": 9
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "reader01@acme-digest.com",
+          "reader02@acme-digest.com",
+          "reader03@acme-digest.com",
+          "reader04@acme-digest.com",
+          "reader05@acme-digest.com",
+          "reader06@acme-digest.com",
+          "reader07@acme-digest.com",
+          "reader08@acme-digest.com",
+          "reader09@acme-digest.com"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/9",
+        "body": "This week: the verification checklist, two reader questions, and the December roadmap.",
+        "subject": "Weekly digest"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "subscriber-list snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Send the weekly product digest to the subscriber list \u2014 completed for 9 items.",
+      "task": "Send the weekly product digest to the subscriber list"
+    },
+    "id": "clean-01",
+    "intended_pattern": "clean"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "tickets_exported",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-1401"
+          },
+          "target": "helpdesk"
+        },
+        {
+          "action": "archive_published",
+          "evidence": {
+            "record_id": "rec-1402",
+            "url": "https://ops.acmehq.io/archive/1"
+          },
+          "target": "archive"
+        }
+      ],
+      "counts": {
+        "handled": 14
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "ticket-0001",
+          "ticket-0002",
+          "ticket-0003",
+          "ticket-0004",
+          "ticket-0005",
+          "ticket-0006",
+          "ticket-0007",
+          "ticket-0008",
+          "ticket-0009",
+          "ticket-0010",
+          "ticket-0011",
+          "ticket-0012",
+          "ticket-0013",
+          "ticket-0014"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/14",
+        "body": "Fourteen resolved tickets exported with full transcripts and resolution notes attached.",
+        "subject": "Resolved tickets export"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "helpdesk snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Export the resolved support tickets to the helpdesk archive \u2014 completed for 14 items.",
+      "task": "Export the resolved support tickets to the helpdesk archive"
+    },
+    "id": "clean-02",
+    "intended_pattern": "clean"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "invoices_issued",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-701"
+          },
+          "target": "billing"
+        },
+        {
+          "action": "ledger_posted",
+          "evidence": {
+            "record_id": "rec-702",
+            "url": "https://ops.acmehq.io/ledger/1"
+          },
+          "target": "ledger"
+        }
+      ],
+      "counts": {
+        "handled": 7
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "INV-2026-001",
+          "INV-2026-002",
+          "INV-2026-003",
+          "INV-2026-004",
+          "INV-2026-005",
+          "INV-2026-006",
+          "INV-2026-007"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/7",
+        "body": "Seven invoices issued; totals reconciled against the ledger before posting.",
+        "subject": "November invoice batch"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "billing snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Run the monthly invoice batch for active accounts \u2014 completed for 7 items.",
+      "task": "Run the monthly invoice batch for active accounts"
+    },
+    "id": "clean-03",
+    "intended_pattern": "clean"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "post_published",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-501"
+          },
+          "target": "social-feed"
+        },
+        {
+          "action": "thread_scheduled",
+          "evidence": {
+            "record_id": "rec-502",
+            "url": "https://ops.acmehq.io/scheduler/1"
+          },
+          "target": "scheduler"
+        }
+      ],
+      "counts": {
+        "handled": 5
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "post-01",
+          "post-02",
+          "post-03",
+          "post-04",
+          "post-05"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/5",
+        "body": "The launch post is live with the demo link and the release notes thread scheduled.",
+        "subject": "Launch announcement"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "social-feed snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Publish the launch announcement to all social channels \u2014 completed for 5 items.",
+      "task": "Publish the launch announcement to all social channels"
+    },
+    "id": "clean-04",
+    "intended_pattern": "clean"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "contacts_synced",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-2101"
+          },
+          "target": "crm"
+        },
+        {
+          "action": "sync_report_filed",
+          "evidence": {
+            "record_id": "rec-2102",
+            "url": "https://ops.acmehq.io/ops-log/1"
+          },
+          "target": "ops-log"
+        }
+      ],
+      "counts": {
+        "handled": 21
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "contact-0001",
+          "contact-0002",
+          "contact-0003",
+          "contact-0004",
+          "contact-0005",
+          "contact-0006",
+          "contact-0007",
+          "contact-0008",
+          "contact-0009",
+          "contact-0010",
+          "contact-0011",
+          "contact-0012",
+          "contact-0013",
+          "contact-0014",
+          "contact-0015",
+          "contact-0016",
+          "contact-0017",
+          "contact-0018",
+          "contact-0019",
+          "contact-0020",
+          "contact-0021"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/21",
+        "body": "Twenty-one contacts deduplicated, merged, and synced; the sync report is filed.",
+        "subject": "CRM sync"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "crm snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Sync the cleaned contact list into the CRM \u2014 completed for 21 items.",
+      "task": "Sync the cleaned contact list into the CRM"
+    },
+    "id": "clean-05",
+    "intended_pattern": "clean"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "report_published",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-601"
+          },
+          "target": "team-wiki"
+        },
+        {
+          "action": "charts_embedded",
+          "evidence": {
+            "record_id": "rec-602",
+            "url": "https://ops.acmehq.io/report/1"
+          },
+          "target": "report"
+        }
+      ],
+      "counts": {
+        "handled": 6
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "chart-01",
+          "chart-02",
+          "chart-03",
+          "chart-04",
+          "chart-05",
+          "chart-06"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/6",
+        "body": "The report is published with all six charts embedded and the methodology appendix attached.",
+        "subject": "Quarterly metrics report"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "team-wiki snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Publish the quarterly metrics report to the team wiki \u2014 completed for 6 items.",
+      "task": "Publish the quarterly metrics report to the team wiki"
+    },
+    "id": "clean-06",
+    "intended_pattern": "clean"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "segments_cut",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-301"
+          },
+          "target": "editor"
+        },
+        {
+          "action": "episode_uploaded",
+          "evidence": {
+            "record_id": "rec-302",
+            "url": "https://ops.acmehq.io/podcast-host/1"
+          },
+          "target": "podcast-host"
+        }
+      ],
+      "counts": {
+        "handled": 3
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "seg-01",
+          "seg-02",
+          "seg-03"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/3",
+        "body": "Three segments cut clean, loudness matched, and the episode uploaded for review.",
+        "subject": "Interview episode cut"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "editor snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Cut the interview recording into publishable segments \u2014 completed for 3 items.",
+      "task": "Cut the interview recording into publishable segments"
+    },
+    "id": "clean-07",
+    "intended_pattern": "clean"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "based_on": {
+        "expected_state_version": 9
+      },
+      "claims": [
+        {
+          "action": "stock_updated",
+          "evidence": {
+            "provider": "ops",
+            "record_id": "rec-1801"
+          },
+          "target": "catalogue"
+        },
+        {
+          "action": "adjustment_log_written",
+          "evidence": {
+            "record_id": "rec-1802",
+            "url": "https://ops.acmehq.io/warehouse-log/1"
+          },
+          "target": "warehouse-log"
+        }
+      ],
+      "counts": {
+        "handled": 18
+      },
+      "generated_at": "2026-11-18T10:00:00Z",
+      "items": {
+        "handled": [
+          "SKU-00001",
+          "SKU-00002",
+          "SKU-00003",
+          "SKU-00004",
+          "SKU-00005",
+          "SKU-00006",
+          "SKU-00007",
+          "SKU-00008",
+          "SKU-00009",
+          "SKU-00010",
+          "SKU-00011",
+          "SKU-00012",
+          "SKU-00013",
+          "SKU-00014",
+          "SKU-00015",
+          "SKU-00016",
+          "SKU-00017",
+          "SKU-00018"
+        ]
+      },
+      "output": {
+        "archive_url": "https://ops.acmehq.io/archive/18",
+        "body": "Eighteen SKUs adjusted to the overnight counts; the adjustment log is written.",
+        "subject": "Inventory adjustment"
+      },
+      "segments": [
+        {
+          "end": 4.0,
+          "id": "intro",
+          "start": 0.0
+        },
+        {
+          "end": 9.0,
+          "id": "main",
+          "start": 4.0
+        },
+        {
+          "end": 12.0,
+          "id": "outro",
+          "start": 9.0
+        }
+      ],
+      "state": {
+        "context": "catalogue snapshot used for the run",
+        "context_updated_at": "2026-11-18T09:35:00Z",
+        "version": 9
+      },
+      "status": "done",
+      "summary": "Apply the overnight inventory adjustments to the catalogue \u2014 completed for 18 items.",
+      "task": "Apply the overnight inventory adjustments to the catalogue"
+    },
+    "id": "clean-08",
+    "intended_pattern": "clean"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "answer": "The Pro plan costs 29 dollars a month [1] and includes 10 seats [2].",
+      "citations": [
+        "pricing",
+        "seats"
+      ],
+      "sources": [
+        {
+          "id": "pricing",
+          "text": "The Pro plan costs 29 dollars a month."
+        },
+        {
+          "id": "seats",
+          "text": "The Pro plan includes 10 seats by default."
+        }
+      ],
+      "status": "done",
+      "task": "Answer the customer's pricing question from the retrieved help pages"
+    },
+    "id": "clean-rag-01",
+    "intended_pattern": "clean"
+  },
+  {
+    "claimed_status": "done",
+    "doc": {
+      "answer": "The Pro plan costs 29 dollars a month [1] and includes 10 seats [2].",
+      "citations": [
+        "pricing",
+        "seats"
+      ],
+      "sources": [
+        {
+          "id": "pricing",
+          "text": "The Pro plan costs 29 dollars a month."
+        },
+        {
+          "id": "seats",
+          "text": "The Pro plan includes 10 seats by default."
+        }
+      ],
+      "status": "done",
+      "task": "Answer the customer's pricing question from the retrieved help pages"
+    },
+    "id": "clean-rag-02",
+    "intended_pattern": "clean"
+  }
+]
