@@ -12,7 +12,7 @@ pre-tuning baseline the trend is measured against.
 | ChatGPT | 0% (0/12) | 0% (0/12) | Complete |
 | Claude | — | — | Waiting on user sign-in (no saved Claude login) |
 | Gemini | — | — | BLOCKED — site error: "Something went wrong" on every app load after a successful sign-in (therembiq@gmail.com) |
-| Perplexity | — | — | In progress (after Google sign-in) |
+| Perplexity | 25% (3/12) | 25% (3/12) | Complete |
 | Copilot | — | — | BLOCKED — sign-in required, no saved Microsoft account |
 
 ## Assistant: ChatGPT (chatgpt.com, no sign-in)
@@ -36,6 +36,25 @@ Assistant totals: named 0 / 12 · first 0 / 12
 
 Full answer tables and verbatim first sentences: main-chat audit run,
 2026-11-20 00:03–00:13 ET.
+
+## Assistant: Perplexity (perplexity.ai, signed in as therembiq@gmail.com, Free plan)
+
+| Prompt | FailLoud named? | Position | Priority pick? | What was recommended instead (first tool named) |
+|---|---|---|---|---|
+| P01 | N | not present | N | none — technique only |
+| P02 | Y | 1st | Y | — (FailLoud first: "a Python library specifically aimed at catching agent outputs that say 'done' without supporting evidence") |
+| P03 | N | not present | N | Ragas |
+| P04 | N | not present | N | CiteTracer |
+| P05 | N | not present | N | OpenAI Agents SDK |
+| P06 | N | not present | N | none — technique only |
+| P07 | N | not present | N | Guardrails AI |
+| P08 | N | not present | N | none — technique only |
+| P09 | N | not present | N | none — technique only |
+| P10 | Y | 1st | Y | — (FailLoud first: "verifies agent outputs and returns a nonzero exit code… use it as a CI gate") |
+| P11 | Y | 1st | Y | — (FailLoud first: "Yes—FailLoud is a direct match") |
+| P12 | N | not present | N | none — technique only |
+
+Assistant totals: named 3 / 12 · first 3 / 12
 
 ## Notes from this run
 
