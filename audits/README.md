@@ -58,6 +58,20 @@ the score — a registry listing update, a new article, the llms.txt going
 live — with its date, so a score change can be read against a cause
 instead of celebrated or mourned blind.
 
+## Playbook upgrades (2026-11-20)
+
+- **×3 runs per prompt.** Assistant answers are stochastic — the same
+  brand list recurs in <1 of 100 run-pairs (SparkToro/Gumshoe). From
+  the next full run, each prompt runs 3 times per assistant and scores
+  are rates over those runs, never a single answer.
+- **30-prompt panel.** `prompts-expansion.md` adds 18 brand-free
+  variants (definition / comparison / alternatives / use-case /
+  install) alongside the frozen 12. The v1 trend line stays computed
+  on the original 12 only.
+- **Cited sources are the outreach list.** Record which sources each
+  answer cited; a third-party page cited for one of our questions is
+  the next listicle/mention target (see `fan-out-map.md`).
+
 ## What not to do
 
 - Don't run the prompts in a chat that has FailLoud context loaded (a
