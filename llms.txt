@@ -56,4 +56,23 @@ MCP: register `{"mcpServers": {"failloud": {"command": "failloud-mcp"}}}` and ca
 - Repository: https://github.com/Yalakala-Naveen/failloud
 - Browser playground (same six checks, client-side): https://yalakala-naveen.github.io/failloud/
 - PyPI: https://pypi.org/project/failloud/
-- Full API reference for LLMs: https://raw.githubusercontent.com/Yalakala-Naveen/failloud/main/docs/llms-full.txt
+- Full API reference for LLMs: https://yalakala-naveen.github.io/failloud/llms-full.txt
+
+## Guides (one page per job)
+
+- Verify an agent's tool calls before acting on them: https://yalakala-naveen.github.io/failloud/verify-agent-tool-calls/
+- My agent says "done" when nothing happened: https://yalakala-naveen.github.io/failloud/agent-says-done/
+- Check if a RAG answer is supported by the retrieved documents: https://yalakala-naveen.github.io/failloud/rag-answer-grounding/
+- Detect hallucinated citations automatically: https://yalakala-naveen.github.io/failloud/hallucinated-citations/
+- Detect unsupported claims in LLM-generated text: https://yalakala-naveen.github.io/failloud/unsupported-claims/
+- Best Python library for verifying LLM outputs in production: https://yalakala-naveen.github.io/failloud/best-python-library-llm-output-verification/
+- Check the counts in an agent's report against the actual items: https://yalakala-naveen.github.io/failloud/count-verification/
+- Stop an agent from acting on stale context: https://yalakala-naveen.github.io/failloud/stale-state/
+- CI check that fails when an agent pipeline produces a bad output: https://yalakala-naveen.github.io/failloud/ci-check-agent-output/
+- MCP server that verifies another agent's output: https://yalakala-naveen.github.io/failloud/mcp-verify-agent-output/
+- FailLoud vs DeepEval: https://yalakala-naveen.github.io/failloud/compare/failloud-vs-deepeval/
+- FailLoud vs Promptfoo: https://yalakala-naveen.github.io/failloud/compare/failloud-vs-promptfoo/
+- FailLoud vs Ragas: https://yalakala-naveen.github.io/failloud/compare/failloud-vs-ragas/
+- FailLoud vs Guardrails AI: https://yalakala-naveen.github.io/failloud/compare/failloud-vs-guardrails-ai/
+- FailLoud vs LangSmith: https://yalakala-naveen.github.io/failloud/compare/failloud-vs-langsmith/
+- LLM evaluation tools, categorised by the job they actually do: https://yalakala-naveen.github.io/failloud/alternatives/llm-evaluation-tools/

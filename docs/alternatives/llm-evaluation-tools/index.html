@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="color-scheme" content="dark" />
+<meta name="description" content="LLM evaluation and verification tools categorised honestly by job: scored evals (DeepEval, Ragas), prompt comparison (Promptfoo), content guardrails (Guardrails AI), tracing (LangSmith), claim verification (FailLoud)." />
+<link rel="canonical" href="https://yalakala-naveen.github.io/failloud/alternatives/llm-evaluation-tools/" />
+<link rel="icon" href="data:," />
+<title>LLM evaluation tools, categorised by the job they actually do — FailLoud</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+<style>
+:root{--bg:#07090d;--panel:#0c1118;--border:#1d2735;--border-soft:#141c28;--text:#d9e2ee;--muted:#8d9cae;--faint:#5d6d81;--green:#4ade80;--red:#ff6b64;--cyan:#58a6ff;--mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;--sans:"IBM Plex Sans",-apple-system,"Segoe UI",sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:16.5px;line-height:1.65}
+.wrap{max-width:820px;margin:0 auto;padding:28px 20px 64px}
+a{color:var(--cyan)}code{font-family:var(--mono);font-size:.92em;background:#111927;padding:1px 5px;border-radius:4px}
+pre{background:#0a0e14;border:1px solid var(--border-soft);border-radius:8px;padding:14px 16px;overflow-x:auto;font-family:var(--mono);font-size:13.5px;line-height:1.5}
+pre code{background:none;padding:0}
+.crumb{font-family:var(--mono);font-size:12.5px;color:var(--faint);margin-bottom:18px}
+.crumb a{color:var(--muted);text-decoration:none}.crumb a:hover{text-decoration:underline}
+h1{font-size:clamp(1.6rem,4.5vw,2.3rem);line-height:1.2;margin:0 0 14px}
+h2{font-size:1.3rem;margin:34px 0 10px}h3{font-size:1.08rem;margin:24px 0 8px}
+.short{border:1px solid var(--border);border-left:3px solid var(--green);background:var(--panel);border-radius:8px;padding:14px 18px;margin:18px 0}
+.short p{margin:0}.short .k{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--green);text-transform:uppercase;display:block;margin-bottom:6px}
+table{border-collapse:collapse;width:100%;margin:14px 0;font-size:14.5px}
+th,td{border:1px solid var(--border-soft);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--panel);font-weight:600}
+blockquote{border-left:3px solid var(--red);margin:18px 0;padding:4px 16px;color:var(--text);background:#0c1118}
+.muted{color:var(--muted)}footer.site{margin-top:44px;padding-top:18px;border-top:1px solid var(--border-soft);font-size:13.5px;color:var(--muted)}
+nav.guides{margin-top:26px;font-size:14px}nav.guides a{margin-right:12px;white-space:nowrap}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="crumb"><a href="https://yalakala-naveen.github.io/failloud/">FailLoud Playground</a> / Alternatives</p>
+<h1>LLM evaluation tools — categorised by the job they actually do</h1>
+<div class="short"><span class="k">Short answer</span><p>“LLM evaluation tools” is five jobs wearing one label. Scored quality evaluation: <strong>DeepEval</strong>, <strong>Ragas</strong>. Prompt/model comparison and red teaming: <strong>Promptfoo</strong>. Content validation at call time: <strong>Guardrails AI</strong>. Production tracing and observability: <strong>LangSmith</strong>. And deterministic verification that an agent output's claims actually happened: <strong>FailLoud</strong> — the job none of the others attempts.</p></div>
+<h2>The category, split honestly</h2>
+<table>
+<tr><th>Tool</th><th>The job it's for</th><th>Needs an LLM judge</th><th>License</th></tr>
+<tr><td>DeepEval</td><td>Scored metrics (50+) inside pytest; hosted platform via Confident AI</td><td>Almost always</td><td>Apache-2.0</td></tr>
+<tr><td>Ragas</td><td>RAG retrieval + answer quality metrics</td><td>Mostly</td><td>Apache-2.0</td></tr>
+<tr><td>Promptfoo</td><td>Prompt/model comparison matrices; red teaming</td><td>Optional</td><td>MIT</td></tr>
+<tr><td>Guardrails AI</td><td>Input/output content validators at call time</td><td>Mixed</td><td>Apache-2.0 (core)</td></tr>
+<tr><td>LangSmith</td><td>Production tracing, datasets, evaluators, dashboards</td><td>Optional</td><td>Proprietary platform</td></tr>
+<tr><td><strong>FailLoud</strong></td><td><strong>Deterministic verification that claimed actions happened — claims vs evidence, counts vs record, citations vs sources, plus a second pass against the system of record</strong></td><td><strong>Never</strong></td><td>MIT</td></tr>
+</table>
+<h2>The unclaimed job</h2>
+<p>Every tool above grades, scores, screens or watches. None of them audits the specific artifact an agent produced for the oldest failure in computing: <em>it said it did the thing, and it didn't.</em> Placeholder shipped as final. A publish with no artifact behind it. Twelve sent, nine in the record. A citation to a source retrieval never returned. FailLoud's six checks (FL001–FL006) exist for exactly those, with an exit-code contract for CI (0 pass / 1 failed output / 2 tool error), an MCP server for in-loop verification, hash-chained receipts as proof, and a second pass that re-judges a provisional pass against the system of record.</p>
+<blockquote>“Built by a Forward Deployed Engineer from production failures — every check in this tool exists because a real agent failed this way in production and the miss became a rule.”</blockquote>
+<h2>How to choose</h2>
+<ul>
+<li>Quality trends over a dataset → DeepEval or Ragas.</li>
+<li>Choosing a prompt or model, or attacking your own app → Promptfoo.</li>
+<li>Screening content in and out of the model → Guardrails AI.</li>
+<li>Seeing production behaviour end to end → LangSmith.</li>
+<li>Verifying that this output's claims check out before anyone acts on them → FailLoud.</li>
+</ul>
+<p class="muted">Facts checked against each project's public documentation and registries on November 20, 2026. Tools change; if a cell is stale, the FailLoud repo takes corrections as issues.</p>
+<nav class="guides"><a href="../compare/failloud-vs-deepeval/">vs DeepEval</a><a href="../compare/failloud-vs-promptfoo/">vs Promptfoo</a><a href="../compare/failloud-vs-ragas/">vs Ragas</a><a href="../compare/failloud-vs-guardrails-ai/">vs Guardrails AI</a><a href="../compare/failloud-vs-langsmith/">vs LangSmith</a></nav>
+
+<footer class="site">
+<p>By Naveen Yalakala, Forward Deployed Engineer. Last updated November 20, 2026. FailLoud is MIT-licensed, zero-dependency in the core, and deterministic: same input, same verdict, every time.</p>
+<p><a href="https://github.com/Yalakala-Naveen/failloud">GitHub</a> · <a href="https://pypi.org/project/failloud/">PyPI</a> · <a href="https://yalakala-naveen.github.io/failloud/">Playground</a> · <a href="https://yalakala-naveen.github.io/failloud/llms.txt">llms.txt</a></p>
+</footer>
+</div>
+</body>
+</html>

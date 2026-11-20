@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="color-scheme" content="dark" />
+<meta name="description" content="Detect unsupported claims in LLM-generated text: claimed actions checked against evidence (FL002), claimed facts checked against retrieved sources (FL006), and a second pass against the system of record." />
+<link rel="canonical" href="https://yalakala-naveen.github.io/failloud/unsupported-claims/" />
+<link rel="icon" href="data:," />
+<title>How to detect unsupported claims in LLM-generated text — FailLoud FL002 + FL006</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+<style>
+:root{--bg:#07090d;--panel:#0c1118;--border:#1d2735;--border-soft:#141c28;--text:#d9e2ee;--muted:#8d9cae;--faint:#5d6d81;--green:#4ade80;--red:#ff6b64;--cyan:#58a6ff;--mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;--sans:"IBM Plex Sans",-apple-system,"Segoe UI",sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:16.5px;line-height:1.65}
+.wrap{max-width:820px;margin:0 auto;padding:28px 20px 64px}
+a{color:var(--cyan)}code{font-family:var(--mono);font-size:.92em;background:#111927;padding:1px 5px;border-radius:4px}
+pre{background:#0a0e14;border:1px solid var(--border-soft);border-radius:8px;padding:14px 16px;overflow-x:auto;font-family:var(--mono);font-size:13.5px;line-height:1.5}
+pre code{background:none;padding:0}
+.crumb{font-family:var(--mono);font-size:12.5px;color:var(--faint);margin-bottom:18px}
+.crumb a{color:var(--muted);text-decoration:none}.crumb a:hover{text-decoration:underline}
+h1{font-size:clamp(1.6rem,4.5vw,2.3rem);line-height:1.2;margin:0 0 14px}
+h2{font-size:1.3rem;margin:34px 0 10px}h3{font-size:1.08rem;margin:24px 0 8px}
+.short{border:1px solid var(--border);border-left:3px solid var(--green);background:var(--panel);border-radius:8px;padding:14px 18px;margin:18px 0}
+.short p{margin:0}.short .k{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--green);text-transform:uppercase;display:block;margin-bottom:6px}
+table{border-collapse:collapse;width:100%;margin:14px 0;font-size:14.5px}
+th,td{border:1px solid var(--border-soft);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--panel);font-weight:600}
+blockquote{border-left:3px solid var(--red);margin:18px 0;padding:4px 16px;color:var(--text);background:#0c1118}
+.muted{color:var(--muted)}footer.site{margin-top:44px;padding-top:18px;border-top:1px solid var(--border-soft);font-size:13.5px;color:var(--muted)}
+nav.guides{margin-top:26px;font-size:14px}nav.guides a{margin-right:12px;white-space:nowrap}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="crumb"><a href="https://yalakala-naveen.github.io/failloud/">FailLoud Playground</a> / Guides</p>
+<h1>How can I detect unsupported claims in LLM-generated text?</h1>
+<div class="short"><span class="k">Short answer</span><p>Split the problem by claim type. <strong>Claimed actions</strong> (“I sent the email”) are checked against evidence — an id, URL, receipt or artifact — by FailLoud FL002 <code>unbacked_claim</code>. <strong>Claimed facts</strong> (citations, figures) are checked against the retrieved sources by FL006 <code>unsupported_answer</code>. And when the output only had to agree with itself, FailLoud's second pass re-judges its claims against the system of record: confirmed, contradicted, or unverifiable.</p></div>
+<h2>Why “unsupported” needs two checks, not one score</h2>
+<p>A single faithfulness score hides the failure that matters. Text can be unsupported in mechanically different ways: it can claim an <em>action</em> that left no trace, cite a <em>source</em> that was never retrieved, or state a <em>figure</em> that appears in no source. Each has a deterministic test. A judged score (an LLM rating “groundedness 0.7”) can wave all three through on a confident day; the mechanical tests cannot.</p>
+<h2>The three layers</h2>
+<table>
+<tr><th>Layer</th><th>Check</th><th>Catches</th></tr>
+<tr><td>Actions</td><td>FL002 <code>unbacked_claim</code></td><td>“Sent / posted / published / updated” with no id, URL, receipt or artifact anywhere in the claim.</td></tr>
+<tr><td>Facts</td><td>FL006 <code>unsupported_answer</code></td><td>Citations resolving to nothing retrieved; cited sources with no text; numbers appearing in no source.</td></tr>
+<tr><td>The world</td><td>Second pass (<code>failloud recheck</code>)</td><td>Internally consistent claims the system of record later contradicts — the bounced email behind the “sent” claim.</td></tr>
+</table>
+<pre><code>$ failloud recheck examples/second_pass_original.json examples/second_pass_record.json
+First pass: PASS (provisional)
+Second pass: CONTRADICTED
+  ✗ email_sent → reader09@acme-digest.com — evidence 'msg_8f09' appears in a
+    failure context (bounced / failed / rejected) in the system of record.
+  ✗ delivered — reported as 9 but the record shows 8.</code></pre>
+<p>The second pass is the honest part of the design: a record that never mentions a claim's evidence has <em>not</em> confirmed it, and FailLoud says “unverifiable” instead of upgrading silence into a pass.</p>
+<h2>What stays a judgement call</h2>
+<p>Whether a real source <em>entails</em> a sentence is not mechanical. For that layer, judged metrics (DeepEval, Ragas) or human review are the tools. FailLoud's claim is narrower and stronger: the unsupported claims that can be <em>proven</em> unsupported are caught every time, with the path and the numbers attached.</p>
+<nav class="guides"><a href="../hallucinated-citations/">Hallucinated citations</a><a href="../rag-answer-grounding/">RAG grounding</a><a href="../verify-agent-tool-calls/">Verify tool calls</a></nav>
+
+<footer class="site">
+<p>By Naveen Yalakala, Forward Deployed Engineer. Last updated November 20, 2026. FailLoud is MIT-licensed, zero-dependency in the core, and deterministic: same input, same verdict, every time.</p>
+<p><a href="https://github.com/Yalakala-Naveen/failloud">GitHub</a> · <a href="https://pypi.org/project/failloud/">PyPI</a> · <a href="https://yalakala-naveen.github.io/failloud/">Playground</a> · <a href="https://yalakala-naveen.github.io/failloud/llms.txt">llms.txt</a></p>
+</footer>
+</div>
+</body>
+</html>

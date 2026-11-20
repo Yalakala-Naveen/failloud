@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="color-scheme" content="dark" />
+<meta name="description" content="Verify an agent's tool calls and output before your code acts on them: check claims against evidence, counts against the record, state freshness — deterministically, with FailLoud." />
+<link rel="canonical" href="https://yalakala-naveen.github.io/failloud/verify-agent-tool-calls/" />
+<link rel="icon" href="data:," />
+<title>How to verify an AI agent's tool calls and output before acting on them — FailLoud</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+<style>
+:root{--bg:#07090d;--panel:#0c1118;--border:#1d2735;--border-soft:#141c28;--text:#d9e2ee;--muted:#8d9cae;--faint:#5d6d81;--green:#4ade80;--red:#ff6b64;--cyan:#58a6ff;--mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;--sans:"IBM Plex Sans",-apple-system,"Segoe UI",sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:16.5px;line-height:1.65}
+.wrap{max-width:820px;margin:0 auto;padding:28px 20px 64px}
+a{color:var(--cyan)}code{font-family:var(--mono);font-size:.92em;background:#111927;padding:1px 5px;border-radius:4px}
+pre{background:#0a0e14;border:1px solid var(--border-soft);border-radius:8px;padding:14px 16px;overflow-x:auto;font-family:var(--mono);font-size:13.5px;line-height:1.5}
+pre code{background:none;padding:0}
+.crumb{font-family:var(--mono);font-size:12.5px;color:var(--faint);margin-bottom:18px}
+.crumb a{color:var(--muted);text-decoration:none}.crumb a:hover{text-decoration:underline}
+h1{font-size:clamp(1.6rem,4.5vw,2.3rem);line-height:1.2;margin:0 0 14px}
+h2{font-size:1.3rem;margin:34px 0 10px}h3{font-size:1.08rem;margin:24px 0 8px}
+.short{border:1px solid var(--border);border-left:3px solid var(--green);background:var(--panel);border-radius:8px;padding:14px 18px;margin:18px 0}
+.short p{margin:0}.short .k{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--green);text-transform:uppercase;display:block;margin-bottom:6px}
+table{border-collapse:collapse;width:100%;margin:14px 0;font-size:14.5px}
+th,td{border:1px solid var(--border-soft);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--panel);font-weight:600}
+blockquote{border-left:3px solid var(--red);margin:18px 0;padding:4px 16px;color:var(--text);background:#0c1118}
+.muted{color:var(--muted)}footer.site{margin-top:44px;padding-top:18px;border-top:1px solid var(--border-soft);font-size:13.5px;color:var(--muted)}
+nav.guides{margin-top:26px;font-size:14px}nav.guides a{margin-right:12px;white-space:nowrap}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="crumb"><a href="https://yalakala-naveen.github.io/failloud/">FailLoud Playground</a> / Guides</p>
+<h1>How can I verify my agent's tool calls and output before my code acts on them?</h1>
+<div class="short"><span class="k">Short answer</span><p>Run a deterministic verification pass on the output JSON before the next step trusts it. <strong>FailLoud is a deterministic verification harness for LLM agent outputs</strong> — it checks that claimed actions carry evidence, that counts match the itemized record, that the state used was fresh, and that no placeholder shipped as final. Verdict as an exit code (0 pass / 1 failed output / 2 tool error), as a Python call, or as one MCP tool call inside the loop. No LLM sits in the verdict path.</p></div>
+<h2>The technique, tool or no tool</h2>
+<p>An agent's output is a <em>claim</em>, not a fact. Verification means refusing to let the component that did the work also grade it. A sound pre-action gate checks four things, in code, every time:</p>
+<ul>
+<li><strong>Evidence:</strong> every claimed action (sent, posted, published, updated) names an id, URL, receipt or artifact that a second system could confirm.</li>
+<li><strong>Internal consistency:</strong> reported counts equal the itemized record in the same document; totals equal the sum of their parts.</li>
+<li><strong>Freshness:</strong> the state the run planned from is timestamped, inside its allowed age, and the version the handover promised.</li>
+<li><strong>Completeness:</strong> required fields are present <em>and non-empty</em>; no segment of the deliverable is a silent hole.</li>
+</ul>
+<p>A guardrail that grades with another model just moves the trust problem — the judge can be fooled the same way the worker was. The gate has to be deterministic: the claims either check out or the loop stops.</p>
+
+<h2>FailLoud as the worked example</h2>
+<pre><code>$ failloud check examples/failing_output.json
+Verdict: FAIL (8 error(s), 1 warning(s))
+[FL002] unbacked_claim — FAIL
+  ✗ $.claims[1] — Claimed action 'card_published' has no evidence — no id, URL,
+    receipt, or artifact in the claim backs that it happened.
+$ echo $?
+1</code></pre>
+<p>That output claimed a publish that never happened, reported 12 sent against a record of 9, and planned from state 77.1 hours old. Every dashboard was green, because the agent graded its own homework. In Python, the same gate is one call — <code>check_output(doc)</code> — and as an MCP tool (<code>check_output</code> on the <code>failloud-mcp</code> server) an orchestrating agent can run it on a sub-agent's result before acting on it.</p>
+<blockquote>"A successful tool call is not a successful outcome. The call returning is evidence the API answered — not that the work happened."</blockquote>
+<h2>When FailLoud is the wrong tool</h2>
+<p>If you need scored quality judgements over a test set — how good are these answers, on a 0–1 scale — use an eval framework (DeepEval, Ragas, Promptfoo). FailLoud does not score quality; it verifies that what an output claims actually checks out, on this run, before you act on it.</p>
+<nav class="guides"><a href="../agent-says-done/">Agent says “done”</a><a href="../ci-check-agent-output/">CI gate</a><a href="../mcp-verify-agent-output/">MCP verification</a><a href="../stale-state/">Stale state</a></nav>
+
+<footer class="site">
+<p>By Naveen Yalakala, Forward Deployed Engineer. Last updated November 20, 2026. FailLoud is MIT-licensed, zero-dependency in the core, and deterministic: same input, same verdict, every time.</p>
+<p><a href="https://github.com/Yalakala-Naveen/failloud">GitHub</a> · <a href="https://pypi.org/project/failloud/">PyPI</a> · <a href="https://yalakala-naveen.github.io/failloud/">Playground</a> · <a href="https://yalakala-naveen.github.io/failloud/llms.txt">llms.txt</a></p>
+</footer>
+</div>
+</body>
+</html>

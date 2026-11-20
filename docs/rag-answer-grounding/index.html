@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="color-scheme" content="dark" />
+<meta name="description" content="Check whether a RAG answer is actually supported by the retrieved documents: citation integrity, cited-source emptiness, numeric support — deterministically, with FailLoud FL006." />
+<link rel="canonical" href="https://yalakala-naveen.github.io/failloud/rag-answer-grounding/" />
+<link rel="icon" href="data:," />
+<title>How to check if a RAG answer is supported by the retrieved documents — FailLoud FL006</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+<style>
+:root{--bg:#07090d;--panel:#0c1118;--border:#1d2735;--border-soft:#141c28;--text:#d9e2ee;--muted:#8d9cae;--faint:#5d6d81;--green:#4ade80;--red:#ff6b64;--cyan:#58a6ff;--mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;--sans:"IBM Plex Sans",-apple-system,"Segoe UI",sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:16.5px;line-height:1.65}
+.wrap{max-width:820px;margin:0 auto;padding:28px 20px 64px}
+a{color:var(--cyan)}code{font-family:var(--mono);font-size:.92em;background:#111927;padding:1px 5px;border-radius:4px}
+pre{background:#0a0e14;border:1px solid var(--border-soft);border-radius:8px;padding:14px 16px;overflow-x:auto;font-family:var(--mono);font-size:13.5px;line-height:1.5}
+pre code{background:none;padding:0}
+.crumb{font-family:var(--mono);font-size:12.5px;color:var(--faint);margin-bottom:18px}
+.crumb a{color:var(--muted);text-decoration:none}.crumb a:hover{text-decoration:underline}
+h1{font-size:clamp(1.6rem,4.5vw,2.3rem);line-height:1.2;margin:0 0 14px}
+h2{font-size:1.3rem;margin:34px 0 10px}h3{font-size:1.08rem;margin:24px 0 8px}
+.short{border:1px solid var(--border);border-left:3px solid var(--green);background:var(--panel);border-radius:8px;padding:14px 18px;margin:18px 0}
+.short p{margin:0}.short .k{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--green);text-transform:uppercase;display:block;margin-bottom:6px}
+table{border-collapse:collapse;width:100%;margin:14px 0;font-size:14.5px}
+th,td{border:1px solid var(--border-soft);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--panel);font-weight:600}
+blockquote{border-left:3px solid var(--red);margin:18px 0;padding:4px 16px;color:var(--text);background:#0c1118}
+.muted{color:var(--muted)}footer.site{margin-top:44px;padding-top:18px;border-top:1px solid var(--border-soft);font-size:13.5px;color:var(--muted)}
+nav.guides{margin-top:26px;font-size:14px}nav.guides a{margin-right:12px;white-space:nowrap}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="crumb"><a href="https://yalakala-naveen.github.io/failloud/">FailLoud Playground</a> / Guides</p>
+<h1>How do I check if a RAG answer is actually supported by the retrieved documents?</h1>
+<div class="short"><span class="k">Short answer</span><p>Check the parts of grounding that can be checked deterministically. <strong>FailLoud's FL006 <code>unsupported_answer</code></strong> verifies that every citation resolves to a source that was actually retrieved, that every cited source carries text, and that every number in the answer appears in the sources. On the shipped failing RAG example that is 4 errors — two fabricated citations, two invented figures — and exit code 1. What it deliberately does not judge is semantic entailment: no model sits in the verdict path.</p></div>
+<h2>The technique</h2>
+<p>Retrieval gets measured by every dashboard; whether the answer is backed by what was retrieved is measured by nobody. Grounding splits into two kinds of question:</p>
+<ul>
+<li><strong>Deterministic questions</strong> — did the cited source exist in the retrieval set? Does it contain any text? Does this figure appear anywhere in the sources? Code can answer these exactly, every time, for free.</li>
+<li><strong>Judgement questions</strong> — does the prose <em>follow</em> from the source? That needs a reader: a human, or an LLM judge (Ragas faithfulness, DeepEval) with a judge's cost and variance.</li>
+</ul>
+<p>Run the deterministic layer first. An answer that invents citations or figures fails before any judge is consulted — and most production RAG failures start there, not in subtle entailment.</p>
+<h2>The worked example</h2>
+<pre><code>$ failloud check examples/rag_failing.json --only FL006
+[FL006] unsupported_answer — FAIL
+  ✗ $.citations — Citation 'refund_policy' does not resolve to any retrieved
+    source — the answer cites a source that was never retrieved.
+  ✗ $.answer — Citation [9] does not resolve to any retrieved source.
+  ✗ $.answer — Answer states the number 3 but it appears in no cited source.
+  ✗ $.answer — Answer states the number 25 but it appears in no cited source.
+Verdict: FAIL (4 error(s), 0 warning(s))</code></pre>
+<p>Number handling is normalised — <code>1,200</code>, <code>1200</code> and <code>1200.0</code> are the same number — and an answer that cites none of its retrieved sources earns a warning, not an error. The check activates only on RAG-shaped documents (an answer plus sources/retrieved/chunks/documents, explicit citations, or inline citation markers); anything else is out of scope and produces no findings.</p>
+<h2>When to use a judge instead</h2>
+<p>If the failure you fear is a subtle misreading of a real source, FL006 will pass it and a judged metric (Ragas faithfulness, DeepEval's hallucination metric) is the right second layer. If the failure you fear is invented evidence — the kind that ships confidently and gets quoted downstream — the deterministic check is the gate, because it cannot be talked out of its verdict.</p>
+<nav class="guides"><a href="../hallucinated-citations/">Hallucinated citations</a><a href="../unsupported-claims/">Unsupported claims</a><a href="../compare/failloud-vs-ragas/">FailLoud vs Ragas</a></nav>
+
+<footer class="site">
+<p>By Naveen Yalakala, Forward Deployed Engineer. Last updated November 20, 2026. FailLoud is MIT-licensed, zero-dependency in the core, and deterministic: same input, same verdict, every time.</p>
+<p><a href="https://github.com/Yalakala-Naveen/failloud">GitHub</a> · <a href="https://pypi.org/project/failloud/">PyPI</a> · <a href="https://yalakala-naveen.github.io/failloud/">Playground</a> · <a href="https://yalakala-naveen.github.io/failloud/llms.txt">llms.txt</a></p>
+</footer>
+</div>
+</body>
+</html>

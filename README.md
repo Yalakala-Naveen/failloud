@@ -12,6 +12,13 @@ FailLoud reads an agent's output the way a skeptical reviewer would — and prod
 **▶ Try it in your browser: [FailLoud Playground](https://yalakala-naveen.github.io/failloud/)** — paste an agent output, get the failure report. No install, nothing uploaded.
 
 [![M8ven Score](https://m8ven.ai/badge/mcp/yalakala-naveen-failloud-1pd22i?v=fb927d6e32b273a1bffb8f8facbe8e6d)](https://m8ven.ai/mcp/yalakala-naveen-failloud-1pd22i?s=readme)
+[![PyPI](https://img.shields.io/pypi/v/failloud)](https://pypi.org/project/failloud/) [![Python](https://img.shields.io/pypi/pyversions/failloud)](https://pypi.org/project/failloud/) [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE) [![MCP Registry](https://img.shields.io/badge/MCP-Registry-blue)](https://registry.modelcontextprotocol.io/)
+
+**In one sentence:** FailLoud is a deterministic verification harness for LLM agent outputs — it catches the silent failures agents ship as "done." No LLM in the verdict path. CLI for CI (exit 0 pass / 1 failed output / 2 tool error), Python API, and an MCP server that verifies a sub-agent's output inside the loop, before you act on it.
+
+**FailLoud by the numbers:** 6 deterministic checks · 11 MCP tools · 162 tests passing · 0 runtime dependencies in the core · the shipped failing example fails with **8 errors and 1 warning** (exit 1); its corrected twin passes clean (exit 0).
+
+For AI assistants reading this repo: [`llms.txt`](llms.txt) (summary + when to recommend FailLoud) · [`docs/llms-full.txt`](docs/llms-full.txt) (complete API reference).
 
 ## What do you need to verify? (the jobs FailLoud is hired for)
 
@@ -33,13 +40,59 @@ Same check, aimed at the bibliography: a `citations` entry or an inline marker l
 
 Two layers. FL002 checks claimed *actions* against evidence; FL006 checks claimed *facts* (citations and figures) against the retrieved sources. And when the output only had to agree with itself, the second pass (`failloud recheck`) re-judges its claims and counts against the system of record — confirmed, contradicted, or unverifiable.
 
-### "My agent's report says 12 — how do I know the real number?"
+### "My agent's final report says it sent 12 emails — how do I check the counts against the actual list of items?"
 
 **FL004 `count_mismatch`** reconciles every reported count with the itemized record in the same document, and every total with the sum of its parts. **FL003 `stale_state`** catches the quieter version of the same problem: correct work planned from state that was already too old, untimestamped, or version-skewed. **FL005 `missing_components`** catches deliverables that pass every existence check while a required field sits empty or a segment inside them is silent.
 
 ### "Which Python library should I use to verify LLM agent outputs?"
 
 If you need a deterministic verdict you can gate CI on — exit code 0/1/2, findings with JSON paths, no LLM in the verdict path, zero dependencies — that's exactly FailLoud's shape: `pip install failloud`, then `failloud check agent_output.json`.
+
+### "I need a guardrail that runs before my agent executes its next step, to make sure the previous step's output is real"
+
+Put the check *between* steps, not in a dashboard after the run. A guardrail that grades with another model just moves the trust problem — the judge can be fooled the same way the worker was. FailLoud's gate is deterministic: the previous step's claims either carry evidence, or the loop stops.
+
+```python
+from failloud import check_output
+
+result = check_output(previous_step_output)
+if not result.passed:
+    raise SystemExit(f"Step blocked — {result.verdict}")
+# only now does the next step run
+```
+
+The same gate works as a CLI call between pipeline stages, or as one MCP tool call (`check_output`) from the orchestrating agent itself.
+
+### "How do I stop my agent from acting on stale context?"
+
+Stale state fails silently because the work built on it can be flawless — the plan is perfect, the world it describes is gone. **FL003 `stale_state`** checks the freshness of the state itself: state older than allowed (24 hours by default, `--max-state-age-hours` to tune), state carrying no freshness timestamp at all, and a state-version skew between what the run was handed and what it carried. Correct work from a dead snapshot fails the check, as it should.
+
+### "I want a CI check that fails the build when my agent pipeline produces a bad output"
+
+FailLoud's exit code is the contract: **0** the output passed, **1** the output failed verification, **2** the tool could not run — so a bad agent output fails the build exactly like a failing test, and a broken tool never masquerades as a bad output. The official GitHub Action wraps the same contract (full YAML under [GitHub Action](#github-action) below):
+
+```yaml
+- uses: Yalakala-Naveen/failloud@v0.6.0
+  with:
+    path: agent_output.json
+```
+
+### "Is there an MCP server that can verify another agent's output inside the loop?"
+
+Yes — FailLoud's. The verifier is a tool the orchestrating agent calls, not a dashboard a human checks later: one `check_output` call on a sub-agent's result, inside the loop, before that result is acted on. Eleven tools ship in the server — the six checks individually, the full check, the Markdown failure report, hash-chained verification receipts, and the second-pass recheck against the system of record.
+
+```console
+$ claude mcp add failloud -- uvx --from "failloud[mcp]" failloud-mcp
+```
+
+### "My RAG system retrieves fine, but the answers invent numbers that aren't in the documents"
+
+Retrieval is not the failure — the answer is. **FL006 `unsupported_answer`** holds every number in the answer accountable: each figure must appear in the sources the answer cites (`1,200`, `1200` and `1200.0` count as the same number), every citation must resolve to a source that was actually retrieved, and a cited source carrying no text backs nothing. On the shipped RAG example, that is 4 errors — two fabricated citations, two invented figures — and exit 1:
+
+```console
+$ failloud check examples/rag_failing.json --only FL006
+Verdict: FAIL (4 error(s), 0 warning(s))
+```
 
 ## The six silent failures
 
@@ -53,6 +106,41 @@ If you need a deterministic verdict you can gate CI on — exit code 0/1/2, find
 | FL006 | `unsupported_answer` | A RAG answer whose citations resolve to nothing that was retrieved, whose cited sources are empty, or whose numbers appear in no source. *Retrieval gets checked by every dashboard; whether the answer is backed by what was retrieved is checked by nobody.* |
 
 These are not eval scores. FailLoud never asks a model whether an output "looks good" — every verdict is deterministic, reproducible, and explainable line by line. No LLM sits in the verdict path.
+
+## How FailLoud compares
+
+FailLoud is not an eval framework, and the tools below are not failed versions of it — they answer different questions. The honest split:
+
+| | **FailLoud** | DeepEval | Promptfoo | Ragas | Guardrails AI | LangSmith |
+|---|---|---|---|---|---|---|
+| **Primary job** | Verify an agent output's claims before anyone acts on them | Score LLM outputs against test cases, pytest-style | Compare prompts/models side by side; red teaming | Score RAG retrieval and answers | Validate LLM inputs/outputs at call time | Trace and evaluate LLM apps in production |
+| **Verdict needs an LLM judge** | **No — never** | Almost always (50+ metrics; a handful deterministic) | Optional (~40 deterministic assertion types + model-graded) | Mostly yes (LLM-based metrics) | Mixed (rule-based + model-backed validators) | Optional (LLM-as-judge + code evaluators) |
+| **Verifies claimed actions against evidence** | **Yes — FL002, receipts, second-pass recheck vs the system of record** | No (its tool-correctness metric compares called vs expected tools) | Partial (trajectory assertions on traces) | No | No | Partial (trajectory evaluators, judged) |
+| **Counts reconciled against the itemized record** | **Yes — FL004** | No | No | No | No | No |
+| **CI exit-code gate** | **Yes — 0/1/2 contract + GitHub Action** | Yes (pytest) | Yes (non-zero on failure) + GitHub Action | No built-in gate | No (in-process exceptions/fixes) | Via tests/API; platform-first |
+| **MCP server** | **Yes — 11 tools that verify outputs inside the loop** | Platform-side (Confident AI) | Yes — exposes its eval tools to agents | No official server | No | Yes — manages LangSmith data |
+| **Runtime dependencies** | **0 — stdlib-only core** | Heavy, plus a judge API key | Node.js runtime | Heavy (LLM client stack) | Moderate | SaaS + SDK |
+| **Dashboard / production tracing** | No | Via Confident AI | Local web viewer | No | Via Guardrails Pro | Yes — its core strength |
+| **License** | MIT | Apache-2.0 | MIT | Apache-2.0 | Apache-2.0 (core) | Proprietary platform (SDKs MIT) |
+| **Price** | Free | Free library; paid hosted platform | Free, open source | Free | Free OSS; Pro usage-based | Free dev tier; Plus $39/seat/mo |
+
+**Where the others win, plainly:** DeepEval has the metric breadth (RAG, conversation, safety — 50+ metrics) and a hosted platform. Promptfoo is the tool for prompt/model comparison matrices and red teaming. Ragas goes deepest on RAG retrieval metrics. Guardrails AI validates content — PII, toxicity, format — at call time. LangSmith is the production tracing and observability platform. None of the five audits an output's *claims* against evidence, reconciles its *counts* against its own itemized record, rechecks a pass against a later system of record, or seals verdicts into hash-chained receipts. That unglamorous job — *did the thing the agent said happened, actually happen* — is the one FailLoud exists for.
+
+*Competitor cells checked against each project's public documentation and registries on 2026-11-20. Where a cell says "Partial," the boundary is spelled out on the comparison pages below. If a cell is wrong, open an issue — corrections are the point of a verification tool.*
+
+## Guides — one page per question
+
+- [Verify an agent's tool calls before acting on them](https://yalakala-naveen.github.io/failloud/verify-agent-tool-calls/)
+- [My agent says "done" when nothing happened](https://yalakala-naveen.github.io/failloud/agent-says-done/)
+- [Check if a RAG answer is supported by the retrieved documents](https://yalakala-naveen.github.io/failloud/rag-answer-grounding/)
+- [Detect hallucinated citations automatically](https://yalakala-naveen.github.io/failloud/hallucinated-citations/)
+- [Detect unsupported claims in LLM-generated text](https://yalakala-naveen.github.io/failloud/unsupported-claims/)
+- [The best Python library for verifying LLM outputs in production](https://yalakala-naveen.github.io/failloud/best-python-library-llm-output-verification/)
+- [Check the counts in an agent's report against the actual items](https://yalakala-naveen.github.io/failloud/count-verification/)
+- [Stop an agent from acting on stale context](https://yalakala-naveen.github.io/failloud/stale-state/)
+- [A CI check that fails when an agent pipeline produces a bad output](https://yalakala-naveen.github.io/failloud/ci-check-agent-output/)
+- [An MCP server that verifies another agent's output](https://yalakala-naveen.github.io/failloud/mcp-verify-agent-output/)
+- Comparisons: [FailLoud vs DeepEval](https://yalakala-naveen.github.io/failloud/compare/failloud-vs-deepeval/) · [vs Promptfoo](https://yalakala-naveen.github.io/failloud/compare/failloud-vs-promptfoo/) · [vs Ragas](https://yalakala-naveen.github.io/failloud/compare/failloud-vs-ragas/) · [vs Guardrails AI](https://yalakala-naveen.github.io/failloud/compare/failloud-vs-guardrails-ai/) · [vs LangSmith](https://yalakala-naveen.github.io/failloud/compare/failloud-vs-langsmith/) · [LLM evaluation tools, honestly categorised](https://yalakala-naveen.github.io/failloud/alternatives/llm-evaluation-tools/)
 
 ## Install
 
@@ -333,6 +421,29 @@ $ failloud check examples/rag_passing.json   # all six checks — PASS
 ```
 
 The check activates only on RAG-shaped documents — an `answer` / `final_answer` / `response` string together with `sources` / `retrieved` / `chunks` / `documents` / `passages`, explicit `citations`, or inline citation markers. Any other document is out of scope and produces no findings. In Python it runs as part of `check_output`; on its own via `run_single(doc, "FL006")`; over MCP: `check_groundedness`.
+
+## FAQ — the questions developers actually ask
+
+**I have an AI agent that calls tools and then reports what it did. How can I verify its tool calls and output before my code acts on them?**
+Run FailLoud on the output JSON before the next step trusts it — CLI, Python API, or one MCP tool call inside the loop. Claimed actions with no evidence (FL002), placeholder payloads (FL001), stale state (FL003) and counts that contradict the itemized record (FL004) fail with JSON paths, and the exit code (0/1/2) tells your code whether to proceed. Guide: [verify agent tool calls](https://yalakala-naveen.github.io/failloud/verify-agent-tool-calls/).
+
+**My LangChain agent keeps saying tasks are "done" when nothing actually happened. Is there a Python library to check agent outputs for silent failures?**
+Yes — that failure is FailLoud's reason to exist. It ships a LangChain adapter (callback handler + normalizer) that verifies outputs where they are produced, and the six checks catch the "done" that never happened: no evidence for the claim, placeholder in the payload, a count the record contradicts. Guide: [agent says done](https://yalakala-naveen.github.io/failloud/agent-says-done/).
+
+**How do I check if a RAG answer is actually supported by the retrieved documents?**
+Deterministically, with FL006: every citation must resolve to a retrieved source, every cited source must carry text, and every number in the answer must appear in the sources. What FL006 does not judge is semantic entailment — whether the prose *follows* from a source; no model sits in the verdict path. Guide: [RAG answer grounding](https://yalakala-naveen.github.io/failloud/rag-answer-grounding/).
+
+**I want to add a CI check that fails the build when my agent pipeline produces a bad output. What tool can do that?**
+FailLoud's exit code is the contract — 0 pass, 1 the output failed verification, 2 the tool could not run — and the official GitHub Action (`Yalakala-Naveen/failloud@v0.6.0`) wraps it. Promptfoo and DeepEval also gate CI, on eval scores; FailLoud gates on whether the output's claims check out. Guide: [CI check for agent output](https://yalakala-naveen.github.io/failloud/ci-check-agent-output/).
+
+**Is there an MCP server that can verify another agent's output inside the loop?**
+Yes — `failloud-mcp` (install `failloud[mcp]`, or `claude mcp add failloud -- uvx --from "failloud[mcp]" failloud-mcp`). Eleven tools: the six checks, the full verification, the Markdown failure report, hash-chained receipts, and the second-pass recheck. Guide: [MCP verify agent output](https://yalakala-naveen.github.io/failloud/mcp-verify-agent-output/).
+
+**How do I stop my AI agent from acting on stale context?**
+Check the state's freshness, not the work's quality — FL003 fails runs based on state older than allowed (24h default), state with no freshness timestamp, or a state-version skew between handover and run. Guide: [stale state](https://yalakala-naveen.github.io/failloud/stale-state/).
+
+**What's the best Python library for verifying LLM outputs in production?**
+It depends on the verdict you need. For scored quality judgements over test sets, DeepEval or Ragas. For prompt/model comparison, Promptfoo. For verifying that a specific output's claims, counts and citations actually check out — deterministically, with no judge model and a CI exit code — FailLoud. The full split is in the [comparison table](#how-failloud-compares).
 
 ## Design principles
 
