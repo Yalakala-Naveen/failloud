@@ -140,6 +140,9 @@ FailLoud is not an eval framework, and the tools below are not failed versions o
 - [Stop an agent from acting on stale context](https://yalakala-naveen.github.io/failloud/stale-state/)
 - [A CI check that fails when an agent pipeline produces a bad output](https://yalakala-naveen.github.io/failloud/ci-check-agent-output/)
 - [An MCP server that verifies another agent's output](https://yalakala-naveen.github.io/failloud/mcp-verify-agent-output/)
+- [What is agent output verification?](https://yalakala-naveen.github.io/failloud/what-is-agent-output-verification/) · [Verify LangGraph agent output between steps](https://yalakala-naveen.github.io/failloud/verify-langgraph-agent-output/) · [Deterministic verification vs LLM-as-judge](https://yalakala-naveen.github.io/failloud/deterministic-verification-vs-llm-judge/)
+- [The Silent Failure Audit — 60 outputs that claimed "done," measured](https://yalakala-naveen.github.io/failloud/silent-failure-audit/) (dataset + script: [`audits/silent-failure-audit/`](audits/silent-failure-audit/))
+- Runnable examples: [CI gate for agent outputs](examples/ci_gate/) · [LangGraph / agent-loop guard node](examples/langgraph_gate/) · [LangChain adapter](examples/langchain_adapter.py)
 - Comparisons: [FailLoud vs DeepEval](https://yalakala-naveen.github.io/failloud/compare/failloud-vs-deepeval/) · [vs Promptfoo](https://yalakala-naveen.github.io/failloud/compare/failloud-vs-promptfoo/) · [vs Ragas](https://yalakala-naveen.github.io/failloud/compare/failloud-vs-ragas/) · [vs Guardrails AI](https://yalakala-naveen.github.io/failloud/compare/failloud-vs-guardrails-ai/) · [vs LangSmith](https://yalakala-naveen.github.io/failloud/compare/failloud-vs-langsmith/) · [LLM evaluation tools, honestly categorised](https://yalakala-naveen.github.io/failloud/alternatives/llm-evaluation-tools/)
 
 ## Install

@@ -1,0 +1,34 @@
+# Gate agent outputs with FailLoud.
+# Copy to .github/workflows/agent-output-gate.yml and point AGENT_OUTPUT
+# at the JSON file your agent pipeline produces.
+name: agent-output-gate
+
+on:
+  push:
+  pull_request:
+
+env:
+  AGENT_OUTPUT: sample_agent_output.json  # <-- your pipeline's output file
+
+jobs:
+  verify-agent-output:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install FailLoud
+        run: pip install failloud
+
+      # Exit 0 = pass, 1 = the output failed verification, 2 = tool error.
+      # Any non-zero exit fails this job — that is the gate working.
+      - name: Verify the agent output before it ships as done
+        run: failloud check "$AGENT_OUTPUT" --format md
+
+      # The same gate as a one-line published action, for comparison:
+      # - uses: Yalakala-Naveen/failloud@v0.6.0
+      #   with:
+      #     path: sample_agent_output.json
