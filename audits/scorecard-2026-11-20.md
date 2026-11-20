@@ -10,7 +10,7 @@ pre-tuning baseline the trend is measured against.
 | Assistant | Recommendation Score (named %) | Priority Score (named first %) | Status |
 |---|---|---|---|
 | ChatGPT | 0% (0/12) | 0% (0/12) | Complete |
-| Claude | — | — | Waiting on user sign-in (no saved Claude login) |
+| Claude | 0% (0/12) | 0% (0/12) | Complete |
 | Gemini | — | — | BLOCKED — site error: "Something went wrong" on every app load after a successful sign-in (therembiq@gmail.com) |
 | Perplexity | 25% (3/12) | 25% (3/12) | Complete |
 | Copilot | — | — | BLOCKED — sign-in required, no saved Microsoft account |
