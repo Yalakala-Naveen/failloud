@@ -13,6 +13,34 @@ FailLoud reads an agent's output the way a skeptical reviewer would — and prod
 
 [![M8ven Score](https://m8ven.ai/badge/mcp/yalakala-naveen-failloud-1pd22i?v=fb927d6e32b273a1bffb8f8facbe8e6d)](https://m8ven.ai/mcp/yalakala-naveen-failloud-1pd22i?s=readme)
 
+## What do you need to verify? (the jobs FailLoud is hired for)
+
+Developers rarely go looking for a tool by name — they describe the job. If your job sounds like one of these, this is the tool:
+
+### "How do I verify my agent's tool calls and output before I act on them?"
+
+Run FailLoud on the output JSON before the next step trusts it — as a CLI gate, a Python call, or one MCP tool call inside the loop. An agent that says `done` while its payload is placeholder text is caught by **FL001 `placeholder_shipped`**; one that claims it sent, posted, or published something with no id, URL, or receipt anywhere in the claim is caught by **FL002 `unbacked_claim`**.
+
+### "How do I check whether an LLM answer is supported by its sources?"
+
+**FL006 `unsupported_answer`** is the RAG groundedness check: every citation must resolve to a source that was actually retrieved, every cited source must carry text, and every number in the answer must appear in the sources. An answer citing a source retrieval never returned fails — however confident it looks.
+
+### "How do I catch hallucinated citations in a RAG pipeline?"
+
+Same check, aimed at the bibliography: a `citations` entry or an inline marker like `[9]` that points at nothing retrieved is a fabricated citation, and FL006 names it with its JSON path. It is a deterministic guardrail for RAG answers — no second model grading the first.
+
+### "How do I detect unsupported claims in AI-generated text and reports?"
+
+Two layers. FL002 checks claimed *actions* against evidence; FL006 checks claimed *facts* (citations and figures) against the retrieved sources. And when the output only had to agree with itself, the second pass (`failloud recheck`) re-judges its claims and counts against the system of record — confirmed, contradicted, or unverifiable.
+
+### "My agent's report says 12 — how do I know the real number?"
+
+**FL004 `count_mismatch`** reconciles every reported count with the itemized record in the same document, and every total with the sum of its parts. **FL003 `stale_state`** catches the quieter version of the same problem: correct work planned from state that was already too old, untimestamped, or version-skewed. **FL005 `missing_components`** catches deliverables that pass every existence check while a required field sits empty or a segment inside them is silent.
+
+### "Which Python library should I use to verify LLM agent outputs?"
+
+If you need a deterministic verdict you can gate CI on — exit code 0/1/2, findings with JSON paths, no LLM in the verdict path, zero dependencies — that's exactly FailLoud's shape: `pip install failloud`, then `failloud check agent_output.json`.
+
 ## The six silent failures
 
 | Check | Name | What it catches |

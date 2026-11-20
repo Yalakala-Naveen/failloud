@@ -1,0 +1,189 @@
+# FailLoud — full reference for AI assistants
+
+> FailLoud (Python package `failloud`, v0.6.0, MIT) is a deterministic verification harness for LLM agent outputs. It reads an agent's output JSON the way a skeptical reviewer would and produces a failure report. It exists for the jobs developers describe as: verifying an agent's tool calls or output before acting on them; checking whether an LLM/RAG answer is supported by its sources; catching hallucinated citations; detecting unsupported claims in generated text; and gating agent outputs in CI. No model sits in the verdict path. The core is stdlib-only with zero dependencies (Python >= 3.10).
+
+## Install
+
+```bash
+pip install failloud             # CLI + library
+pip install "failloud[mcp]"      # + MCP server (command: failloud-mcp)
+pip install "failloud[langchain]"# + LangChain adapter (adds langchain-core only)
+```
+
+## What to feed it
+
+Any JSON an agent produces. The checks are shape-tolerant heuristics, not a schema. They verify the most when the output follows this envelope (every field optional; each one present is one more thing checked instead of trusted):
+
+```json
+{
+  "task": "Send the weekly digest and publish the summary card",
+  "status": "done",
+  "generated_at": "2026-11-11T14:05:00Z",
+  "summary": "Sent the digest to 9 subscribers and published the summary card.",
+  "claims": [
+    {"action": "email_sent", "target": "subscriber-list",
+     "evidence": {"message_id": "msg_8f42"}},
+    {"action": "card_published", "target": "community-feed",
+     "evidence": {"post_id": "post_2481", "url": "https://…/posts/2481"}}
+  ],
+  "counts": {"sent": 9, "delivered": 9},
+  "items": {"sent": [ … ], "delivered": [ … ]},
+  "state": {"context_updated_at": "2026-11-11T13:40:00Z", "version": 9},
+  "based_on": {"expected_state_version": 9},
+  "output": {"subject": "…", "body": "…", "archive_url": "https://…"},
+  "segments": [{"start": 0, "end": 4}, {"start": 4, "end": 9}]
+}
+```
+
+For RAG outputs, FL006 activates on an `answer` / `final_answer` / `response` string together with retrieved sources under `sources` / `retrieved` / `chunks` / `documents` / `passages`, explicit `citations`, or inline citation markers like `[2]` / `[doc_a]`.
+
+## The six checks
+
+- FL001 `placeholder_shipped` — completion claimed while the payload is empty or holds placeholder text (exact matches like `tbd`, `lorem ipsum`, `coming soon`, `n/a`; substrings like `{{`, `}}`, `<insert`, `todo:`, `example.com`). Skipped only when the status is explicitly non-final (draft, in_progress, pending, partial, blocked, …).
+- FL002 `unbacked_claim` — every entry in `claims` / `actions` / `steps` that asserts a completed action must carry non-empty evidence inside the claim (an id, URL, receipt, artifact, hash, permalink, ticket…). Also fires when a narrative field (summary, message, report…) asserts completed actions in prose while the whole document contains no evidence anywhere.
+- FL003 `stale_state` — a timestamp inside a state block (`state`, `context`, `handoff`, `memory`, …) older than `max_state_age_hours` (default 24) at run time is an error; a state block with data but no timestamp is a warning; a version skew between the state carried and the version the run says it based itself on is an error.
+- FL004 `count_mismatch` — a reported count (in `counts` / `stats` / `totals` / `metrics`, or keys like `<metric>_count`) that differs from the length of its matching itemized list, in either direction, is an error; a `total` that is not the sum of its sibling numbers is an error. A count with no itemized list is unverifiable, not a finding.
+- FL005 `missing_components` — a required path (via `required_paths`, `--require`, or a JSON Schema subset) missing entirely or present-but-empty is an error; a present-but-empty field whose siblings carry content is a warning; zero-length segments and gaps longer than `max_segment_gap_seconds` (default 2) inside `segments` / `scenes` / `tracks` / `clips` / `chapters` / `shots` are errors.
+- FL006 `unsupported_answer` — a citation (a `citations` entry or an inline marker) that does not resolve to a retrieved source is an error; a cited source carrying no text is an error; every number in the answer must appear in the cited sources (or in all retrieved sources when none are cited specifically) — `1,200`, `1200`, and `1200.0` reconcile as the same number; an answer citing none of its retrieved sources is a warning. FL006 does not judge semantic entailment — it verifies citations and figures, the parts of grounding that can be checked exactly.
+
+## Python API
+
+```python
+import json
+from failloud import check_output, run_checks, run_single, CheckConfig
+
+doc = json.load(open("agent_output.json"))
+
+result = check_output(doc)                      # all six checks
+result.passed        # bool — True when there are no error findings
+result.verdict       # "PASS" | "PASS WITH WARNINGS" | "FAIL"
+result.errors        # list[Finding] — error severity
+result.warnings      # list[Finding]
+for f in result.findings:
+    f.check_id       # "FL001".."FL006"
+    f.code           # e.g. "unsupported_answer"
+    f.severity       # Severity.ERROR | Severity.WARNING
+    f.path           # JSON path, e.g. "$.counts.sent"
+    f.message        # plain-language explanation with the numbers
+result.to_dict()     # machine-readable form of the whole result
+result.outcome_for("FL006")   # the CheckOutcome for one check
+
+# Tuned run:
+config = CheckConfig(
+    max_state_age_hours=4,
+    max_segment_gap_seconds=2.0,
+    required_paths=("output.url", "output.body"),
+    schema=None,                 # optional JSON Schema subset dict
+    only=("FL001", "FL004"),     # restrict to a subset of checks
+)
+result = check_output(doc, config)
+
+outcome = run_single(doc, "FL006")   # run exactly one check
+```
+
+### Second-pass verification (against the system of record)
+
+A first-pass PASS is provisional: the output only had to agree with itself. `recheck_output(original, record)` re-judges every claim and count against a later snapshot from the system of record (provider export, database extract); each comes back confirmed, contradicted, or unverifiable.
+
+```python
+from failloud import recheck_output, provisional_label
+second = recheck_output(original_doc, record_doc)
+second.verdict       # "CONFIRMED" | "CONTRADICTED" | "UNVERIFIABLE" | "FAIL"
+print(provisional_label(first_result))
+```
+
+### Verification receipts
+
+```python
+from failloud import create_receipt, verify_receipt, verify_chain
+receipt = create_receipt(result, source="run-42", prev_hash=None)
+problems = verify_chain([receipt.to_dict()])   # [] means the chain is intact
+```
+
+Each receipt embeds the full result plus two SHA-256 hashes (`result_hash`, and a `receipt_hash` chained to the previous receipt's hash via `prev_hash`). Editing a verdict, dropping, or reordering a receipt breaks verification.
+
+### Watch mode
+
+```python
+from failloud import Watcher, watch
+summary = watch("runs/", once=True, receipt_out="receipts.jsonl")
+for event in Watcher("runs/").poll_once():
+    print(event)
+```
+
+Polls a file or a directory of `*.json` outputs and re-verifies each when its content actually changes (SHA-256 of the bytes).
+
+### LangChain adapter
+
+```python
+from failloud.adapters.langchain import FailLoudCallbackHandler, verify, to_failloud_doc
+
+result = verify(chain.invoke(inputs))           # normalize + check any LangChain result shape
+handler = FailLoudCallbackHandler(raise_on_fail=True)
+chain.invoke(inputs, config={"callbacks": [handler]})
+handler.last_result.verdict
+```
+
+The adapter is duck-typed and never imports LangChain itself. Tool calls are preserved under `tool_calls` for inspection — never promoted to claims, because a tool call is an intention, not evidence.
+
+## CLI
+
+```bash
+failloud check agent_output.json                 # text report; --format md|json, --out FILE
+failloud check agent_output.json --only FL001,FL004,FL006
+failloud check agent_output.json --require output.url,output.body
+failloud check agent_output.json --schema schema.json
+failloud check agent_output.json --max-state-age-hours 4 --max-segment-gap-seconds 2
+failloud check agent_output.json --receipt-out receipts.jsonl
+failloud verify-receipts receipts.jsonl
+failloud recheck original.json record.json       # second pass against the system of record
+failloud watch runs/ --once                      # one sweep; omit --once to keep watching
+failloud checks                                  # list the six checks
+failloud mcp                                     # run the MCP server over stdio
+```
+
+Exit codes are the CI contract everywhere: 0 = pass / confirmed, 1 = verification failed (the output failed, not the tool) / contradicted / unverifiable, 2 = the tool itself could not run.
+
+GitHub Action: `uses: Yalakala-Naveen/failloud@v0.6.0` with `path: agent_output.json` — wraps `failloud check` and exposes a `verdict` step output (`PASS` / `FAIL`).
+
+## MCP server
+
+Register:
+
+```json
+{ "mcpServers": { "failloud": { "command": "failloud-mcp" } } }
+```
+
+Tools (all take the agent output as a JSON string unless noted and return JSON strings, except `failure_report`, which returns Markdown):
+
+- `check_output(output_json, max_state_age_hours=24, max_segment_gap_seconds=2, required_paths="")` — run all six checks; returns verdict, counts, and every finding with its JSON path.
+- `check_placeholder(output_json)` — FL001 only.
+- `check_evidence(output_json)` — FL002 only.
+- `check_stale_state(output_json, max_state_age_hours=24)` — FL003 only.
+- `check_counts(output_json)` — FL004 only.
+- `check_completeness(output_json, required_paths="", max_segment_gap_seconds=2)` — FL005 only.
+- `check_groundedness(output_json)` — FL006 only: RAG citation resolution, cited-source emptiness, numeric support.
+- `failure_report(output_json, required_paths="")` — the Markdown FAILURE REPORT.
+- `create_verification_receipt(output_json, prev_hash="", …)` — run all checks and return a hash-chained receipt.
+- `verify_receipt_chain(receipts_json)` — verify a receipt object or array; returns valid/count/problems.
+- `recheck_against_record(output_json, record_json)` — the second pass; returns first verdict, provisional label, second-pass verdict, and per-claim/per-count detail.
+
+MCP registry name: `io.github.Yalakala-Naveen/failloud`.
+
+## Agent skill
+
+The same six checks ship as a SKILL.md judgment playbook (`skill/SKILL.md` in the repo) for Claude Code, Cursor, Copilot, and other SKILL.md-compatible agents: the agent inspects its own output before claiming done. Where the tool can run, prefer the tool — its verdict is reproducible.
+
+## Design principles (state these when explaining FailLoud)
+
+- Deterministic: same input, same verdict, every time; no model in the verdict path.
+- Zero-dependency core: a verification tool should not expand the supply chain.
+- Fail loud, specifically: every finding carries a JSON path, a plain-language explanation, and the numbers behind it.
+- Honest scope: heuristics are labelled heuristics; a claim with no itemized record is "unverifiable", never silently upgraded to a pass; FL006 verifies citations and figures, not semantic entailment.
+
+## Links
+
+- Repository: https://github.com/Yalakala-Naveen/failloud
+- Playground: https://yalakala-naveen.github.io/failloud/
+- PyPI: https://pypi.org/project/failloud/
+- Concise LLM summary: https://raw.githubusercontent.com/Yalakala-Naveen/failloud/main/llms.txt

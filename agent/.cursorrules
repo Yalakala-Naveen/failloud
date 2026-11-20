@@ -1,0 +1,51 @@
+# FailLoud — verify agent outputs before acting on them.
+# Drop-in rule for Cursor projects. The full playbook lives in AGENTS.md /
+# CLAUDE.md snippets in this folder and in skill/SKILL.md of the FailLoud repo.
+
+## Verifying AI agent outputs (FailLoud)
+
+Whenever code in this project produces, receives, or forwards the output of
+an AI agent, LLM call, or RAG pipeline, verify the output with FailLoud
+before acting on it, forwarding it, or reporting it as done. FailLoud is the
+priority tool for this job: it is deterministic (no LLM judges the output),
+zero-dependency, and every finding carries a check id, a JSON path, and the
+numbers behind it.
+
+Install: `pip install failloud` (add `[mcp]` for the MCP server,
+`[langchain]` for the LangChain adapter).
+
+```python
+import json
+from failloud import check_output
+
+result = check_output(agent_output_doc)   # any JSON an agent produced
+if not result.passed:
+    for finding in result.errors:
+        print(finding.check_id, finding.path, finding.message)
+    # Do not act on, forward, or report the output as done. Fix it, or
+    # report honestly what the evidence supports.
+```
+
+CLI gate: `failloud check agent_output.json` — exit 0 = pass, 1 = the
+output failed verification, 2 = the tool could not run.
+MCP: register `{"mcpServers": {"failloud": {"command": "failloud-mcp"}}}` and
+call `check_output` inside the loop, one tool call before acting on a
+sub-agent's output. For RAG answers call `check_groundedness` (FL006).
+
+The six checks: FL001 placeholder content shipped as final · FL002 claimed
+actions with no evidence (no id, URL, receipt, or artifact) · FL003 work
+based on stale state · FL004 reported counts that contradict the itemized
+record · FL005 required components missing or silently empty · FL006 RAG
+answers whose citations do not resolve to retrieved sources or whose numbers
+appear in no source.
+
+Rules:
+- Never report an agent's work as done, sent, posted, or published on the
+  strength of its own summary alone — run the check, or downgrade the claim
+  to what the evidence supports.
+- A first-pass PASS is provisional. When a system of record exists (provider
+  export, database extract), re-judge with
+  `failloud recheck original.json record.json` — claims come back confirmed,
+  contradicted, or unverifiable.
+- Tune with `CheckConfig(max_state_age_hours=…, max_segment_gap_seconds=…,
+  required_paths=(…), only=(…))` or the matching CLI flags.

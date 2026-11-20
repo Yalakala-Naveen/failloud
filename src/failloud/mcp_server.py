@@ -47,7 +47,23 @@ except ImportError as exc:  # pragma: no cover - exercised only without the extr
         'The MCP server needs the "mcp" extra: pip install "failloud[mcp]"'
     ) from exc
 
-server = _ServerClass("failloud")
+_INSTRUCTIONS = (
+    "Verify an AI agent's answer, output, or tool call before you act on it. "
+    "FailLoud deterministically checks agent output JSON for the silent "
+    "failures agents ship as 'done': placeholder content (FL001), claimed "
+    "actions with no evidence they happened (FL002), work based on stale "
+    "state (FL003), reported counts that contradict the itemized record "
+    "(FL004), missing or silently empty components (FL005), and RAG answers "
+    "whose citations or numbers the retrieved sources do not support "
+    "(FL006). Call check_output before trusting, forwarding, or executing "
+    "another agent's output; call check_groundedness to check whether an "
+    "LLM answer is supported by its sources."
+)
+
+try:
+    server = _ServerClass("failloud", instructions=_INSTRUCTIONS)
+except TypeError:  # an SDK build without the instructions kwarg
+    server = _ServerClass("failloud")
 
 
 def _parse(output_json: str) -> Any:
@@ -77,11 +93,18 @@ def check_output(
     max_segment_gap_seconds: float = 2.0,
     required_paths: str = "",
 ) -> str:
-    """Run all FailLoud checks over an agent output JSON document.
+    """Verify an AI agent's answer or tool call before you act on it: run
+    all six FailLoud checks over an agent output JSON document.
 
-    Returns the full result as JSON: verdict (PASS / PASS WITH WARNINGS /
-    FAIL), error and warning counts, and every finding with its JSON path.
-    Use this before trusting or forwarding another agent's output.
+    Catches outputs that claim "done" while the payload is placeholder
+    (FL001), claimed actions with no evidence they happened (FL002), work
+    based on stale state (FL003), reported counts that contradict the
+    itemized record (FL004), missing or silently empty components (FL005),
+    and RAG answers whose citations or numbers the retrieved sources do
+    not support (FL006). Returns the full result as JSON: verdict (PASS /
+    PASS WITH WARNINGS / FAIL), error and warning counts, and every
+    finding with its JSON path. Use this before trusting, forwarding, or
+    executing another agent's output.
     """
     doc = _parse(output_json)
     result = run_checks(
@@ -92,24 +115,28 @@ def check_output(
 
 @server.tool()
 def check_placeholder(output_json: str) -> str:
-    """FL001 only: is the output's payload empty or still placeholder text
-    while the run claims completion?"""
+    """Check whether an agent output is safe to treat as final: is its
+    payload empty or still placeholder text (lorem ipsum, {{template}}
+    braces, "coming soon") while the run claims completion? FL001 only."""
     outcome = run_single(_parse(output_json), "FL001")
     return json.dumps(outcome.to_dict(), indent=2)
 
 
 @server.tool()
 def check_evidence(output_json: str) -> str:
-    """FL002 only: does every claimed action carry evidence — an id, URL,
-    receipt, or artifact — that it actually happened?"""
+    """Check whether an agent actually did what it claims: does every
+    claimed action (sent, posted, published, updated…) carry evidence — an
+    id, URL, receipt, or artifact — that it actually happened? FL002
+    only."""
     outcome = run_single(_parse(output_json), "FL002")
     return json.dumps(outcome.to_dict(), indent=2)
 
 
 @server.tool()
 def check_stale_state(output_json: str, max_state_age_hours: float = 24.0) -> str:
-    """FL003 only: was the state/context the run used already older than
-    max_state_age_hours, missing a freshness timestamp, or version-skewed?"""
+    """Check whether an agent worked from state you can still trust: was
+    the state/context it used already older than max_state_age_hours,
+    missing a freshness timestamp, or version-skewed? FL003 only."""
     outcome = run_single(
         _parse(output_json), "FL003", CheckConfig(max_state_age_hours=max_state_age_hours)
     )
@@ -118,8 +145,10 @@ def check_stale_state(output_json: str, max_state_age_hours: float = 24.0) -> st
 
 @server.tool()
 def check_counts(output_json: str) -> str:
-    """FL004 only: do reported counts reconcile with the itemized lists in
-    the same document?"""
+    """Check whether the numbers in an agent's report are true: do the
+    reported counts reconcile with the itemized lists in the same
+    document, and does every total equal the sum of its parts? FL004
+    only."""
     outcome = run_single(_parse(output_json), "FL004")
     return json.dumps(outcome.to_dict(), indent=2)
 
@@ -130,9 +159,11 @@ def check_completeness(
     required_paths: str = "",
     max_segment_gap_seconds: float = 2.0,
 ) -> str:
-    """FL005 only: are required components present and non-empty, and are
-    there dead stretches inside segmented deliverables? Pass required_paths
-    as comma-separated dotted paths, e.g. "output.url,output.body"."""
+    """Check whether an agent's deliverable is actually complete: are the
+    required components present and non-empty, and are there dead
+    stretches inside segmented deliverables? FL005 only. Pass
+    required_paths as comma-separated dotted paths, e.g.
+    "output.url,output.body"."""
     outcome = run_single(
         _parse(output_json),
         "FL005",
@@ -143,17 +174,20 @@ def check_completeness(
 
 @server.tool()
 def check_groundedness(output_json: str) -> str:
-    """FL006 only: does a RAG answer's grounding hold — do its citations
-    resolve to retrieved sources, are the cited sources non-empty, and
-    does every number in the answer appear in the sources?"""
+    """Check whether a RAG / LLM answer is supported by its sources before
+    you present or act on it: do its citations resolve to sources that
+    were actually retrieved (no hallucinated citations), are the cited
+    sources non-empty, and does every number in the answer appear in the
+    sources? FL006 only."""
     outcome = run_single(_parse(output_json), "FL006")
     return json.dumps(outcome.to_dict(), indent=2)
 
 
 @server.tool()
 def failure_report(output_json: str, required_paths: str = "") -> str:
-    """Run all checks and return the Markdown FAILURE REPORT — the
-    human-readable artifact to attach to a run, issue, or pull request."""
+    """Verify an agent output before it is trusted and return the Markdown
+    FAILURE REPORT — the human-readable artifact to attach to a run,
+    issue, or pull request."""
     doc = _parse(output_json)
     result = run_checks(doc, _config(required_paths=required_paths))
     return render_markdown(result, source="mcp:failure_report")
@@ -167,7 +201,9 @@ def create_verification_receipt(
     max_segment_gap_seconds: float = 2.0,
     required_paths: str = "",
 ) -> str:
-    """Run all checks and return a hash-chained verification receipt.
+    """Verify an agent output and seal the verdict into a hash-chained
+    receipt, so a later step can prove the verdict it acted on was never
+    altered. Runs all checks and returns the receipt.
 
     The receipt embeds the full result plus SHA-256 hashes sealing it: pass
     the previous receipt's receipt_hash as prev_hash to extend a chain, and
@@ -187,7 +223,9 @@ def create_verification_receipt(
 
 @server.tool()
 def verify_receipt_chain(receipts_json: str) -> str:
-    """Verify a receipt chain: every receipt intact, every link in order.
+    """Check that a chain of FailLoud verification receipts is intact
+    before trusting the verdicts recorded in it: every receipt unaltered,
+    every link in order.
 
     Pass a JSON array of receipt objects (as returned by
     create_verification_receipt). Returns JSON with valid (bool), the
@@ -210,7 +248,8 @@ def verify_receipt_chain(receipts_json: str) -> str:
 
 @server.tool()
 def recheck_against_record(output_json: str, record_json: str) -> str:
-    """Second pass: re-judge an agent output against the system of record.
+    """Re-judge an agent's claims against the system of record before
+    treating its "done" as fact (second pass).
 
     A first-pass PASS is provisional — the output only had to agree with
     itself. Pass the original output and a later snapshot from the system
