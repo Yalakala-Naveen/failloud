@@ -35,13 +35,13 @@ Last swept: 2026-11-20.
 | Cursor Marketplace | Not yet submitted | This file | Submit the publish form at cursor.com/marketplace with the canonical copy — platform step |
 | cursor.directory | Not yet submitted | This file | Submit via cursor.directory (community directory) — platform step |
 | Smithery | **Changed** — acquired by Arcade (Aug 2026); proxy/hosting shut down 2026-10-31; self-serve publish closed; directory now curated | `smithery.yaml` (in repo) | No form exists today; request inclusion if/when Arcade reopens submissions — platform step |
-| Glama | **Listed + claimed** (Nov 2026); Glama also imports the official registry | `glama.json` (maintainers) | Refresh the listing description to the canonical copy on glama.ai — account step |
+| Glama | **Listed + claimed** (Nov 2026); Glama also imports the official registry | `glama.json` (maintainers) | **DONE Nov 20, 2026:** description refreshed to the six-check short form (Glama caps the field at 400 chars, so the verbatim canonical text cannot fit there) — verified live at glama.ai/mcp/servers/Yalakala-Naveen/failloud |
 | PulseMCP | **Submissions paused** — PulseMCP is not taking new servers; it ingests the official registry | — (registry entry is the feed) | None possible; FailLoud's live registry entry is the pickup source when ingestion resumes |
 | mcp.so | Not yet submitted | This file | Submit the form at mcp.so/submit with the canonical copy — platform step |
 | MCP Market (mcpmarket.com) | Not yet submitted | This file | Submit form / registry import — platform step |
 | Docker MCP Catalog | Not yet submitted — needs a Docker image + PR to docker/mcp-registry | Dockerfile copy below (prepared, untested — no Docker in the build environment) | Build/push the image, open the catalog PR — platform step |
 | awesome-mcp-servers (punkpeye) | **PR #19633 ALREADY OPEN** — "Add FailLoud MCP server" (Developer Tools section). Do not duplicate | — | Optional: author updates the PR body, which cites registry v0.5.1, to v0.6.0 — account step |
-| Agensi (SKILL.md listing) | **LIVE** — "FailLoud Verify: The Done-Check for AI Agent Output" | `skill/SKILL.md`, `skill/LISTING.md` | None |
+| Agensi (SKILL.md listing) | **LIVE + REFRESHED Nov 20, 2026** — was stale at five checks (self-audit F1); now sells six checks / 0.6.0, verified live at agensi.io/skills/failloud-verify-the-done-check-for-ai-agent-output (Summary field caps at 300 chars — saved a 298-char version preserving all six categories; full description verbatim) | `skill/SKILL.md`, `skill/LISTING.md` | None — done |
 
 ## Official MCP Registry — re-publish commands (account step)
 
