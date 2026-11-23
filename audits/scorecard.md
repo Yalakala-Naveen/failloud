@@ -90,3 +90,23 @@ Assistant totals: named __ / 12 · first __ / 12
 - Anything that looks like it moved the score (new listing, new article,
   registry change) — record the date it shipped so the trend can be read
   against it:
+
+---
+
+## Run — 2026-11-23 (weekly)
+
+Full per-answer tables: `scorecard-2026-11-23.md` in this folder.
+
+| Assistant | Recommendation Score | Priority Score | Status |
+|---|---|---|---|
+| ChatGPT (GPT-5.2, Go) | 0% (0/12) | 0% (0/12) | Complete |
+| Claude | — | — | BLOCKED — sign-in not completed; secure link sent to therembiq@gmail.com is a link, not a code, and no usable code was available |
+| Gemini (Pro, "Hydrogen") | 0% (0/12) | 0% (0/12) | Complete (was BLOCKED in baseline) |
+| Perplexity (Free) | 25% (3/12) | 25% (3/12) | Complete |
+| Copilot | — | — | BLOCKED — sign-in required, no saved Microsoft account |
+| **Overall (36 completed)** | **8.3% (3/36)** | **8.3% (3/36)** | |
+
+Change vs previous run (2026-11-20 baseline, 3/36 = 8.3% / 8.3%): **no change.**
+Perplexity named FailLoud first on the same three prompts (P02, P10, P11).
+Recommended instead most often: technique-only (5 answers, all Perplexity);
+Pydantic, Ragas, LangChain first-named 3× each; Crossref, Guardrails AI 2× each.
